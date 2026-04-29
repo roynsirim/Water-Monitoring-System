@@ -1,0 +1,1008 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Speciality Steels – Water Management System</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+:root{
+  --bg:#0f1117;--surface:#1a1d27;--surface2:#232636;--border:#2d3148;
+  --accent:#3b82f6;--accent2:#06b6d4;--green:#10b981;--amber:#f59e0b;
+  --red:#ef4444;--text:#e2e8f0;--text2:#94a3b8;--text3:#64748b;
+  --towns:#3b82f6;--river:#06b6d4;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Segoe UI',sans-serif;background:var(--bg);color:var(--text);min-height:100vh}
+/* Layout */
+#app{display:flex;height:100vh;overflow:hidden}
+#sidebar{width:220px;background:var(--surface);border-right:1px solid var(--border);display:flex;flex-direction:column;flex-shrink:0}
+#main{flex:1;overflow-y:auto;display:flex;flex-direction:column}
+/* Sidebar */
+.logo{padding:20px 16px 16px;border-bottom:1px solid var(--border)}
+.logo h2{font-size:13px;font-weight:700;color:var(--accent);letter-spacing:.5px;text-transform:uppercase}
+.logo p{font-size:11px;color:var(--text3);margin-top:3px}
+.nav-section{padding:12px 8px 4px;font-size:10px;font-weight:700;color:var(--text3);letter-spacing:1px;text-transform:uppercase;margin:0 4px}
+.nav-item{display:flex;align-items:center;gap:10px;padding:9px 12px;margin:1px 6px;border-radius:8px;cursor:pointer;font-size:13px;color:var(--text2);transition:all .15s}
+.nav-item:hover{background:var(--surface2);color:var(--text)}
+.nav-item.active{background:var(--accent)20;color:var(--accent);font-weight:600}
+.nav-item .ico{width:16px;text-align:center;font-size:14px}
+.site-badge{font-size:10px;padding:2px 7px;border-radius:99px;margin-left:auto}
+.site-badge.rot{background:#ef444420;color:var(--red)}
+.site-badge.sto{background:#10b98120;color:var(--green)}
+.site-badge.bri{background:#f59e0b20;color:var(--amber)}
+.site-badge.wed{background:#8b5cf620;color:#a78bfa}
+/* Topbar */
+#topbar{background:var(--surface);border-bottom:1px solid var(--border);padding:0 24px;height:56px;display:flex;align-items:center;gap:16px;flex-shrink:0}
+#topbar h1{font-size:16px;font-weight:700;flex:1}
+.top-btn{padding:7px 14px;border-radius:8px;border:1px solid var(--border);background:var(--surface2);color:var(--text2);font-size:12px;cursor:pointer;transition:all .15s}
+.top-btn:hover{border-color:var(--accent);color:var(--accent)}
+.top-btn.primary{background:var(--accent);border-color:var(--accent);color:#fff}
+.top-btn.primary:hover{background:#2563eb}
+/* Page areas */
+.page{display:none;padding:24px;flex:1}
+.page.active{display:block}
+/* Cards */
+.card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:20px}
+.card-grid{display:grid;gap:16px}
+.card-grid.cols2{grid-template-columns:repeat(2,1fr)}
+.card-grid.cols3{grid-template-columns:repeat(3,1fr)}
+.card-grid.cols4{grid-template-columns:repeat(4,1fr)}
+.card-grid.cols-auto{grid-template-columns:repeat(auto-fill,minmax(220px,1fr))}
+.card h3{font-size:12px;color:var(--text3);text-transform:uppercase;letter-spacing:.5px;margin-bottom:12px;font-weight:600}
+/* KPI cards */
+.kpi{display:flex;flex-direction:column;gap:4px}
+.kpi .val{font-size:28px;font-weight:700}
+.kpi .sub{font-size:12px;color:var(--text3)}
+.kpi .delta{font-size:12px;padding:2px 8px;border-radius:99px;width:fit-content}
+.kpi .delta.up{background:#10b98120;color:var(--green)}
+.kpi .delta.down{background:#ef444420;color:var(--red)}
+/* Tables */
+.tbl-wrap{overflow-x:auto}
+table{width:100%;border-collapse:collapse;font-size:13px}
+th{padding:10px 12px;text-align:left;font-size:11px;font-weight:600;color:var(--text3);text-transform:uppercase;letter-spacing:.4px;border-bottom:1px solid var(--border)}
+td{padding:10px 12px;border-bottom:1px solid var(--border)10}
+tr:last-child td{border-bottom:none}
+tr:hover td{background:var(--surface2)}
+.badge{font-size:11px;padding:2px 8px;border-radius:99px}
+.badge.towns{background:var(--towns)20;color:var(--towns)}
+.badge.river{background:var(--river)20;color:var(--river)}
+.badge.both{background:#8b5cf620;color:#a78bfa}
+.badge.eemon{background:#10b98120;color:var(--green)}
+.badge.trend{background:#f59e0b20;color:var(--amber)}
+.badge.manual{background:#64748b20;color:var(--text3)}
+/* Forms */
+.form-grid{display:grid;gap:14px}
+.form-grid.cols2{grid-template-columns:1fr 1fr}
+.field label{display:block;font-size:12px;color:var(--text3);margin-bottom:5px;font-weight:500}
+.field input,.field select,.field textarea{width:100%;padding:9px 12px;background:var(--surface2);border:1px solid var(--border);border-radius:8px;color:var(--text);font-size:13px;outline:none;transition:border-color .15s}
+.field input:focus,.field select,.field select:focus,.field textarea:focus{border-color:var(--accent)}
+.field textarea{resize:vertical;min-height:70px}
+.field select option{background:var(--surface)}
+/* Progress bars */
+.bar-wrap{display:flex;align-items:center;gap:10px}
+.bar-bg{flex:1;background:var(--surface2);border-radius:99px;height:8px;overflow:hidden}
+.bar-fill{height:100%;border-radius:99px;transition:width .6s ease}
+.bar-fill.towns{background:var(--towns)}
+.bar-fill.river{background:var(--river)}
+/* Alerts */
+.alert{padding:12px 16px;border-radius:8px;font-size:13px;margin-bottom:12px}
+.alert.success{background:#10b98115;border:1px solid #10b98130;color:var(--green)}
+.alert.error{background:#ef444415;border:1px solid #ef444430;color:var(--red)}
+.alert.info{background:#3b82f615;border:1px solid #3b82f630;color:var(--accent)}
+/* Tabs */
+.tabs{display:flex;gap:4px;margin-bottom:20px;border-bottom:1px solid var(--border);padding-bottom:0}
+.tab-btn{padding:8px 16px;border:none;background:none;color:var(--text3);font-size:13px;cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1px;transition:all .15s}
+.tab-btn.active{color:var(--accent);border-bottom-color:var(--accent);font-weight:600}
+/* Chart container */
+.chart-box{position:relative;height:260px}
+.chart-box.tall{height:320px}
+/* Section heading */
+.sec-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px}
+.sec-head h2{font-size:16px;font-weight:700}
+/* Search bar */
+.search-wrap{display:flex;gap:10px;margin-bottom:20px}
+.search-wrap input{flex:1;padding:10px 14px;background:var(--surface);border:1px solid var(--border);border-radius:8px;color:var(--text);font-size:14px;outline:none}
+.search-wrap input:focus{border-color:var(--accent)}
+/* Scrollbar */
+::-webkit-scrollbar{width:6px;height:6px}
+::-webkit-scrollbar-track{background:transparent}
+::-webkit-scrollbar-thumb{background:var(--border);border-radius:99px}
+/* Responsive tweaks */
+@media(max-width:900px){
+  .card-grid.cols4{grid-template-columns:repeat(2,1fr)}
+  .card-grid.cols3{grid-template-columns:1fr 1fr}
+}
+.separator{flex:1}
+.sync-status{font-size:11px;padding:6px 12px;border-top:1px solid var(--border);color:var(--text3);text-align:center}
+.dot{display:inline-block;width:7px;height:7px;border-radius:50%;margin-right:5px;background:var(--green)}
+.loading{text-align:center;padding:40px;color:var(--text3)}
+</style>
+</head>
+<body>
+<div id="app">
+<!-- Sidebar -->
+<div id="sidebar">
+  <div class="logo">
+    <h2>💧 Water MS</h2>
+    <p>Speciality Steels UK</p>
+  </div>
+  <div class="nav-section">Overview</div>
+  <div class="nav-item active" onclick="showPage('dashboard')"><span class="ico">📊</span>All Sites Dashboard</div>
+  <div class="nav-item" onclick="showPage('kpis')"><span class="ico">📈</span>KPIs & Efficiency</div>
+  <div class="nav-section">Sites</div>
+  <div class="nav-item" onclick="showSite('rotherham')"><span class="ico">🏭</span>Rotherham<span class="site-badge rot">ROT</span></div>
+  <div class="nav-item" onclick="showSite('stocksbridge')"><span class="ico">🏭</span>Stocksbridge<span class="site-badge sto">STO</span></div>
+  <div class="nav-item" onclick="showSite('brinsworth')"><span class="ico">🏭</span>Brinsworth<span class="site-badge bri">BRI</span></div>
+  <div class="nav-item" onclick="showSite('wednesbury')"><span class="ico">🏭</span>Wednesbury<span class="site-badge wed">WED</span></div>
+  <div class="nav-section">Data Entry</div>
+  <div class="nav-item" onclick="showPage('input')"><span class="ico">✏️</span>Manual Readings</div>
+  <div class="nav-item" onclick="showPage('tonnes-page')"><span class="ico">⚖️</span>Tonnes Input</div>
+  <div class="nav-section">Tools</div>
+  <div class="nav-item" onclick="showPage('search')"><span class="ico">🔍</span>Search & Query</div>
+  <div class="nav-item" onclick="showPage('reports')"><span class="ico">📋</span>Reports</div>
+  <div class="nav-item" onclick="showPage('integrations')"><span class="ico">🔗</span>Integrations</div>
+  <div class="separator"></div>
+  <div class="sync-status"><span class="dot"></span>System Online</div>
+</div>
+
+<!-- Main -->
+<div id="main">
+  <div id="topbar">
+    <h1 id="page-title">All Sites Dashboard</h1>
+    <div style="display:flex;gap:8px;align-items:center">
+      <label style="font-size:12px;color:var(--text3)">From</label>
+      <input type="date" id="global-from" class="top-btn" style="padding:6px 10px">
+      <label style="font-size:12px;color:var(--text3)">To</label>
+      <input type="date" id="global-to" class="top-btn" style="padding:6px 10px">
+      <button class="top-btn primary" onclick="refresh()">Refresh</button>
+      <button class="top-btn" onclick="seedData()">Load Sample Data</button>
+    </div>
+  </div>
+
+  <!-- ── DASHBOARD ──────────────────────────────────────────── -->
+  <div id="page-dashboard" class="page active">
+    <div id="dash-alert"></div>
+    <div id="site-kpi-cards" class="card-grid cols4" style="margin-bottom:20px"></div>
+    <div class="card-grid cols2" style="margin-bottom:20px">
+      <div class="card">
+        <h3>Water Usage by Site (m³)</h3>
+        <div class="chart-box"><canvas id="chart-site-bar"></canvas></div>
+      </div>
+      <div class="card">
+        <h3>Towns vs River Water – All Sites</h3>
+        <div class="chart-box"><canvas id="chart-type-doughnut"></canvas></div>
+      </div>
+    </div>
+    <div class="card">
+      <h3>Usage Timeline – All Sites Combined</h3>
+      <div class="chart-box tall"><canvas id="chart-timeline"></canvas></div>
+    </div>
+  </div>
+
+  <!-- ── SITE DETAIL ────────────────────────────────────────── -->
+  <div id="page-site" class="page">
+    <div id="site-alert"></div>
+    <div id="site-kpis" class="card-grid cols4" style="margin-bottom:20px"></div>
+    <div class="card-grid cols2" style="margin-bottom:20px">
+      <div class="card">
+        <h3 id="dept-chart-title">Department Usage (m³)</h3>
+        <div class="chart-box"><canvas id="chart-dept"></canvas></div>
+      </div>
+      <div class="card">
+        <h3>Water Type Split</h3>
+        <div class="chart-box"><canvas id="chart-site-pie"></canvas></div>
+      </div>
+    </div>
+    <div class="card" style="margin-bottom:20px">
+      <h3>Usage Timeline</h3>
+      <div class="chart-box tall"><canvas id="chart-site-timeline"></canvas></div>
+    </div>
+    <div class="card">
+      <div class="sec-head"><h2>Department Breakdown</h2></div>
+      <div class="tbl-wrap">
+        <table>
+          <thead><tr><th>Department</th><th>Total m³</th><th>Towns m³</th><th>River m³</th><th>Tonnes</th><th>m³/tonne</th><th>Efficiency</th></tr></thead>
+          <tbody id="dept-table"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── KPIs ───────────────────────────────────────────────── -->
+  <div id="page-kpis" class="page">
+    <div class="card-grid cols4" style="margin-bottom:20px" id="kpi-cards"></div>
+    <div class="card-grid cols2" style="margin-bottom:20px">
+      <div class="card">
+        <h3>m³ per Tonne by Site</h3>
+        <div class="chart-box"><canvas id="chart-efficiency"></canvas></div>
+      </div>
+      <div class="card">
+        <h3>Water Use per Tonne – Trend</h3>
+        <div class="chart-box"><canvas id="chart-m3t-trend"></canvas></div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="tbl-wrap">
+        <table>
+          <thead><tr><th>Site</th><th>Total m³</th><th>Towns m³</th><th>River m³</th><th>Tonnes</th><th>m³/tonne</th><th>Towns %</th></tr></thead>
+          <tbody id="kpi-table"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── MANUAL INPUT ───────────────────────────────────────── -->
+  <div id="page-input" class="page">
+    <div class="card-grid cols2">
+      <div class="card">
+        <h3 style="margin-bottom:16px">Add Meter Reading</h3>
+        <div id="input-alert"></div>
+        <div class="form-grid">
+          <div class="field">
+            <label>Site</label>
+            <select id="in-site" onchange="loadMetersForSite()">
+              <option value="">Select site…</option>
+              <option value="rotherham">Rotherham</option>
+              <option value="stocksbridge">Stocksbridge</option>
+              <option value="brinsworth">Brinsworth</option>
+              <option value="wednesbury">Wednesbury</option>
+            </select>
+          </div>
+          <div class="field">
+            <label>Department</label>
+            <select id="in-dept" onchange="filterMeters()">
+              <option value="">All departments</option>
+            </select>
+          </div>
+          <div class="field">
+            <label>Meter</label>
+            <select id="in-meter">
+              <option value="">Select meter…</option>
+            </select>
+          </div>
+          <div class="field">
+            <label>Reading Value</label>
+            <input type="number" id="in-value" placeholder="Cumulative meter reading" step="0.01">
+          </div>
+          <div class="field">
+            <label>Date</label>
+            <input type="date" id="in-date">
+          </div>
+          <div class="field">
+            <label>Notes</label>
+            <textarea id="in-notes" placeholder="Optional notes…"></textarea>
+          </div>
+        </div>
+        <button class="top-btn primary" style="margin-top:16px;width:100%" onclick="submitReading()">Submit Reading</button>
+      </div>
+      <div class="card">
+        <h3 style="margin-bottom:16px">Recent Readings</h3>
+        <div class="tbl-wrap" id="recent-readings-wrap">
+          <table>
+            <thead><tr><th>Date</th><th>Meter</th><th>Value</th><th>Usage</th><th>Type</th></tr></thead>
+            <tbody id="recent-readings"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── TONNES ─────────────────────────────────────────────── -->
+  <div id="page-tonnes-page" class="page">
+    <div class="card-grid cols2">
+      <div class="card">
+        <h3 style="margin-bottom:16px">Input Production Tonnes</h3>
+        <div id="tonnes-alert"></div>
+        <div class="form-grid">
+          <div class="field">
+            <label>Site</label>
+            <select id="t-site" onchange="loadDeptsForTonnes()">
+              <option value="">Select site…</option>
+              <option value="rotherham">Rotherham</option>
+              <option value="stocksbridge">Stocksbridge</option>
+              <option value="brinsworth">Brinsworth</option>
+              <option value="wednesbury">Wednesbury</option>
+            </select>
+          </div>
+          <div class="field">
+            <label>Department</label>
+            <select id="t-dept"><option value="">Select department…</option></select>
+          </div>
+          <div class="field">
+            <label>Tonnes</label>
+            <input type="number" id="t-value" placeholder="Production tonnes" step="0.1">
+          </div>
+          <div class="field">
+            <label>Period (Date)</label>
+            <input type="date" id="t-date">
+          </div>
+          <div class="field">
+            <label>Notes</label>
+            <textarea id="t-notes" placeholder="Optional notes…"></textarea>
+          </div>
+        </div>
+        <button class="top-btn primary" style="margin-top:16px;width:100%" onclick="submitTonnes()">Save Tonnes</button>
+      </div>
+      <div class="card">
+        <h3 style="margin-bottom:16px">Recent Tonnes Entries</h3>
+        <div class="tbl-wrap">
+          <table>
+            <thead><tr><th>Date</th><th>Site</th><th>Department</th><th>Tonnes</th></tr></thead>
+            <tbody id="recent-tonnes"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── SEARCH ─────────────────────────────────────────────── -->
+  <div id="page-search" class="page">
+    <div class="card" style="margin-bottom:20px">
+      <div class="form-grid cols2">
+        <div class="field"><label>Search Query</label>
+          <input type="text" id="sq-query" placeholder="Search by meter, department, notes…">
+        </div>
+        <div class="field"><label>Site</label>
+          <select id="sq-site">
+            <option value="">All Sites</option>
+            <option value="rotherham">Rotherham</option>
+            <option value="stocksbridge">Stocksbridge</option>
+            <option value="brinsworth">Brinsworth</option>
+            <option value="wednesbury">Wednesbury</option>
+          </select>
+        </div>
+        <div class="field"><label>Water Type</label>
+          <select id="sq-type">
+            <option value="">All Types</option>
+            <option value="towns">Towns Water</option>
+            <option value="river">River Water</option>
+          </select>
+        </div>
+        <div class="field"><label>From Date</label>
+          <input type="date" id="sq-from">
+        </div>
+        <div class="field"><label>To Date</label>
+          <input type="date" id="sq-to">
+        </div>
+      </div>
+      <div style="display:flex;gap:8px;margin-top:14px">
+        <button class="top-btn primary" onclick="runSearch()">Search</button>
+        <button class="top-btn" onclick="clearSearch()">Clear</button>
+        <span id="search-count" style="line-height:34px;font-size:13px;color:var(--text3)"></span>
+      </div>
+    </div>
+    <div class="card">
+      <div class="tbl-wrap">
+        <table>
+          <thead><tr><th>Date</th><th>Site</th><th>Department</th><th>Meter</th><th>Reading</th><th>Usage (m³)</th><th>Type</th><th>Source</th><th>Notes</th></tr></thead>
+          <tbody id="search-results"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── REPORTS ────────────────────────────────────────────── -->
+  <div id="page-reports" class="page">
+    <div class="card" style="margin-bottom:20px">
+      <h3 style="margin-bottom:12px">Generate Report</h3>
+      <div class="form-grid cols2">
+        <div class="field"><label>From Date</label><input type="date" id="rep-from"></div>
+        <div class="field"><label>To Date</label><input type="date" id="rep-to"></div>
+      </div>
+      <button class="top-btn primary" style="margin-top:14px" onclick="generateReport()">Generate Report</button>
+      <button class="top-btn" style="margin-top:14px;margin-left:8px" onclick="exportCSV()">Export CSV</button>
+    </div>
+    <div id="report-output"></div>
+  </div>
+
+  <!-- ── INTEGRATIONS ───────────────────────────────────────── -->
+  <div id="page-integrations" class="page">
+    <div class="card-grid cols2">
+      <div class="card">
+        <h3 style="margin-bottom:16px">🟢 EEmon System (Stocksbridge)</h3>
+        <p style="font-size:13px;color:var(--text3);margin-bottom:16px">Connect to the EEmon monitoring system to pull live meter readings automatically.</p>
+        <div class="form-grid">
+          <div class="field"><label>Base URL</label><input type="text" id="ee-url" placeholder="https://eemon.example.com/api"></div>
+          <div class="field"><label>Username</label><input type="text" id="ee-user" placeholder="username"></div>
+          <div class="field"><label>Password</label><input type="password" id="ee-pass" placeholder="password"></div>
+        </div>
+        <button class="top-btn primary" style="margin-top:14px" onclick="configEEmon()">Connect EEmon</button>
+        <div id="ee-status" class="alert info" style="margin-top:12px;display:none"></div>
+        <div style="margin-top:16px">
+          <h3 style="font-size:11px;margin-bottom:8px">Monitored Meters</h3>
+          <div style="display:flex;flex-wrap:wrap;gap:6px;font-size:11px">
+            <span class="badge eemon">RMS 1</span><span class="badge eemon">RMS 2</span>
+            <span class="badge eemon">VIM</span><span class="badge eemon">BM Meter 16</span>
+            <span class="badge eemon">BM Meter 17</span><span class="badge eemon">BM Saws 14</span>
+            <span class="badge eemon">Croft Supply</span><span class="badge eemon">West Bank WQ1</span>
+            <span class="badge eemon">West Bank WQ2</span><span class="badge eemon">Spring Bank</span>
+          </div>
+        </div>
+      </div>
+      <div class="card">
+        <h3 style="margin-bottom:16px">🟡 Trend System (Brinsworth)</h3>
+        <p style="font-size:13px;color:var(--text3);margin-bottom:16px">Connect to the Trend BEMS system to pull live river water meter readings.</p>
+        <div class="form-grid">
+          <div class="field"><label>Base URL</label><input type="text" id="tr-url" placeholder="https://trend.example.com/api"></div>
+          <div class="field"><label>API Key</label><input type="password" id="tr-key" placeholder="API Key"></div>
+        </div>
+        <button class="top-btn primary" style="margin-top:14px" onclick="configTrend()">Connect Trend</button>
+        <div id="tr-status" class="alert info" style="margin-top:12px;display:none"></div>
+        <div style="margin-top:16px">
+          <h3 style="font-size:11px;margin-bottom:8px">Monitored Meters</h3>
+          <div style="display:flex;flex-wrap:wrap;gap:6px;font-size:11px">
+            <span class="badge trend">Hot Mill River</span>
+            <span class="badge trend">HRP River Water</span>
+            <span class="badge trend">Cold Mill River</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="card" style="margin-top:20px">
+      <h3 style="margin-bottom:16px">Manual Meters Summary</h3>
+      <div class="card-grid cols4">
+        <div>
+          <p style="font-size:11px;color:var(--text3);margin-bottom:8px">Rotherham</p>
+          <div style="display:flex;flex-wrap:wrap;gap:5px;font-size:11px" id="manual-rot"></div>
+        </div>
+        <div>
+          <p style="font-size:11px;color:var(--text3);margin-bottom:8px">Stocksbridge (Manual)</p>
+          <div style="display:flex;flex-wrap:wrap;gap:5px;font-size:11px" id="manual-sto"></div>
+        </div>
+        <div>
+          <p style="font-size:11px;color:var(--text3);margin-bottom:8px">Brinsworth (Manual)</p>
+          <div style="display:flex;flex-wrap:wrap;gap:5px;font-size:11px" id="manual-bri"></div>
+        </div>
+        <div>
+          <p style="font-size:11px;color:var(--text3);margin-bottom:8px">Wednesbury</p>
+          <div style="display:flex;flex-wrap:wrap;gap:5px;font-size:11px" id="manual-wed"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div><!-- /main -->
+</div><!-- /app -->
+
+<script>
+const API = '';
+let allMeters = [];
+let charts = {};
+
+// ─── Init ────────────────────────────────────────────────────
+document.addEventListener('DOMContentLoaded', async () => {
+  setDefaultDates();
+  await fetchMeters();
+  loadDashboard();
+  loadRecentReadings();
+  loadRecentTonnes();
+  populateManualMeters();
+});
+
+function setDefaultDates() {
+  const to = new Date();
+  const from = new Date(); from.setMonth(from.getMonth() - 3);
+  const fmt = d => d.toISOString().split('T')[0];
+  document.getElementById('global-from').value = fmt(from);
+  document.getElementById('global-to').value = fmt(to);
+  document.getElementById('in-date').value = fmt(to);
+  document.getElementById('t-date').value = fmt(to);
+  const y = new Date(); y.setMonth(y.getMonth()-1);
+  document.getElementById('rep-from').value = fmt(y);
+  document.getElementById('rep-to').value = fmt(to);
+}
+
+async function fetchMeters() {
+  const r = await fetch(`${API}/api/meters`);
+  allMeters = await r.json();
+}
+
+// ─── Navigation ──────────────────────────────────────────────
+let currentSite = null;
+function showPage(id) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+  document.getElementById('page-'+id).classList.add('active');
+  const titles = {
+    dashboard:'All Sites Dashboard', kpis:'KPIs & Efficiency',
+    input:'Manual Readings', 'tonnes-page':'Tonnes Input',
+    search:'Search & Query', reports:'Reports', integrations:'Integrations'
+  };
+  document.getElementById('page-title').textContent = titles[id] || id;
+  if(id==='kpis') loadKPIs();
+  if(id==='reports') {}
+  if(id==='search') {}
+}
+
+function showSite(siteId) {
+  currentSite = siteId;
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.getElementById('page-site').classList.add('active');
+  const names = {rotherham:'Rotherham',stocksbridge:'Stocksbridge',brinsworth:'Brinsworth',wednesbury:'Wednesbury'};
+  document.getElementById('page-title').textContent = names[siteId] + ' – Site Detail';
+  loadSiteDashboard(siteId);
+}
+
+function refresh() { 
+  const pg = document.querySelector('.page.active').id.replace('page-','');
+  if(pg==='dashboard') loadDashboard();
+  else if(pg==='site') loadSiteDashboard(currentSite);
+  else if(pg==='kpis') loadKPIs();
+}
+
+// ─── Dashboard ───────────────────────────────────────────────
+async function loadDashboard() {
+  const from = document.getElementById('global-from').value;
+  const to   = document.getElementById('global-to').value;
+  const r = await fetch(`${API}/api/dashboard?from=${from}&to=${to}`);
+  const data = await r.json();
+  renderSiteKPICards(data);
+  renderSiteBarChart(data);
+  renderTypeDoughnut(data);
+  renderTimelineChart(data);
+}
+
+function renderSiteKPICards(data) {
+  const el = document.getElementById('site-kpi-cards');
+  const colors = {rotherham:'red',stocksbridge:'green',brinsworth:'amber',wednesbury:'purple'};
+  el.innerHTML = data.map(d => `
+    <div class="card kpi">
+      <h3>${d.site_name}</h3>
+      <div class="val" style="font-size:22px">${fmt(d.total_m3)} m³</div>
+      <div style="display:flex;gap:6px;margin:4px 0">
+        <span class="badge towns">T: ${fmt(d.towns_m3)}</span>
+        <span class="badge river">R: ${fmt(d.river_m3)}</span>
+      </div>
+      <div class="sub">${fmt(d.total_tonnes)} t produced</div>
+      <div class="sub" style="color:var(--accent)">${d.m3_per_tonne > 0 ? d.m3_per_tonne.toFixed(3)+' m³/t' : 'No tonnes data'}</div>
+    </div>
+  `).join('');
+}
+
+function renderSiteBarChart(data) {
+  destroyChart('site-bar');
+  const ctx = document.getElementById('chart-site-bar');
+  charts['site-bar'] = new Chart(ctx, {
+    type:'bar',
+    data:{
+      labels: data.map(d=>d.site_name),
+      datasets:[
+        {label:'Towns Water (m³)',data:data.map(d=>d.towns_m3),backgroundColor:'#3b82f680',borderColor:'#3b82f6',borderWidth:1},
+        {label:'River Water (m³)',data:data.map(d=>d.river_m3),backgroundColor:'#06b6d480',borderColor:'#06b6d4',borderWidth:1},
+      ]
+    },
+    options: chartOpts('m³')
+  });
+}
+
+function renderTypeDoughnut(data) {
+  destroyChart('type-doughnut');
+  const towns = data.reduce((s,d)=>s+d.towns_m3,0);
+  const river = data.reduce((s,d)=>s+d.river_m3,0);
+  const ctx = document.getElementById('chart-type-doughnut');
+  charts['type-doughnut'] = new Chart(ctx,{
+    type:'doughnut',
+    data:{
+      labels:['Towns Water','River Water'],
+      datasets:[{data:[towns,river],backgroundColor:['#3b82f6','#06b6d4'],borderWidth:0}]
+    },
+    options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{labels:{color:'#94a3b8'}}}}
+  });
+}
+
+function renderTimelineChart(data) {
+  destroyChart('timeline');
+  // Merge all site timelines
+  const weekMap = {};
+  data.forEach(d => {
+    (d.timeline||[]).forEach(t => {
+      if(!weekMap[t.date]) weekMap[t.date]={towns:0,river:0};
+      weekMap[t.date].towns += t.towns;
+      weekMap[t.date].river += t.river;
+    });
+  });
+  const weeks = Object.keys(weekMap).sort();
+  const ctx = document.getElementById('chart-timeline');
+  charts['timeline'] = new Chart(ctx,{
+    type:'line',
+    data:{
+      labels:weeks,
+      datasets:[
+        {label:'Towns Water',data:weeks.map(w=>weekMap[w].towns),borderColor:'#3b82f6',fill:true,backgroundColor:'#3b82f615',tension:.4,pointRadius:3},
+        {label:'River Water',data:weeks.map(w=>weekMap[w].river),borderColor:'#06b6d4',fill:true,backgroundColor:'#06b6d415',tension:.4,pointRadius:3},
+      ]
+    },
+    options: chartOpts('m³')
+  });
+}
+
+// ─── Site Dashboard ──────────────────────────────────────────
+async function loadSiteDashboard(siteId) {
+  const from = document.getElementById('global-from').value;
+  const to   = document.getElementById('global-to').value;
+  const r = await fetch(`${API}/api/dashboard?site_id=${siteId}&from=${from}&to=${to}`);
+  const d = await r.json();
+
+  // KPI cards
+  document.getElementById('site-kpis').innerHTML = `
+    <div class="card kpi"><h3>Total Usage</h3><div class="val">${fmt(d.total_m3)}</div><div class="sub">m³ total</div></div>
+    <div class="card kpi"><h3>Towns Water</h3><div class="val" style="color:var(--towns)">${fmt(d.towns_m3)}</div><div class="sub">m³ from mains</div></div>
+    <div class="card kpi"><h3>River Water</h3><div class="val" style="color:var(--river)">${fmt(d.river_m3)}</div><div class="sub">m³ from river</div></div>
+    <div class="card kpi"><h3>m³ / Tonne</h3><div class="val" style="color:var(--green)">${d.m3_per_tonne > 0 ? d.m3_per_tonne.toFixed(3) : '—'}</div><div class="sub">${fmt(d.total_tonnes)} t produced</div></div>
+  `;
+
+  // Dept chart
+  const depts = d.departments||[];
+  document.getElementById('dept-chart-title').textContent = `${d.site_name} – Department Usage (m³)`;
+  destroyChart('dept');
+  charts['dept'] = new Chart(document.getElementById('chart-dept'),{
+    type:'bar',
+    data:{
+      labels:depts.map(x=>x.department),
+      datasets:[
+        {label:'Towns (m³)',data:depts.map(x=>x.towns_m3),backgroundColor:'#3b82f680',borderColor:'#3b82f6',borderWidth:1},
+        {label:'River (m³)',data:depts.map(x=>x.river_m3),backgroundColor:'#06b6d480',borderColor:'#06b6d4',borderWidth:1},
+      ]
+    },
+    options: chartOpts('m³')
+  });
+
+  // Pie
+  destroyChart('site-pie');
+  charts['site-pie'] = new Chart(document.getElementById('chart-site-pie'),{
+    type:'doughnut',
+    data:{
+      labels:['Towns Water','River Water'],
+      datasets:[{data:[d.towns_m3,d.river_m3],backgroundColor:['#3b82f6','#06b6d4'],borderWidth:0}]
+    },
+    options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{labels:{color:'#94a3b8'}}}}
+  });
+
+  // Timeline
+  const tl = d.timeline||[];
+  destroyChart('site-timeline');
+  charts['site-timeline'] = new Chart(document.getElementById('chart-site-timeline'),{
+    type:'line',
+    data:{
+      labels:tl.map(t=>t.date),
+      datasets:[
+        {label:'Towns',data:tl.map(t=>t.towns),borderColor:'#3b82f6',fill:true,backgroundColor:'#3b82f615',tension:.4,pointRadius:3},
+        {label:'River',data:tl.map(t=>t.river),borderColor:'#06b6d4',fill:true,backgroundColor:'#06b6d415',tension:.4,pointRadius:3},
+        {label:'Total',data:tl.map(t=>t.total),borderColor:'#10b981',borderDash:[4,4],fill:false,tension:.4,pointRadius:2},
+      ]
+    },
+    options: chartOpts('m³')
+  });
+
+  // Dept table
+  const tbody = document.getElementById('dept-table');
+  const maxM3 = Math.max(...depts.map(d=>d.m3),1);
+  tbody.innerHTML = depts.map(dp => `
+    <tr>
+      <td><strong>${dp.department}</strong></td>
+      <td>${fmt(dp.m3)}</td>
+      <td><span class="badge towns">${fmt(dp.towns_m3)}</span></td>
+      <td><span class="badge river">${fmt(dp.river_m3)}</span></td>
+      <td>${fmt(dp.tonnes)}</td>
+      <td>${dp.m3_per_tonne > 0 ? dp.m3_per_tonne.toFixed(3) : '—'}</td>
+      <td>
+        <div class="bar-wrap">
+          <div class="bar-bg" style="width:120px">
+            <div class="bar-fill towns" style="width:${Math.round(dp.towns_m3/maxM3*100)}%"></div>
+          </div>
+          <div class="bar-bg" style="width:80px">
+            <div class="bar-fill river" style="width:${Math.round(dp.river_m3/maxM3*100)}%"></div>
+          </div>
+        </div>
+      </td>
+    </tr>
+  `).join('');
+}
+
+// ─── KPIs ────────────────────────────────────────────────────
+async function loadKPIs() {
+  const r = await fetch(`${API}/api/kpis`);
+  const data = await r.json();
+
+  document.getElementById('kpi-cards').innerHTML = data.map(d=>`
+    <div class="card kpi">
+      <h3>${d.site_name}</h3>
+      <div class="val" style="color:var(--green)">${d.m3_per_tonne > 0 ? d.m3_per_tonne.toFixed(3) : '—'}</div>
+      <div class="sub">m³ per tonne</div>
+      <div class="delta up">${fmt(d.total_m3)} m³</div>
+    </div>
+  `).join('');
+
+  destroyChart('efficiency');
+  charts['efficiency'] = new Chart(document.getElementById('chart-efficiency'),{
+    type:'bar',
+    data:{
+      labels:data.map(d=>d.site_name),
+      datasets:[{label:'m³/tonne',data:data.map(d=>d.m3_per_tonne),backgroundColor:['#3b82f6','#10b981','#f59e0b','#8b5cf6'],borderWidth:0,borderRadius:6}]
+    },
+    options: chartOpts('m³/t')
+  });
+
+  // m3/t trend (dummy trend using site comparison)
+  destroyChart('m3t-trend');
+  charts['m3t-trend'] = new Chart(document.getElementById('chart-m3t-trend'),{
+    type:'bar',
+    data:{
+      labels:data.map(d=>d.site_name),
+      datasets:[
+        {label:'Towns m³/t',data:data.map(d=>d.tonnes>0?Math.round(d.towns_m3/d.tonnes*1000)/1000:0),backgroundColor:'#3b82f680',borderColor:'#3b82f6',borderWidth:1},
+        {label:'River m³/t',data:data.map(d=>d.tonnes>0?Math.round(d.river_m3/d.tonnes*1000)/1000:0),backgroundColor:'#06b6d480',borderColor:'#06b6d4',borderWidth:1},
+      ]
+    },
+    options: chartOpts('m³/t')
+  });
+
+  const tbody = document.getElementById('kpi-table');
+  tbody.innerHTML = data.map(d=>`
+    <tr>
+      <td><strong>${d.site_name}</strong></td>
+      <td>${fmt(d.total_m3)}</td>
+      <td><span class="badge towns">${fmt(d.towns_m3)}</span></td>
+      <td><span class="badge river">${fmt(d.river_m3)}</span></td>
+      <td>${fmt(d.tonnes)}</td>
+      <td><strong style="color:var(--green)">${d.m3_per_tonne > 0 ? d.m3_per_tonne.toFixed(3) : '—'}</strong></td>
+      <td>${d.total_m3>0?Math.round(d.towns_m3/d.total_m3*100)+'%':'—'}</td>
+    </tr>
+  `).join('');
+}
+
+// ─── Manual Input ────────────────────────────────────────────
+async function loadMetersForSite() {
+  const site = document.getElementById('in-site').value;
+  if (!site) return;
+  const meters = allMeters.filter(m=>m.site_id===site);
+  // Populate depts
+  const depts = [...new Set(meters.map(m=>m.department))];
+  const dSel = document.getElementById('in-dept');
+  dSel.innerHTML = '<option value="">All departments</option>' + depts.map(d=>`<option value="${d}">${d}</option>`).join('');
+  filterMeters();
+}
+
+function filterMeters() {
+  const site = document.getElementById('in-site').value;
+  const dept = document.getElementById('in-dept').value;
+  const meters = allMeters.filter(m=>m.site_id===site&&(dept===''||m.department===dept)&&m.source==='manual');
+  const mSel = document.getElementById('in-meter');
+  mSel.innerHTML = '<option value="">Select meter…</option>' + meters.map(m=>`<option value="${m.id}">[${m.water_type.toUpperCase()}] ${m.name} (${m.unit})</option>`).join('');
+}
+
+async function submitReading() {
+  const body = {
+    meter_id: document.getElementById('in-meter').value,
+    value: parseFloat(document.getElementById('in-value').value),
+    date: document.getElementById('in-date').value,
+    notes: document.getElementById('in-notes').value,
+  };
+  if(!body.meter_id || isNaN(body.value)) { showAlert('input-alert','Please fill all required fields.','error'); return; }
+  const r = await fetch(`${API}/api/readings`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});
+  const d = await r.json();
+  if(d.status==='ok'){
+    showAlert('input-alert','Reading saved successfully!','success');
+    document.getElementById('in-value').value='';
+    document.getElementById('in-notes').value='';
+    loadRecentReadings();
+  } else {
+    showAlert('input-alert', d.error||'Error saving reading.','error');
+  }
+}
+
+async function loadRecentReadings() {
+  const r = await fetch(`${API}/api/readings`);
+  const data = await r.json();
+  const recent = data.slice(-20).reverse();
+  const mMap = {};
+  allMeters.forEach(m=>mMap[m.id]=m);
+  const tbody = document.getElementById('recent-readings');
+  tbody.innerHTML = recent.map(rd=>{
+    const m = mMap[rd.meter_id]||{};
+    return `<tr>
+      <td>${fmtDate(rd.date)}</td>
+      <td style="font-size:11px">${m.name||rd.meter_id}</td>
+      <td>${rd.value?.toLocaleString()}</td>
+      <td>${rd.usage>0?'+'+fmt(toM3(rd.usage,m.unit||'m3'))+' m³':'—'}</td>
+      <td><span class="badge ${rd.water_type}">${rd.water_type}</span></td>
+    </tr>`;
+  }).join('');
+}
+
+function toM3(v, unit) { return unit==='litres' ? v/1000 : v; }
+
+// ─── Tonnes ──────────────────────────────────────────────────
+async function loadDeptsForTonnes() {
+  const site = document.getElementById('t-site').value;
+  const depts = [...new Set(allMeters.filter(m=>m.site_id===site).map(m=>m.department))];
+  const sel = document.getElementById('t-dept');
+  sel.innerHTML = '<option value="">All (Site Total)</option>' + depts.map(d=>`<option value="${d}">${d}</option>`).join('');
+}
+
+async function submitTonnes() {
+  const body = {
+    site_id: document.getElementById('t-site').value,
+    department: document.getElementById('t-dept').value || 'Site Total',
+    tonnes: parseFloat(document.getElementById('t-value').value),
+    date: document.getElementById('t-date').value,
+    notes: document.getElementById('t-notes').value,
+  };
+  if(!body.site_id || isNaN(body.tonnes)) { showAlert('tonnes-alert','Please fill all required fields.','error'); return; }
+  const r = await fetch(`${API}/api/tonnes`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});
+  const d = await r.json();
+  if(d.status==='ok'){
+    showAlert('tonnes-alert','Tonnes saved!','success');
+    document.getElementById('t-value').value='';
+    document.getElementById('t-notes').value='';
+    loadRecentTonnes();
+  }
+}
+
+async function loadRecentTonnes() {
+  const r = await fetch(`${API}/api/tonnes`);
+  const data = await r.json();
+  const siteNames = {rotherham:'Rotherham',stocksbridge:'Stocksbridge',brinsworth:'Brinsworth',wednesbury:'Wednesbury'};
+  const tbody = document.getElementById('recent-tonnes');
+  tbody.innerHTML = data.slice(-15).reverse().map(t=>`
+    <tr>
+      <td>${fmtDate(t.date)}</td>
+      <td>${siteNames[t.site_id]||t.site_id}</td>
+      <td>${t.department}</td>
+      <td>${t.tonnes.toLocaleString()}</td>
+    </tr>
+  `).join('');
+}
+
+// ─── Search ──────────────────────────────────────────────────
+async function runSearch() {
+  const q = document.getElementById('sq-query').value;
+  const site = document.getElementById('sq-site').value;
+  const wt = document.getElementById('sq-type').value;
+  const from = document.getElementById('sq-from').value;
+  const to = document.getElementById('sq-to').value;
+  const params = new URLSearchParams({q,site_id:site,water_type:wt,from,to});
+  const r = await fetch(`${API}/api/search?${params}`);
+  const data = await r.json();
+  document.getElementById('search-count').textContent = `${data.length} results`;
+  const tbody = document.getElementById('search-results');
+  tbody.innerHTML = (data||[]).map(sr=>`
+    <tr>
+      <td>${fmtDate(sr.reading.date)}</td>
+      <td>${sr.site_name}</td>
+      <td>${sr.department}</td>
+      <td style="font-size:12px">${sr.meter_name}</td>
+      <td>${sr.reading.value?.toLocaleString()}</td>
+      <td>${sr.m3>0?sr.m3.toFixed(2):'—'}</td>
+      <td><span class="badge ${sr.reading.water_type}">${sr.reading.water_type}</span></td>
+      <td><span class="badge ${sr.reading.source}">${sr.reading.source}</span></td>
+      <td style="font-size:11px;color:var(--text3)">${sr.reading.notes||''}</td>
+    </tr>
+  `).join('') || '<tr><td colspan="9" style="text-align:center;color:var(--text3);padding:30px">No results found</td></tr>';
+}
+
+function clearSearch() {
+  ['sq-query','sq-site','sq-type','sq-from','sq-to'].forEach(id=>document.getElementById(id).value='');
+  document.getElementById('search-results').innerHTML='';
+  document.getElementById('search-count').textContent='';
+}
+
+// ─── Reports ─────────────────────────────────────────────────
+async function generateReport() {
+  const from = document.getElementById('rep-from').value;
+  const to   = document.getElementById('rep-to').value;
+  const r = await fetch(`${API}/api/report?from=${from}&to=${to}`);
+  const rep = await r.json();
+  const el = document.getElementById('report-output');
+  el.innerHTML = `
+    <div class="card" style="margin-bottom:16px">
+      <div style="display:flex;justify-content:space-between;align-items:center">
+        <div>
+          <h2 style="font-size:18px">${rep.title}</h2>
+          <p style="font-size:12px;color:var(--text3)">Period: ${rep.period} | Generated: ${fmtDate(rep.generated)}</p>
+        </div>
+      </div>
+    </div>
+    ${(rep.sites||[]).map(s=>`
+    <div class="card" style="margin-bottom:16px">
+      <h3 style="font-size:14px;margin-bottom:16px">${s.site_name}</h3>
+      <div class="card-grid cols4" style="margin-bottom:16px">
+        <div class="kpi"><h3>Total m³</h3><div class="val" style="font-size:20px">${fmt(s.total_m3)}</div></div>
+        <div class="kpi"><h3>Towns Water</h3><div class="val" style="font-size:20px;color:var(--towns)">${fmt(s.towns_m3)}</div></div>
+        <div class="kpi"><h3>River Water</h3><div class="val" style="font-size:20px;color:var(--river)">${fmt(s.river_m3)}</div></div>
+        <div class="kpi"><h3>m³/tonne</h3><div class="val" style="font-size:20px;color:var(--green)">${s.m3_per_tonne>0?s.m3_per_tonne.toFixed(3):'—'}</div></div>
+      </div>
+      <div class="tbl-wrap">
+        <table>
+          <thead><tr><th>Department</th><th>Total m³</th><th>Towns m³</th><th>River m³</th><th>Tonnes</th><th>m³/tonne</th></tr></thead>
+          <tbody>${(s.departments||[]).map(d=>`
+            <tr><td>${d.department}</td><td>${fmt(d.m3)}</td><td>${fmt(d.towns_m3)}</td><td>${fmt(d.river_m3)}</td><td>${fmt(d.tonnes)}</td><td>${d.m3_per_tonne>0?d.m3_per_tonne.toFixed(3):'—'}</td></tr>
+          `).join('')}</tbody>
+        </table>
+      </div>
+    </div>
+    `).join('')}
+  `;
+}
+
+async function exportCSV() {
+  const from = document.getElementById('rep-from').value;
+  const to   = document.getElementById('rep-to').value;
+  const r = await fetch(`${API}/api/search?from=${from}&to=${to}`);
+  const data = await r.json();
+  const headers = ['Date','Site','Department','Meter','Reading','Usage_m3','Water_Type','Source','Notes'];
+  const rows = data.map(sr=>[fmtDate(sr.reading.date),sr.site_name,sr.department,sr.meter_name,sr.reading.value,sr.m3,sr.reading.water_type,sr.reading.source,sr.reading.notes||'']);
+  const csv = [headers,...rows].map(r=>r.map(c=>`"${c}"`).join(',')).join('\n');
+  const a = document.createElement('a');
+  a.href = 'data:text/csv;charset=utf-8,'+encodeURIComponent(csv);
+  a.download = `water_usage_${from}_${to}.csv`;
+  a.click();
+}
+
+// ─── Integrations ────────────────────────────────────────────
+async function configEEmon() {
+  const body = {base_url: document.getElementById('ee-url').value, username: document.getElementById('ee-user').value, password: document.getElementById('ee-pass').value};
+  const r = await fetch(`${API}/api/eemon/sync`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});
+  const d = await r.json();
+  const el = document.getElementById('ee-status');
+  el.style.display='block';
+  el.textContent = d.message;
+}
+
+async function configTrend() {
+  const body = {base_url: document.getElementById('tr-url').value, api_key: document.getElementById('tr-key').value};
+  const r = await fetch(`${API}/api/trend/sync`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});
+  const d = await r.json();
+  const el = document.getElementById('tr-status');
+  el.style.display='block';
+  el.textContent = d.message;
+}
+
+function populateManualMeters() {
+  const groups = {rot:['rotherham'],sto:['stocksbridge'],bri:['brinsworth'],wed:['wednesbury']};
+  Object.entries(groups).forEach(([key,siteIds])=>{
+    const el = document.getElementById('manual-'+key);
+    const meters = allMeters.filter(m=>siteIds.includes(m.site_id)&&m.source==='manual');
+    el.innerHTML = meters.map(m=>`<span class="badge manual" title="${m.feed}">${m.name}</span>`).join('');
+  });
+}
+
+// ─── Seed ────────────────────────────────────────────────────
+async function seedData() {
+  const btn = event.target;
+  btn.textContent='Loading…'; btn.disabled=true;
+  const r = await fetch(`${API}/api/seed`,{method:'POST'});
+  const d = await r.json();
+  btn.textContent='Load Sample Data'; btn.disabled=false;
+  showAlert('dash-alert',`Sample data loaded: ${d.readings} readings imported.`,'success');
+  setTimeout(()=>loadDashboard(),200);
+}
+
+// ─── Helpers ─────────────────────────────────────────────────
+function fmt(n){ if(!n) return '—'; return n.toLocaleString('en-GB',{maximumFractionDigits:1}); }
+function fmtDate(d){ if(!d) return '—'; return new Date(d).toLocaleDateString('en-GB',{day:'2-digit',month:'short',year:'numeric'}); }
+
+function showAlert(id, msg, type) {
+  const el = document.getElementById(id);
+  if(!el) return;
+  el.innerHTML = `<div class="alert ${type}">${msg}</div>`;
+  setTimeout(()=>{ if(el) el.innerHTML=''; }, 4000);
+}
+
+function destroyChart(key) {
+  if(charts[key]){ charts[key].destroy(); delete charts[key]; }
+}
+
+function chartOpts(yLabel) {
+  return {
+    responsive:true, maintainAspectRatio:false,
+    plugins:{legend:{labels:{color:'#94a3b8',font:{size:11}}}},
+    scales:{
+      x:{ticks:{color:'#64748b',font:{size:10}},grid:{color:'#2d314820'}},
+      y:{ticks:{color:'#64748b',font:{size:10}},grid:{color:'#2d314840'},title:{display:true,text:yLabel,color:'#64748b',font:{size:11}}}
+    }
+  };
+}
+</script>
+</body>
+</html>

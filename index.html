@@ -701,7 +701,9 @@ async function loadSiteDashboard(siteId) {
 
 // ─── KPIs ────────────────────────────────────────────────────
 async function loadKPIs() {
-  const r = await fetch(`${API}/api/kpis`);
+  const from = document.getElementById('global-from').value;
+  const to   = document.getElementById('global-to').value;
+  const r = await fetch(`${API}/api/kpis?from=${from}&to=${to}`);
   const data = await r.json();
 
   document.getElementById('kpi-cards').innerHTML = data.map(d=>`

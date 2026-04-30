@@ -1,495 +1,781 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-bs-theme="dark">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Speciality Steels – Water Management System</title>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
-<style>
-:root{
-  --bg:#0f1117;--surface:#1a1d27;--surface2:#232636;--border:#2d3148;
-  --accent:#3b82f6;--accent2:#06b6d4;--green:#10b981;--amber:#f59e0b;
-  --red:#ef4444;--text:#e2e8f0;--text2:#94a3b8;--text3:#64748b;
-  --towns:#3b82f6;--river:#06b6d4;
-}
-*{box-sizing:border-box;margin:0;padding:0}
-body{font-family:'Segoe UI',sans-serif;background:var(--bg);color:var(--text);min-height:100vh}
-/* Layout */
-#app{display:flex;height:100vh;overflow:hidden}
-#sidebar{width:220px;background:var(--surface);border-right:1px solid var(--border);display:flex;flex-direction:column;flex-shrink:0}
-#main{flex:1;overflow-y:auto;display:flex;flex-direction:column}
-/* Sidebar */
-.logo{padding:20px 16px 16px;border-bottom:1px solid var(--border)}
-.logo h2{font-size:13px;font-weight:700;color:var(--accent);letter-spacing:.5px;text-transform:uppercase}
-.logo p{font-size:11px;color:var(--text3);margin-top:3px}
-.nav-section{padding:12px 8px 4px;font-size:10px;font-weight:700;color:var(--text3);letter-spacing:1px;text-transform:uppercase;margin:0 4px}
-.nav-item{display:flex;align-items:center;gap:10px;padding:9px 12px;margin:1px 6px;border-radius:8px;cursor:pointer;font-size:13px;color:var(--text2);transition:all .15s}
-.nav-item:hover{background:var(--surface2);color:var(--text)}
-.nav-item.active{background:var(--accent)20;color:var(--accent);font-weight:600}
-.nav-item .ico{width:16px;text-align:center;font-size:14px}
-.site-badge{font-size:10px;padding:2px 7px;border-radius:99px;margin-left:auto}
-.site-badge.rot{background:#ef444420;color:var(--red)}
-.site-badge.sto{background:#10b98120;color:var(--green)}
-.site-badge.bri{background:#f59e0b20;color:var(--amber)}
-.site-badge.wed{background:#8b5cf620;color:#a78bfa}
-/* Topbar */
-#topbar{background:var(--surface);border-bottom:1px solid var(--border);padding:0 24px;height:56px;display:flex;align-items:center;gap:16px;flex-shrink:0}
-#topbar h1{font-size:16px;font-weight:700;flex:1}
-.top-btn{padding:7px 14px;border-radius:8px;border:1px solid var(--border);background:var(--surface2);color:var(--text2);font-size:12px;cursor:pointer;transition:all .15s}
-.top-btn:hover{border-color:var(--accent);color:var(--accent)}
-.top-btn.primary{background:var(--accent);border-color:var(--accent);color:#fff}
-.top-btn.primary:hover{background:#2563eb}
-/* Page areas */
-.page{display:none;padding:24px;flex:1}
-.page.active{display:block}
-/* Cards */
-.card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:20px}
-.card-grid{display:grid;gap:16px}
-.card-grid.cols2{grid-template-columns:repeat(2,1fr)}
-.card-grid.cols3{grid-template-columns:repeat(3,1fr)}
-.card-grid.cols4{grid-template-columns:repeat(4,1fr)}
-.card-grid.cols-auto{grid-template-columns:repeat(auto-fill,minmax(220px,1fr))}
-.card h3{font-size:12px;color:var(--text3);text-transform:uppercase;letter-spacing:.5px;margin-bottom:12px;font-weight:600}
-/* KPI cards */
-.kpi{display:flex;flex-direction:column;gap:4px}
-.kpi .val{font-size:28px;font-weight:700}
-.kpi .sub{font-size:12px;color:var(--text3)}
-.kpi .delta{font-size:12px;padding:2px 8px;border-radius:99px;width:fit-content}
-.kpi .delta.up{background:#10b98120;color:var(--green)}
-.kpi .delta.down{background:#ef444420;color:var(--red)}
-/* Tables */
-.tbl-wrap{overflow-x:auto}
-table{width:100%;border-collapse:collapse;font-size:13px}
-th{padding:10px 12px;text-align:left;font-size:11px;font-weight:600;color:var(--text3);text-transform:uppercase;letter-spacing:.4px;border-bottom:1px solid var(--border)}
-td{padding:10px 12px;border-bottom:1px solid var(--border)10}
-tr:last-child td{border-bottom:none}
-tr:hover td{background:var(--surface2)}
-.badge{font-size:11px;padding:2px 8px;border-radius:99px}
-.badge.towns{background:var(--towns)20;color:var(--towns)}
-.badge.river{background:var(--river)20;color:var(--river)}
-.badge.both{background:#8b5cf620;color:#a78bfa}
-.badge.eemon{background:#10b98120;color:var(--green)}
-.badge.trend{background:#f59e0b20;color:var(--amber)}
-.badge.manual{background:#64748b20;color:var(--text3)}
-/* Forms */
-.form-grid{display:grid;gap:14px}
-.form-grid.cols2{grid-template-columns:1fr 1fr}
-.field label{display:block;font-size:12px;color:var(--text3);margin-bottom:5px;font-weight:500}
-.field input,.field select,.field textarea{width:100%;padding:9px 12px;background:var(--surface2);border:1px solid var(--border);border-radius:8px;color:var(--text);font-size:13px;outline:none;transition:border-color .15s}
-.field input:focus,.field select,.field select:focus,.field textarea:focus{border-color:var(--accent)}
-.field textarea{resize:vertical;min-height:70px}
-.field select option{background:var(--surface)}
-/* Progress bars */
-.bar-wrap{display:flex;align-items:center;gap:10px}
-.bar-bg{flex:1;background:var(--surface2);border-radius:99px;height:8px;overflow:hidden}
-.bar-fill{height:100%;border-radius:99px;transition:width .6s ease}
-.bar-fill.towns{background:var(--towns)}
-.bar-fill.river{background:var(--river)}
-/* Alerts */
-.alert{padding:12px 16px;border-radius:8px;font-size:13px;margin-bottom:12px}
-.alert.success{background:#10b98115;border:1px solid #10b98130;color:var(--green)}
-.alert.error{background:#ef444415;border:1px solid #ef444430;color:var(--red)}
-.alert.info{background:#3b82f615;border:1px solid #3b82f630;color:var(--accent)}
-/* Tabs */
-.tabs{display:flex;gap:4px;margin-bottom:20px;border-bottom:1px solid var(--border);padding-bottom:0}
-.tab-btn{padding:8px 16px;border:none;background:none;color:var(--text3);font-size:13px;cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1px;transition:all .15s}
-.tab-btn.active{color:var(--accent);border-bottom-color:var(--accent);font-weight:600}
-/* Chart container */
-.chart-box{position:relative;height:260px}
-.chart-box.tall{height:320px}
-/* Section heading */
-.sec-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px}
-.sec-head h2{font-size:16px;font-weight:700}
-/* Search bar */
-.search-wrap{display:flex;gap:10px;margin-bottom:20px}
-.search-wrap input{flex:1;padding:10px 14px;background:var(--surface);border:1px solid var(--border);border-radius:8px;color:var(--text);font-size:14px;outline:none}
-.search-wrap input:focus{border-color:var(--accent)}
-/* Scrollbar */
-::-webkit-scrollbar{width:6px;height:6px}
-::-webkit-scrollbar-track{background:transparent}
-::-webkit-scrollbar-thumb{background:var(--border);border-radius:99px}
-/* Responsive tweaks */
-@media(max-width:900px){
-  .card-grid.cols4{grid-template-columns:repeat(2,1fr)}
-  .card-grid.cols3{grid-template-columns:1fr 1fr}
-}
-.separator{flex:1}
-.sync-status{font-size:11px;padding:6px 12px;border-top:1px solid var(--border);color:var(--text3);text-align:center}
-.dot{display:inline-block;width:7px;height:7px;border-radius:50%;margin-right:5px;background:var(--green)}
-.loading{text-align:center;padding:40px;color:var(--text3)}
-</style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Water Management System | Speciality Steels</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+  <style>
+    :root {
+      --brand: #00b4d8;
+      --brand-dim: #0077a6;
+      --river: #48cae4;
+      --towns: #f4a261;
+      --bg-card: #1a2332;
+      --bg-sidebar: #111b29;
+      --border: rgba(255,255,255,.08);
+    }
+    [data-bs-theme="light"] {
+      --brand: #0077a6;
+      --brand-dim: #005577;
+      --river: #0096c7;
+      --towns: #e76f51;
+      --bg-card: #ffffff;
+      --bg-sidebar: #f8f9fa;
+      --border: rgba(0,0,0,.1);
+    }
+    body { background: var(--bs-body-bg); font-family: 'Inter', system-ui, sans-serif; }
+    .sidebar { width: 240px; min-height: 100vh; background: var(--bg-sidebar);
+               border-right: 1px solid var(--border); position: fixed; top: 0; left: 0; z-index: 100;
+               display: flex; flex-direction: column; }
+    .sidebar-logo { padding: 1.25rem 1rem .75rem; border-bottom: 1px solid var(--border); }
+    .sidebar-logo .brand { font-size: 1.1rem; font-weight: 700; color: var(--brand); letter-spacing: .3px; }
+    .sidebar-logo .sub { font-size: .7rem; color: var(--bs-secondary-color); text-transform: uppercase; letter-spacing: 1px; }
+    .nav-link { color: var(--bs-secondary-color); font-size: .875rem; padding: .5rem 1rem; border-radius: 6px;
+                margin: .1rem .5rem; display: flex; align-items: center; gap: .6rem; transition: all .15s; }
+    .nav-link:hover, .nav-link.active { background: rgba(0,180,216,.12); color: var(--brand); }
+    .nav-section { font-size: .65rem; text-transform: uppercase; letter-spacing: 1px;
+                   color: var(--bs-tertiary-color); padding: .75rem 1.5rem .2rem; }
+    .main-content { margin-left: 240px; padding: 1.5rem; min-height: 100vh; }
+    .topbar { display: flex; align-items: center; justify-content: space-between; margin-bottom: 1.5rem; flex-wrap: wrap; gap: 1rem; }
+    .page-title { font-size: 1.4rem; font-weight: 700; }
+    .card { background: var(--bg-card); border: 1px solid var(--border); border-radius: 10px; }
+    .card-header { background: rgba(0,180,216,.05); border-bottom: 1px solid var(--border);
+                   font-weight: 600; font-size: .85rem; }
+    .stat-card { background: var(--bg-card); border: 1px solid var(--border);
+                 border-radius: 10px; padding: 1.1rem 1.3rem; }
+    .stat-val { font-size: 1.6rem; font-weight: 700; line-height: 1; }
+    .stat-lbl { font-size: .72rem; color: var(--bs-secondary-color); text-transform: uppercase; letter-spacing: .6px; margin-top: .3rem; }
+    .badge-river { background: rgba(72,202,228,.15); color: var(--river); }
+    .badge-towns { background: rgba(244,162,97,.15); color: var(--towns); }
+    .badge-both { background: rgba(155,89,182,.15); color: #9b59b6; }
+    .badge-eemon { background: rgba(0,180,216,.12); color: var(--brand); }
+    .badge-manual { background: rgba(108,117,125,.15); color: var(--bs-secondary-color); }
+    .badge-trend { background: rgba(243,156,18,.15); color: #f39c12; }
+    .badge-estimated { background: rgba(231,76,60,.15); color: #e74c3c; }
+    .dot-online { width: 8px; height: 8px; border-radius: 50%; background: #2ecc71; display: inline-block;
+                  box-shadow: 0 0 6px #2ecc71; animation: pulse 2s infinite; }
+    .dot-offline { width: 8px; height: 8px; border-radius: 50%; background: #e74c3c; display: inline-block; }
+    @keyframes pulse { 0%,100%{opacity:1}50%{opacity:.4} }
+    table { font-size: .82rem; }
+    thead th { font-size: .72rem; text-transform: uppercase; letter-spacing: .5px; color: var(--bs-secondary-color); border-color: var(--border)!important; }
+    td, th { border-color: var(--border)!important; vertical-align: middle; }
+    .chart-wrap { position: relative; height: 280px; }
+    .chart-wrap.tall { height: 340px; }
+    .section-title { font-size: .78rem; font-weight: 600; text-transform: uppercase;
+                     letter-spacing: .8px; color: var(--bs-secondary-color); margin-bottom: .75rem; }
+    .alert-item { border-left: 3px solid #e74c3c; background: rgba(231,76,60,.07);
+                  padding: .5rem .75rem; border-radius: 0 6px 6px 0; font-size: .8rem; margin-bottom: .5rem; }
+    input.form-control, select.form-select, textarea.form-control { 
+      background: var(--bg-card); border-color: var(--border); }
+    input.form-control:focus, select.form-select:focus, textarea.form-control:focus {
+      background: var(--bg-card); border-color: var(--brand); box-shadow: 0 0 0 .15rem rgba(0,180,216,.2); }
+    .btn-brand { background: var(--brand); border-color: var(--brand); color: #fff; font-weight: 600; }
+    .btn-brand:hover { background: var(--brand-dim); border-color: var(--brand-dim); color: #fff; }
+    ::-webkit-scrollbar { width: 6px; height: 6px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+    .page { display: none; }
+    .page.active { display: block; }
+    .sidebar-footer { margin-top: auto; padding: 1rem; border-top: 1px solid var(--border); font-size: .75rem; }
+    .theme-toggle { cursor: pointer; padding: .5rem; border-radius: 6px; transition: background .15s; }
+    .theme-toggle:hover { background: rgba(0,180,216,.1); }
+    @media (max-width: 768px) {
+      .sidebar { width: 100%; position: relative; min-height: auto; }
+      .main-content { margin-left: 0; }
+    }
+  </style>
 </head>
 <body>
-<div id="app">
+
 <!-- Sidebar -->
-<div id="sidebar">
-  <div class="logo">
-    <h2>💧 Water MS</h2>
-    <p>Speciality Steels UK</p>
+<nav class="sidebar">
+  <div class="sidebar-logo">
+    <div class="brand"><i class="bi bi-droplet-fill me-1"></i> WaterMgmt</div>
+    <div class="sub">Speciality Steels UK</div>
   </div>
-  <div class="nav-section">Overview</div>
-  <div class="nav-item active" onclick="showPage('dashboard')"><span class="ico">📊</span>All Sites Dashboard</div>
-  <div class="nav-item" onclick="showPage('kpis')"><span class="ico">📈</span>KPIs & Efficiency</div>
-  <div class="nav-section">Sites</div>
-  <div class="nav-item" onclick="showSite('rotherham')"><span class="ico">🏭</span>Rotherham<span class="site-badge rot">ROT</span></div>
-  <div class="nav-item" onclick="showSite('stocksbridge')"><span class="ico">🏭</span>Stocksbridge<span class="site-badge sto">STO</span></div>
-  <div class="nav-item" onclick="showSite('brinsworth')"><span class="ico">🏭</span>Brinsworth<span class="site-badge bri">BRI</span></div>
-  <div class="nav-item" onclick="showSite('wednesbury')"><span class="ico">🏭</span>Wednesbury<span class="site-badge wed">WED</span></div>
-  <div class="nav-section">Data Entry</div>
-  <div class="nav-item" onclick="showPage('input')"><span class="ico">✏️</span>Manual Readings</div>
-  <div class="nav-item" onclick="showPage('tonnes-page')"><span class="ico">⚖️</span>Tonnes Input</div>
-  <div class="nav-section">Tools</div>
-  <div class="nav-item" onclick="showPage('search')"><span class="ico">🔍</span>Search & Query</div>
-  <div class="nav-item" onclick="showPage('reports')"><span class="ico">📋</span>Reports</div>
-  <div class="nav-item" onclick="showPage('integrations')"><span class="ico">🔗</span>Integrations</div>
-  <div class="separator"></div>
-  <div class="sync-status"><span class="dot"></span>System Online</div>
-</div>
+  <div class="mt-2 flex-grow-1">
+    <div class="nav-section">Overview</div>
+    <a href="#" class="nav-link active" data-page="dashboard">
+      <i class="bi bi-speedometer2"></i> Dashboard</a>
+    <a href="#" class="nav-link" data-page="kpis">
+      <i class="bi bi-graph-up"></i> KPIs &amp; Efficiency</a>
 
-<!-- Main -->
-<div id="main">
-  <div id="topbar">
-    <h1 id="page-title">All Sites Dashboard</h1>
-    <div style="display:flex;gap:8px;align-items:center">
-      <label style="font-size:12px;color:var(--text3)">From</label>
-      <input type="date" id="global-from" class="top-btn" style="padding:6px 10px">
-      <label style="font-size:12px;color:var(--text3)">To</label>
-      <input type="date" id="global-to" class="top-btn" style="padding:6px 10px">
-      <button class="top-btn primary" onclick="refresh()">Refresh</button>
-      <button class="top-btn" onclick="seedData()">Load Sample Data</button>
+    <div class="nav-section">Sites</div>
+    <a href="#" class="nav-link" data-page="site" data-site="rotherham">
+      <i class="bi bi-building-gear"></i> Rotherham</a>
+    <a href="#" class="nav-link" data-page="site" data-site="stocksbridge">
+      <i class="bi bi-building"></i> Stocksbridge</a>
+    <a href="#" class="nav-link" data-page="site" data-site="brinsworth">
+      <i class="bi bi-building-fill"></i> Brinsworth</a>
+    <a href="#" class="nav-link" data-page="site" data-site="wednesbury">
+      <i class="bi bi-buildings"></i> Wednesbury</a>
+
+    <div class="nav-section">Data Entry</div>
+    <a href="#" class="nav-link" data-page="entry">
+      <i class="bi bi-pencil-square"></i> Manual Readings</a>
+    <a href="#" class="nav-link" data-page="tonnes">
+      <i class="bi bi-box-seam"></i> Tonnes Input</a>
+
+    <div class="nav-section">Tools</div>
+    <a href="#" class="nav-link" data-page="search">
+      <i class="bi bi-search"></i> Search</a>
+    <a href="#" class="nav-link" data-page="reports">
+      <i class="bi bi-file-earmark-bar-graph"></i> Reports</a>
+    <a href="#" class="nav-link" data-page="integrations">
+      <i class="bi bi-hdd-network"></i> Integrations</a>
+
+    <div class="nav-section">Admin</div>
+    <a href="#" class="nav-link" data-page="admin">
+      <i class="bi bi-gear"></i> Settings</a>
+  </div>
+  <div class="sidebar-footer">
+    <div class="d-flex align-items-center justify-content-between">
+      <span class="text-muted"><span class="dot-online me-1"></span> Online</span>
+      <span class="theme-toggle" id="themeToggle" title="Toggle theme">
+        <i class="bi bi-moon-stars"></i>
+      </span>
+    </div>
+    <div class="text-muted mt-2">v2.0.0</div>
+  </div>
+</nav>
+
+<!-- Main Content -->
+<main class="main-content">
+  <div class="topbar">
+    <h1 class="page-title" id="pageTitle">Dashboard</h1>
+    <div class="d-flex align-items-center gap-2 flex-wrap">
+      <div class="d-flex align-items-center gap-2">
+        <label class="text-muted small">From</label>
+        <input type="date" id="globalFrom" class="form-control form-control-sm" style="width:auto">
+        <label class="text-muted small">To</label>
+        <input type="date" id="globalTo" class="form-control form-control-sm" style="width:auto">
+      </div>
+      <button class="btn btn-brand btn-sm" onclick="refresh()">
+        <i class="bi bi-arrow-clockwise me-1"></i>Refresh</button>
     </div>
   </div>
+  <div id="alertContainer"></div>
 
-  <!-- ── DASHBOARD ──────────────────────────────────────────── -->
+  <!-- Dashboard Page -->
   <div id="page-dashboard" class="page active">
-    <div id="dash-alert"></div>
-    <div id="site-kpi-cards" class="card-grid cols4" style="margin-bottom:20px"></div>
-    <div class="card-grid cols2" style="margin-bottom:20px">
-      <div class="card">
-        <h3>Water Usage by Site (m³)</h3>
-        <div class="chart-box"><canvas id="chart-site-bar"></canvas></div>
+    <div class="row g-3 mb-4" id="dashKpiCards"></div>
+    <div class="row g-3 mb-4">
+      <div class="col-lg-8">
+        <div class="card h-100">
+          <div class="card-header d-flex justify-content-between align-items-center py-2 px-3">
+            <span><i class="bi bi-bar-chart-fill me-1 text-info"></i> Water Usage by Site</span>
+          </div>
+          <div class="card-body">
+            <div class="chart-wrap"><canvas id="chartSiteBar"></canvas></div>
+          </div>
+        </div>
       </div>
-      <div class="card">
-        <h3>Towns vs River Water – All Sites</h3>
-        <div class="chart-box"><canvas id="chart-type-doughnut"></canvas></div>
+      <div class="col-lg-4">
+        <div class="card h-100">
+          <div class="card-header py-2 px-3">
+            <i class="bi bi-pie-chart-fill me-1 text-warning"></i> Water Type Split
+          </div>
+          <div class="card-body d-flex flex-column align-items-center justify-content-center">
+            <div style="width:200px;height:200px;"><canvas id="chartTypePie"></canvas></div>
+            <div class="mt-3 d-flex gap-3 flex-wrap justify-content-center" style="font-size:.75rem;">
+              <span><span class="badge badge-towns px-2 py-1 me-1"></span>Towns</span>
+              <span><span class="badge badge-river px-2 py-1 me-1"></span>River</span>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
-    <div class="card">
-      <h3>Usage Timeline – All Sites Combined</h3>
-      <div class="chart-box tall"><canvas id="chart-timeline"></canvas></div>
+    <div class="row g-3">
+      <div class="col-12">
+        <div class="card">
+          <div class="card-header py-2 px-3">
+            <i class="bi bi-graph-up-arrow me-1 text-success"></i> Usage Timeline - All Sites
+          </div>
+          <div class="card-body">
+            <div class="chart-wrap tall"><canvas id="chartTimeline"></canvas></div>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 
-  <!-- ── SITE DETAIL ────────────────────────────────────────── -->
+  <!-- Site Detail Page -->
   <div id="page-site" class="page">
-    <div id="site-alert"></div>
-    <div id="site-kpis" class="card-grid cols4" style="margin-bottom:20px"></div>
-    <div class="card-grid cols2" style="margin-bottom:20px">
-      <div class="card">
-        <h3 id="dept-chart-title">Department Usage (m³)</h3>
-        <div class="chart-box"><canvas id="chart-dept"></canvas></div>
+    <div class="row g-3 mb-4" id="siteKpiCards"></div>
+    <div class="row g-3 mb-4">
+      <div class="col-lg-6">
+        <div class="card h-100">
+          <div class="card-header py-2 px-3">
+            <i class="bi bi-bar-chart me-1 text-info"></i> <span id="siteDeptTitle">Department Usage</span>
+          </div>
+          <div class="card-body">
+            <div class="chart-wrap"><canvas id="chartDept"></canvas></div>
+          </div>
+        </div>
       </div>
-      <div class="card">
-        <h3>Water Type Split</h3>
-        <div class="chart-box"><canvas id="chart-site-pie"></canvas></div>
+      <div class="col-lg-6">
+        <div class="card h-100">
+          <div class="card-header py-2 px-3">
+            <i class="bi bi-pie-chart me-1 text-warning"></i> Water Type Split
+          </div>
+          <div class="card-body d-flex flex-column align-items-center justify-content-center">
+            <div style="width:200px;height:200px;"><canvas id="chartSitePie"></canvas></div>
+          </div>
+        </div>
       </div>
     </div>
-    <div class="card" style="margin-bottom:20px">
-      <h3>Usage Timeline</h3>
-      <div class="chart-box tall"><canvas id="chart-site-timeline"></canvas></div>
+    <div class="row g-3 mb-4">
+      <div class="col-12">
+        <div class="card">
+          <div class="card-header py-2 px-3">
+            <i class="bi bi-graph-up me-1 text-success"></i> Usage Timeline
+          </div>
+          <div class="card-body">
+            <div class="chart-wrap tall"><canvas id="chartSiteTimeline"></canvas></div>
+          </div>
+        </div>
+      </div>
     </div>
-    <div class="card">
-      <div class="sec-head"><h2>Department Breakdown</h2></div>
-      <div class="tbl-wrap">
-        <table>
-          <thead><tr><th>Department</th><th>Total m³</th><th>Towns m³</th><th>River m³</th><th>Tonnes</th><th>m³/tonne</th><th>Efficiency</th></tr></thead>
-          <tbody id="dept-table"></tbody>
-        </table>
+    <div class="row g-3">
+      <div class="col-12">
+        <div class="card">
+          <div class="card-header py-2 px-3">
+            <i class="bi bi-list-ul me-1"></i> Department Breakdown
+          </div>
+          <div class="card-body p-0">
+            <div class="table-responsive">
+              <table class="table table-hover mb-0">
+                <thead><tr>
+                  <th>Department</th><th class="text-end">Total m³</th><th class="text-end">Towns m³</th>
+                  <th class="text-end">River m³</th><th class="text-end">Tonnes</th><th class="text-end">m³/tonne</th>
+                </tr></thead>
+                <tbody id="deptTable"></tbody>
+              </table>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </div>
 
-  <!-- ── KPIs ───────────────────────────────────────────────── -->
+  <!-- KPIs Page -->
   <div id="page-kpis" class="page">
-    <div class="card-grid cols4" style="margin-bottom:20px" id="kpi-cards"></div>
-    <div class="card-grid cols2" style="margin-bottom:20px">
-      <div class="card">
-        <h3>m³ per Tonne by Site</h3>
-        <div class="chart-box"><canvas id="chart-efficiency"></canvas></div>
-      </div>
-      <div class="card">
-        <h3>Water Use per Tonne – Trend</h3>
-        <div class="chart-box"><canvas id="chart-m3t-trend"></canvas></div>
-      </div>
-    </div>
-    <div class="card">
-      <div class="tbl-wrap">
-        <table>
-          <thead><tr><th>Site</th><th>Total m³</th><th>Towns m³</th><th>River m³</th><th>Tonnes</th><th>m³/tonne</th><th>Towns %</th></tr></thead>
-          <tbody id="kpi-table"></tbody>
-        </table>
-      </div>
-    </div>
-  </div>
-
-  <!-- ── MANUAL INPUT ───────────────────────────────────────── -->
-  <div id="page-input" class="page">
-    <div class="card-grid cols2">
-      <div class="card">
-        <h3 style="margin-bottom:16px">Add Meter Reading</h3>
-        <div id="input-alert"></div>
-        <div class="form-grid">
-          <div class="field">
-            <label>Site</label>
-            <select id="in-site" onchange="loadMetersForSite()">
-              <option value="">Select site…</option>
-              <option value="rotherham">Rotherham</option>
-              <option value="stocksbridge">Stocksbridge</option>
-              <option value="brinsworth">Brinsworth</option>
-              <option value="wednesbury">Wednesbury</option>
-            </select>
+    <div class="row g-3 mb-4" id="kpiCards"></div>
+    <div class="row g-3 mb-4">
+      <div class="col-lg-6">
+        <div class="card h-100">
+          <div class="card-header py-2 px-3">
+            <i class="bi bi-speedometer me-1 text-success"></i> m³ per Tonne by Site
           </div>
-          <div class="field">
-            <label>Department</label>
-            <select id="in-dept" onchange="filterMeters()">
-              <option value="">All departments</option>
-            </select>
-          </div>
-          <div class="field">
-            <label>Meter</label>
-            <select id="in-meter">
-              <option value="">Select meter…</option>
-            </select>
-          </div>
-          <div class="field">
-            <label>Reading Value</label>
-            <input type="number" id="in-value" placeholder="Cumulative meter reading" step="0.01">
-          </div>
-          <div class="field">
-            <label>Date</label>
-            <input type="date" id="in-date">
-          </div>
-          <div class="field">
-            <label>Notes</label>
-            <textarea id="in-notes" placeholder="Optional notes…"></textarea>
+          <div class="card-body">
+            <div class="chart-wrap"><canvas id="chartEfficiency"></canvas></div>
           </div>
         </div>
-        <button class="top-btn primary" style="margin-top:16px;width:100%" onclick="submitReading()">Submit Reading</button>
       </div>
-      <div class="card">
-        <h3 style="margin-bottom:16px">Recent Readings</h3>
-        <div class="tbl-wrap" id="recent-readings-wrap">
-          <table>
-            <thead><tr><th>Date</th><th>Meter</th><th>Value</th><th>Usage</th><th>Type</th></tr></thead>
-            <tbody id="recent-readings"></tbody>
-          </table>
+      <div class="col-lg-6">
+        <div class="card h-100">
+          <div class="card-header py-2 px-3">
+            <i class="bi bi-water me-1 text-info"></i> Water Type Comparison
+          </div>
+          <div class="card-body">
+            <div class="chart-wrap"><canvas id="chartWaterComparison"></canvas></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row g-3">
+      <div class="col-12">
+        <div class="card">
+          <div class="card-header py-2 px-3">
+            <i class="bi bi-table me-1"></i> Site KPI Summary
+          </div>
+          <div class="card-body p-0">
+            <div class="table-responsive">
+              <table class="table table-hover mb-0">
+                <thead><tr>
+                  <th>Site</th><th class="text-end">Total m³</th><th class="text-end">Towns m³</th>
+                  <th class="text-end">River m³</th><th class="text-end">Tonnes</th>
+                  <th class="text-end">m³/tonne</th><th class="text-end">Towns %</th>
+                </tr></thead>
+                <tbody id="kpiTable"></tbody>
+              </table>
+            </div>
+          </div>
         </div>
       </div>
     </div>
   </div>
 
-  <!-- ── TONNES ─────────────────────────────────────────────── -->
-  <div id="page-tonnes-page" class="page">
-    <div class="card-grid cols2">
-      <div class="card">
-        <h3 style="margin-bottom:16px">Input Production Tonnes</h3>
-        <div id="tonnes-alert"></div>
-        <div class="form-grid">
-          <div class="field">
-            <label>Site</label>
-            <select id="t-site" onchange="loadDeptsForTonnes()">
-              <option value="">Select site…</option>
-              <option value="rotherham">Rotherham</option>
-              <option value="stocksbridge">Stocksbridge</option>
-              <option value="brinsworth">Brinsworth</option>
-              <option value="wednesbury">Wednesbury</option>
-            </select>
+  <!-- Manual Entry Page -->
+  <div id="page-entry" class="page">
+    <div class="row g-4">
+      <div class="col-lg-6">
+        <div class="card">
+          <div class="card-header py-2 px-3">
+            <i class="bi bi-pencil-square me-1"></i> Add Meter Reading
           </div>
-          <div class="field">
-            <label>Department</label>
-            <select id="t-dept"><option value="">Select department…</option></select>
-          </div>
-          <div class="field">
-            <label>Tonnes</label>
-            <input type="number" id="t-value" placeholder="Production tonnes" step="0.1">
-          </div>
-          <div class="field">
-            <label>Period (Date)</label>
-            <input type="date" id="t-date">
-          </div>
-          <div class="field">
-            <label>Notes</label>
-            <textarea id="t-notes" placeholder="Optional notes…"></textarea>
+          <div class="card-body">
+            <div id="entryAlert"></div>
+            <div class="row g-3">
+              <div class="col-md-6">
+                <label class="form-label small">Site</label>
+                <select id="inSite" class="form-select" onchange="loadMetersForEntry()">
+                  <option value="">Select site...</option>
+                  <option value="rotherham">Rotherham</option>
+                  <option value="stocksbridge">Stocksbridge</option>
+                  <option value="brinsworth">Brinsworth</option>
+                  <option value="wednesbury">Wednesbury</option>
+                </select>
+              </div>
+              <div class="col-md-6">
+                <label class="form-label small">Department</label>
+                <select id="inDept" class="form-select" onchange="filterMetersForEntry()">
+                  <option value="">All departments</option>
+                </select>
+              </div>
+              <div class="col-12">
+                <label class="form-label small">Meter</label>
+                <select id="inMeter" class="form-select">
+                  <option value="">Select meter...</option>
+                </select>
+              </div>
+              <div class="col-md-6">
+                <label class="form-label small">Reading Value</label>
+                <input type="number" id="inValue" class="form-control" placeholder="Cumulative reading" step="0.01">
+              </div>
+              <div class="col-md-6">
+                <label class="form-label small">Date</label>
+                <input type="date" id="inDate" class="form-control">
+              </div>
+              <div class="col-12">
+                <label class="form-label small">Notes</label>
+                <textarea id="inNotes" class="form-control" rows="2" placeholder="Optional notes..."></textarea>
+              </div>
+              <div class="col-12">
+                <button class="btn btn-brand w-100" onclick="submitReading()">
+                  <i class="bi bi-check-lg me-1"></i>Submit Reading</button>
+              </div>
+            </div>
           </div>
         </div>
-        <button class="top-btn primary" style="margin-top:16px;width:100%" onclick="submitTonnes()">Save Tonnes</button>
       </div>
-      <div class="card">
-        <h3 style="margin-bottom:16px">Recent Tonnes Entries</h3>
-        <div class="tbl-wrap">
-          <table>
-            <thead><tr><th>Date</th><th>Site</th><th>Department</th><th>Tonnes</th></tr></thead>
-            <tbody id="recent-tonnes"></tbody>
-          </table>
+      <div class="col-lg-6">
+        <div class="card">
+          <div class="card-header py-2 px-3">
+            <i class="bi bi-clock-history me-1"></i> Recent Readings
+          </div>
+          <div class="card-body p-0">
+            <div class="table-responsive" style="max-height:400px;overflow-y:auto;">
+              <table class="table table-hover mb-0">
+                <thead><tr><th>Date</th><th>Meter</th><th class="text-end">Value</th><th class="text-end">Usage</th><th>Type</th></tr></thead>
+                <tbody id="recentReadings"></tbody>
+              </table>
+            </div>
+          </div>
         </div>
       </div>
     </div>
   </div>
 
-  <!-- ── SEARCH ─────────────────────────────────────────────── -->
+  <!-- Tonnes Entry Page -->
+  <div id="page-tonnes" class="page">
+    <div class="row g-4">
+      <div class="col-lg-6">
+        <div class="card">
+          <div class="card-header py-2 px-3">
+            <i class="bi bi-box-seam me-1"></i> Input Production Tonnes
+          </div>
+          <div class="card-body">
+            <div id="tonnesAlert"></div>
+            <div class="row g-3">
+              <div class="col-md-6">
+                <label class="form-label small">Site</label>
+                <select id="tSite" class="form-select" onchange="loadDeptsForTonnes()">
+                  <option value="">Select site...</option>
+                  <option value="rotherham">Rotherham</option>
+                  <option value="stocksbridge">Stocksbridge</option>
+                  <option value="brinsworth">Brinsworth</option>
+                  <option value="wednesbury">Wednesbury</option>
+                </select>
+              </div>
+              <div class="col-md-6">
+                <label class="form-label small">Department</label>
+                <select id="tDept" class="form-select">
+                  <option value="">All (Site Total)</option>
+                </select>
+              </div>
+              <div class="col-md-6">
+                <label class="form-label small">Tonnes</label>
+                <input type="number" id="tValue" class="form-control" placeholder="Production tonnes" step="0.1">
+              </div>
+              <div class="col-md-6">
+                <label class="form-label small">Date</label>
+                <input type="date" id="tDate" class="form-control">
+              </div>
+              <div class="col-12">
+                <label class="form-label small">Notes</label>
+                <textarea id="tNotes" class="form-control" rows="2" placeholder="Optional notes..."></textarea>
+              </div>
+              <div class="col-12">
+                <button class="btn btn-brand w-100" onclick="submitTonnes()">
+                  <i class="bi bi-check-lg me-1"></i>Save Tonnes</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-6">
+        <div class="card">
+          <div class="card-header py-2 px-3">
+            <i class="bi bi-clock-history me-1"></i> Recent Tonnes Entries
+          </div>
+          <div class="card-body p-0">
+            <div class="table-responsive" style="max-height:400px;overflow-y:auto;">
+              <table class="table table-hover mb-0">
+                <thead><tr><th>Date</th><th>Site</th><th>Department</th><th class="text-end">Tonnes</th></tr></thead>
+                <tbody id="recentTonnes"></tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Search Page -->
   <div id="page-search" class="page">
-    <div class="card" style="margin-bottom:20px">
-      <div class="form-grid cols2">
-        <div class="field"><label>Search Query</label>
-          <input type="text" id="sq-query" placeholder="Search by meter, department, notes…">
+    <div class="card mb-4">
+      <div class="card-body">
+        <div class="row g-3">
+          <div class="col-md-4">
+            <label class="form-label small">Search Query</label>
+            <input type="text" id="sqQuery" class="form-control" placeholder="Search meter, department, notes...">
+          </div>
+          <div class="col-md-2">
+            <label class="form-label small">Site</label>
+            <select id="sqSite" class="form-select">
+              <option value="">All Sites</option>
+              <option value="rotherham">Rotherham</option>
+              <option value="stocksbridge">Stocksbridge</option>
+              <option value="brinsworth">Brinsworth</option>
+              <option value="wednesbury">Wednesbury</option>
+            </select>
+          </div>
+          <div class="col-md-2">
+            <label class="form-label small">Water Type</label>
+            <select id="sqType" class="form-select">
+              <option value="">All Types</option>
+              <option value="towns">Towns Water</option>
+              <option value="river">River Water</option>
+            </select>
+          </div>
+          <div class="col-md-2">
+            <label class="form-label small">From</label>
+            <input type="date" id="sqFrom" class="form-control">
+          </div>
+          <div class="col-md-2">
+            <label class="form-label small">To</label>
+            <input type="date" id="sqTo" class="form-control">
+          </div>
         </div>
-        <div class="field"><label>Site</label>
-          <select id="sq-site">
-            <option value="">All Sites</option>
-            <option value="rotherham">Rotherham</option>
-            <option value="stocksbridge">Stocksbridge</option>
-            <option value="brinsworth">Brinsworth</option>
-            <option value="wednesbury">Wednesbury</option>
-          </select>
+        <div class="d-flex gap-2 mt-3 align-items-center">
+          <button class="btn btn-brand" onclick="runSearch()">
+            <i class="bi bi-search me-1"></i>Search</button>
+          <button class="btn btn-outline-secondary" onclick="clearSearch()">Clear</button>
+          <span id="searchCount" class="text-muted small ms-2"></span>
         </div>
-        <div class="field"><label>Water Type</label>
-          <select id="sq-type">
-            <option value="">All Types</option>
-            <option value="towns">Towns Water</option>
-            <option value="river">River Water</option>
-          </select>
-        </div>
-        <div class="field"><label>From Date</label>
-          <input type="date" id="sq-from">
-        </div>
-        <div class="field"><label>To Date</label>
-          <input type="date" id="sq-to">
-        </div>
-      </div>
-      <div style="display:flex;gap:8px;margin-top:14px">
-        <button class="top-btn primary" onclick="runSearch()">Search</button>
-        <button class="top-btn" onclick="clearSearch()">Clear</button>
-        <span id="search-count" style="line-height:34px;font-size:13px;color:var(--text3)"></span>
       </div>
     </div>
     <div class="card">
-      <div class="tbl-wrap">
-        <table>
-          <thead><tr><th>Date</th><th>Site</th><th>Department</th><th>Meter</th><th>Reading</th><th>Usage (m³)</th><th>Type</th><th>Source</th><th>Notes</th></tr></thead>
-          <tbody id="search-results"></tbody>
-        </table>
+      <div class="card-body p-0">
+        <div class="table-responsive">
+          <table class="table table-hover mb-0">
+            <thead><tr>
+              <th>Date</th><th>Site</th><th>Department</th><th>Meter</th>
+              <th class="text-end">Reading</th><th class="text-end">Usage m³</th>
+              <th>Type</th><th>Source</th><th>Notes</th>
+            </tr></thead>
+            <tbody id="searchResults"></tbody>
+          </table>
+        </div>
       </div>
     </div>
   </div>
 
-  <!-- ── REPORTS ────────────────────────────────────────────── -->
+  <!-- Reports Page -->
   <div id="page-reports" class="page">
-    <div class="card" style="margin-bottom:20px">
-      <h3 style="margin-bottom:12px">Generate Report</h3>
-      <div class="form-grid cols2">
-        <div class="field"><label>From Date</label><input type="date" id="rep-from"></div>
-        <div class="field"><label>To Date</label><input type="date" id="rep-to"></div>
+    <div class="card mb-4">
+      <div class="card-header py-2 px-3">
+        <i class="bi bi-file-earmark-bar-graph me-1"></i> Generate Report
       </div>
-      <button class="top-btn primary" style="margin-top:14px" onclick="generateReport()">Generate Report</button>
-      <button class="top-btn" style="margin-top:14px;margin-left:8px" onclick="exportCSV()">Export CSV</button>
+      <div class="card-body">
+        <div class="row g-3">
+          <div class="col-md-4">
+            <label class="form-label small">From Date</label>
+            <input type="date" id="repFrom" class="form-control">
+          </div>
+          <div class="col-md-4">
+            <label class="form-label small">To Date</label>
+            <input type="date" id="repTo" class="form-control">
+          </div>
+          <div class="col-md-4 d-flex align-items-end gap-2">
+            <button class="btn btn-brand" onclick="generateReport()">
+              <i class="bi bi-file-earmark-text me-1"></i>Generate</button>
+            <button class="btn btn-outline-secondary" onclick="exportCSV()">
+              <i class="bi bi-download me-1"></i>Export CSV</button>
+          </div>
+        </div>
+      </div>
     </div>
-    <div id="report-output"></div>
+    <div id="reportOutput"></div>
   </div>
 
-  <!-- ── INTEGRATIONS ───────────────────────────────────────── -->
+  <!-- Integrations Page -->
   <div id="page-integrations" class="page">
-    <div class="card-grid cols2">
-      <div class="card">
-        <h3 style="margin-bottom:16px">🟢 EEmon System (Stocksbridge)</h3>
-        <p style="font-size:13px;color:var(--text3);margin-bottom:16px">Connect to the EEmon monitoring system to pull live meter readings automatically.</p>
-        <div class="form-grid">
-          <div class="field"><label>Base URL</label><input type="text" id="ee-url" placeholder="https://eemon.example.com/api"></div>
-          <div class="field"><label>Username</label><input type="text" id="ee-user" placeholder="username"></div>
-          <div class="field"><label>Password</label><input type="password" id="ee-pass" placeholder="password"></div>
-        </div>
-        <button class="top-btn primary" style="margin-top:14px" onclick="configEEmon()">Connect EEmon</button>
-        <div id="ee-status" class="alert info" style="margin-top:12px;display:none"></div>
-        <div style="margin-top:16px">
-          <h3 style="font-size:11px;margin-bottom:8px">Monitored Meters</h3>
-          <div style="display:flex;flex-wrap:wrap;gap:6px;font-size:11px">
-            <span class="badge eemon">RMS 1</span><span class="badge eemon">RMS 2</span>
-            <span class="badge eemon">VIM</span><span class="badge eemon">BM Meter 16</span>
-            <span class="badge eemon">BM Meter 17</span><span class="badge eemon">BM Saws 14</span>
-            <span class="badge eemon">Croft Supply</span><span class="badge eemon">West Bank WQ1</span>
-            <span class="badge eemon">West Bank WQ2</span><span class="badge eemon">Spring Bank</span>
+    <div class="row g-4">
+      <div class="col-lg-6">
+        <div class="card">
+          <div class="card-header py-2 px-3">
+            <span class="dot-online me-2"></span> EEmon System (Stocksbridge)
+          </div>
+          <div class="card-body">
+            <p class="text-muted small mb-3">Connect to the EEmon monitoring system for live meter readings.</p>
+            <div class="row g-3">
+              <div class="col-12">
+                <label class="form-label small">Base URL</label>
+                <input type="text" id="eeUrl" class="form-control" placeholder="https://eemon.example.com/api">
+              </div>
+              <div class="col-md-6">
+                <label class="form-label small">Username</label>
+                <input type="text" id="eeUser" class="form-control">
+              </div>
+              <div class="col-md-6">
+                <label class="form-label small">Password</label>
+                <input type="password" id="eePass" class="form-control">
+              </div>
+              <div class="col-12">
+                <button class="btn btn-brand" onclick="configEEmon()">
+                  <i class="bi bi-plug me-1"></i>Connect EEmon</button>
+              </div>
+            </div>
+            <div id="eeStatus" class="mt-3"></div>
           </div>
         </div>
       </div>
-      <div class="card">
-        <h3 style="margin-bottom:16px">🟡 Trend System (Brinsworth)</h3>
-        <p style="font-size:13px;color:var(--text3);margin-bottom:16px">Connect to the Trend BEMS system to pull live river water meter readings.</p>
-        <div class="form-grid">
-          <div class="field"><label>Base URL</label><input type="text" id="tr-url" placeholder="https://trend.example.com/api"></div>
-          <div class="field"><label>API Key</label><input type="password" id="tr-key" placeholder="API Key"></div>
-        </div>
-        <button class="top-btn primary" style="margin-top:14px" onclick="configTrend()">Connect Trend</button>
-        <div id="tr-status" class="alert info" style="margin-top:12px;display:none"></div>
-        <div style="margin-top:16px">
-          <h3 style="font-size:11px;margin-bottom:8px">Monitored Meters</h3>
-          <div style="display:flex;flex-wrap:wrap;gap:6px;font-size:11px">
-            <span class="badge trend">Hot Mill River</span>
-            <span class="badge trend">HRP River Water</span>
-            <span class="badge trend">Cold Mill River</span>
+      <div class="col-lg-6">
+        <div class="card">
+          <div class="card-header py-2 px-3">
+            <span class="dot-offline me-2"></span> Trend System (Brinsworth)
           </div>
-        </div>
-      </div>
-    </div>
-    <div class="card" style="margin-top:20px">
-      <h3 style="margin-bottom:16px">Manual Meters Summary</h3>
-      <div class="card-grid cols4">
-        <div>
-          <p style="font-size:11px;color:var(--text3);margin-bottom:8px">Rotherham</p>
-          <div style="display:flex;flex-wrap:wrap;gap:5px;font-size:11px" id="manual-rot"></div>
-        </div>
-        <div>
-          <p style="font-size:11px;color:var(--text3);margin-bottom:8px">Stocksbridge (Manual)</p>
-          <div style="display:flex;flex-wrap:wrap;gap:5px;font-size:11px" id="manual-sto"></div>
-        </div>
-        <div>
-          <p style="font-size:11px;color:var(--text3);margin-bottom:8px">Brinsworth (Manual)</p>
-          <div style="display:flex;flex-wrap:wrap;gap:5px;font-size:11px" id="manual-bri"></div>
-        </div>
-        <div>
-          <p style="font-size:11px;color:var(--text3);margin-bottom:8px">Wednesbury</p>
-          <div style="display:flex;flex-wrap:wrap;gap:5px;font-size:11px" id="manual-wed"></div>
+          <div class="card-body">
+            <p class="text-muted small mb-3">Connect to the Trend BEMS system for river water readings.</p>
+            <div class="row g-3">
+              <div class="col-12">
+                <label class="form-label small">Base URL</label>
+                <input type="text" id="trUrl" class="form-control" placeholder="https://trend.example.com/api">
+              </div>
+              <div class="col-12">
+                <label class="form-label small">API Key</label>
+                <input type="password" id="trKey" class="form-control">
+              </div>
+              <div class="col-12">
+                <button class="btn btn-brand" onclick="configTrend()">
+                  <i class="bi bi-plug me-1"></i>Connect Trend</button>
+              </div>
+            </div>
+            <div id="trStatus" class="mt-3"></div>
+          </div>
         </div>
       </div>
     </div>
   </div>
-</div><!-- /main -->
-</div><!-- /app -->
 
+  <!-- Admin Page -->
+  <div id="page-admin" class="page">
+    <div class="row g-4">
+      <div class="col-lg-6">
+        <div class="card">
+          <div class="card-header py-2 px-3">
+            <i class="bi bi-palette me-1"></i> Display Settings
+          </div>
+          <div class="card-body">
+            <div class="mb-3">
+              <label class="form-label small">Theme</label>
+              <div class="d-flex gap-3">
+                <div class="form-check">
+                  <input class="form-check-input" type="radio" name="themeRadio" id="themeDark" value="dark" onchange="setTheme('dark')">
+                  <label class="form-check-label" for="themeDark">Dark Mode</label>
+                </div>
+                <div class="form-check">
+                  <input class="form-check-input" type="radio" name="themeRadio" id="themeLight" value="light" onchange="setTheme('light')">
+                  <label class="form-check-label" for="themeLight">Light Mode</label>
+                </div>
+              </div>
+            </div>
+            <div class="mb-3">
+              <label class="form-label small">Default Date Range (days)</label>
+              <select id="adminDateRange" class="form-select" onchange="savePreferences()">
+                <option value="30">30 days</option>
+                <option value="60">60 days</option>
+                <option value="90">90 days</option>
+                <option value="180">180 days</option>
+                <option value="365">1 year</option>
+              </select>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-6">
+        <div class="card">
+          <div class="card-header py-2 px-3">
+            <i class="bi bi-magic me-1"></i> Auto-Fill Missing Data
+          </div>
+          <div class="card-body">
+            <p class="text-muted small mb-3">When enabled, the system can estimate missing meter readings based on historical averages when a connection drops.</p>
+            <div class="form-check form-switch mb-3">
+              <input class="form-check-input" type="checkbox" id="autoFillEnabled" onchange="savePreferences()">
+              <label class="form-check-label" for="autoFillEnabled">Enable Auto-Fill</label>
+            </div>
+            <div id="autoFillSection" style="display:none;">
+              <div class="row g-3">
+                <div class="col-12">
+                  <label class="form-label small">Site (optional)</label>
+                  <select id="afSite" class="form-select">
+                    <option value="">All Sites</option>
+                    <option value="rotherham">Rotherham</option>
+                    <option value="stocksbridge">Stocksbridge</option>
+                    <option value="brinsworth">Brinsworth</option>
+                    <option value="wednesbury">Wednesbury</option>
+                  </select>
+                </div>
+                <div class="col-12">
+                  <button class="btn btn-warning w-100" onclick="runAutoFillAll()">
+                    <i class="bi bi-magic me-1"></i>Fill Missing Data Now</button>
+                </div>
+              </div>
+              <div id="afStatus" class="mt-3"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-6">
+        <div class="card border-danger">
+          <div class="card-header py-2 px-3 bg-danger bg-opacity-10">
+            <i class="bi bi-exclamation-triangle me-1 text-danger"></i> Data Management
+          </div>
+          <div class="card-body">
+            <p class="text-muted small mb-3">Clear all readings and tonnes data. Meters will be preserved. This action cannot be undone.</p>
+            <button class="btn btn-outline-danger" onclick="confirmClearData()">
+              <i class="bi bi-trash3 me-1"></i>Clear All Data</button>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-6">
+        <div class="card">
+          <div class="card-header py-2 px-3">
+            <i class="bi bi-database me-1"></i> Sample Data
+          </div>
+          <div class="card-body">
+            <p class="text-muted small mb-3">Load sample data for testing and demonstration purposes.</p>
+            <button class="btn btn-outline-primary" onclick="loadSampleData()">
+              <i class="bi bi-cloud-download me-1"></i>Load Sample Data</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.3/dist/chart.umd.min.js"></script>
 <script>
 const API = '';
 let allMeters = [];
 let charts = {};
+let currentSite = null;
+let preferences = { theme: 'dark', auto_fill_enabled: false, default_date_range: 90 };
 
-// ─── Init ────────────────────────────────────────────────────
+// ─── Init ─────────────────────────────────────────────────────────────────────
 document.addEventListener('DOMContentLoaded', async () => {
+  await loadPreferences();
   setDefaultDates();
   await fetchMeters();
   loadDashboard();
   loadRecentReadings();
   loadRecentTonnes();
-  populateManualMeters();
+  setupNavigation();
+});
+
+async function loadPreferences() {
+  try {
+    const r = await fetch(`${API}/api/admin/preferences`);
+    preferences = await r.json();
+    applyTheme(preferences.theme || 'dark');
+    document.getElementById('autoFillEnabled').checked = preferences.auto_fill_enabled;
+    document.getElementById('adminDateRange').value = preferences.default_date_range || 90;
+    document.getElementById('autoFillSection').style.display = preferences.auto_fill_enabled ? 'block' : 'none';
+  } catch (e) {
+    console.error('Failed to load preferences:', e);
+  }
+}
+
+async function savePreferences() {
+  const theme = document.querySelector('input[name="themeRadio"]:checked')?.value || preferences.theme;
+  const autoFill = document.getElementById('autoFillEnabled').checked;
+  const dateRange = parseInt(document.getElementById('adminDateRange').value);
+  
+  document.getElementById('autoFillSection').style.display = autoFill ? 'block' : 'none';
+  
+  try {
+    await fetch(`${API}/api/admin/preferences`, {
+      method: 'PUT',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({
+        theme: theme,
+        auto_fill_enabled: autoFill,
+        default_date_range: dateRange
+      })
+    });
+    preferences = { theme, auto_fill_enabled: autoFill, default_date_range: dateRange };
+  } catch (e) {
+    console.error('Failed to save preferences:', e);
+  }
+}
+
+function setTheme(theme) {
+  applyTheme(theme);
+  savePreferences();
+}
+
+function applyTheme(theme) {
+  document.documentElement.setAttribute('data-bs-theme', theme);
+  const icon = document.querySelector('#themeToggle i');
+  if (icon) {
+    icon.className = theme === 'dark' ? 'bi bi-moon-stars' : 'bi bi-sun';
+  }
+  const radio = document.getElementById(theme === 'dark' ? 'themeDark' : 'themeLight');
+  if (radio) radio.checked = true;
+}
+
+document.getElementById('themeToggle').addEventListener('click', () => {
+  const current = document.documentElement.getAttribute('data-bs-theme');
+  setTheme(current === 'dark' ? 'light' : 'dark');
 });
 
 function setDefaultDates() {
   const to = new Date();
-  const from = new Date(); from.setMonth(from.getMonth() - 3);
+  const days = preferences.default_date_range || 90;
+  const from = new Date(); from.setDate(from.getDate() - days);
   const fmt = d => d.toISOString().split('T')[0];
-  document.getElementById('global-from').value = fmt(from);
-  document.getElementById('global-to').value = fmt(to);
-  document.getElementById('in-date').value = fmt(to);
-  document.getElementById('t-date').value = fmt(to);
-  const y = new Date(); y.setMonth(y.getMonth()-1);
-  document.getElementById('rep-from').value = fmt(y);
-  document.getElementById('rep-to').value = fmt(to);
+  document.getElementById('globalFrom').value = fmt(from);
+  document.getElementById('globalTo').value = fmt(to);
+  document.getElementById('inDate').value = fmt(to);
+  document.getElementById('tDate').value = fmt(to);
+  const y = new Date(); y.setMonth(y.getMonth() - 1);
+  document.getElementById('repFrom').value = fmt(y);
+  document.getElementById('repTo').value = fmt(to);
 }
 
 async function fetchMeters() {
@@ -497,297 +783,303 @@ async function fetchMeters() {
   allMeters = await r.json();
 }
 
-// ─── Navigation ──────────────────────────────────────────────
-let currentSite = null;
+function setupNavigation() {
+  document.querySelectorAll('.nav-link[data-page]').forEach(link => {
+    link.addEventListener('click', (e) => {
+      e.preventDefault();
+      const page = link.dataset.page;
+      const site = link.dataset.site;
+      
+      document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
+      link.classList.add('active');
+      
+      document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+      
+      if (page === 'site' && site) {
+        showSite(site);
+      } else {
+        showPage(page);
+      }
+    });
+  });
+}
+
 function showPage(id) {
   document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
-  document.getElementById('page-'+id).classList.add('active');
+  document.getElementById('page-' + id).classList.add('active');
+  
   const titles = {
-    dashboard:'All Sites Dashboard', kpis:'KPIs & Efficiency',
-    input:'Manual Readings', 'tonnes-page':'Tonnes Input',
-    search:'Search & Query', reports:'Reports', integrations:'Integrations'
+    dashboard: 'Dashboard', kpis: 'KPIs & Efficiency', entry: 'Manual Readings',
+    tonnes: 'Tonnes Input', search: 'Search', reports: 'Reports',
+    integrations: 'Integrations', admin: 'Admin Settings'
   };
-  document.getElementById('page-title').textContent = titles[id] || id;
-  if(id==='kpis') loadKPIs();
-  if(id==='reports') {}
-  if(id==='search') {}
+  document.getElementById('pageTitle').textContent = titles[id] || id;
+  
+  if (id === 'kpis') loadKPIs();
 }
 
 function showSite(siteId) {
   currentSite = siteId;
   document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
   document.getElementById('page-site').classList.add('active');
-  const names = {rotherham:'Rotherham',stocksbridge:'Stocksbridge',brinsworth:'Brinsworth',wednesbury:'Wednesbury'};
-  document.getElementById('page-title').textContent = names[siteId] + ' – Site Detail';
+  
+  const names = {rotherham:'Rotherham', stocksbridge:'Stocksbridge', brinsworth:'Brinsworth', wednesbury:'Wednesbury'};
+  document.getElementById('pageTitle').textContent = names[siteId] + ' - Site Detail';
+  document.getElementById('siteDeptTitle').textContent = names[siteId] + ' - Department Usage';
   loadSiteDashboard(siteId);
 }
 
-function refresh() { 
-  const pg = document.querySelector('.page.active').id.replace('page-','');
-  if(pg==='dashboard') loadDashboard();
-  else if(pg==='site') loadSiteDashboard(currentSite);
-  else if(pg==='kpis') loadKPIs();
+function refresh() {
+  const active = document.querySelector('.page.active');
+  if (!active) return;
+  const id = active.id.replace('page-', '');
+  if (id === 'dashboard') loadDashboard();
+  else if (id === 'site') loadSiteDashboard(currentSite);
+  else if (id === 'kpis') loadKPIs();
 }
 
-// ─── Dashboard ───────────────────────────────────────────────
+// ─── Dashboard ────────────────────────────────────────────────────────────────
 async function loadDashboard() {
-  const from = document.getElementById('global-from').value;
-  const to   = document.getElementById('global-to').value;
+  const from = document.getElementById('globalFrom').value;
+  const to = document.getElementById('globalTo').value;
   const r = await fetch(`${API}/api/dashboard?from=${from}&to=${to}`);
   const data = await r.json();
-  renderSiteKPICards(data);
+  renderDashKpiCards(data);
   renderSiteBarChart(data);
-  renderTypeDoughnut(data);
+  renderTypePie(data);
   renderTimelineChart(data);
 }
 
-function renderSiteKPICards(data) {
-  const el = document.getElementById('site-kpi-cards');
-  const colors = {rotherham:'red',stocksbridge:'green',brinsworth:'amber',wednesbury:'purple'};
+function renderDashKpiCards(data) {
+  const el = document.getElementById('dashKpiCards');
   el.innerHTML = data.map(d => `
-    <div class="card kpi">
-      <h3>${d.site_name}</h3>
-      <div class="val" style="font-size:22px">${fmt(d.total_m3)} m³</div>
-      <div style="display:flex;gap:6px;margin:4px 0">
-        <span class="badge towns">T: ${fmt(d.towns_m3)}</span>
-        <span class="badge river">R: ${fmt(d.river_m3)}</span>
+    <div class="col-6 col-xl-3">
+      <div class="stat-card">
+        <div class="d-flex justify-content-between align-items-start">
+          <div>
+            <div class="stat-val text-info">${fmt(d.total_m3)}</div>
+            <div class="stat-lbl">${d.site_name} m³</div>
+          </div>
+          <i class="bi bi-building" style="font-size:1.4rem;color:var(--bs-tertiary-color);"></i>
+        </div>
+        <div class="mt-2 d-flex gap-2">
+          <span class="badge badge-towns">T: ${fmt(d.towns_m3)}</span>
+          <span class="badge badge-river">R: ${fmt(d.river_m3)}</span>
+        </div>
+        <div class="text-muted small mt-1">${d.m3_per_tonne > 0 ? d.m3_per_tonne.toFixed(3) + ' m³/t' : 'No tonnes data'}</div>
       </div>
-      <div class="sub">${fmt(d.total_tonnes)} t produced</div>
-      <div class="sub" style="color:var(--accent)">${d.m3_per_tonne > 0 ? d.m3_per_tonne.toFixed(3)+' m³/t' : 'No tonnes data'}</div>
     </div>
   `).join('');
 }
 
 function renderSiteBarChart(data) {
-  destroyChart('site-bar');
-  const ctx = document.getElementById('chart-site-bar');
-  charts['site-bar'] = new Chart(ctx, {
-    type:'bar',
-    data:{
-      labels: data.map(d=>d.site_name),
-      datasets:[
-        {label:'Towns Water (m³)',data:data.map(d=>d.towns_m3),backgroundColor:'#3b82f680',borderColor:'#3b82f6',borderWidth:1},
-        {label:'River Water (m³)',data:data.map(d=>d.river_m3),backgroundColor:'#06b6d480',borderColor:'#06b6d4',borderWidth:1},
+  destroyChart('siteBar');
+  const ctx = document.getElementById('chartSiteBar');
+  charts['siteBar'] = new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels: data.map(d => d.site_name),
+      datasets: [
+        { label: 'Towns Water (m³)', data: data.map(d => d.towns_m3), backgroundColor: 'rgba(244,162,97,0.7)', borderColor: '#f4a261', borderWidth: 1 },
+        { label: 'River Water (m³)', data: data.map(d => d.river_m3), backgroundColor: 'rgba(72,202,228,0.7)', borderColor: '#48cae4', borderWidth: 1 },
       ]
     },
     options: chartOpts('m³')
   });
 }
 
-function renderTypeDoughnut(data) {
-  destroyChart('type-doughnut');
-  const towns = data.reduce((s,d)=>s+d.towns_m3,0);
-  const river = data.reduce((s,d)=>s+d.river_m3,0);
-  const ctx = document.getElementById('chart-type-doughnut');
-  charts['type-doughnut'] = new Chart(ctx,{
-    type:'doughnut',
-    data:{
-      labels:['Towns Water','River Water'],
-      datasets:[{data:[towns,river],backgroundColor:['#3b82f6','#06b6d4'],borderWidth:0}]
+function renderTypePie(data) {
+  destroyChart('typePie');
+  const towns = data.reduce((s, d) => s + d.towns_m3, 0);
+  const river = data.reduce((s, d) => s + d.river_m3, 0);
+  const ctx = document.getElementById('chartTypePie');
+  charts['typePie'] = new Chart(ctx, {
+    type: 'doughnut',
+    data: {
+      labels: ['Towns Water', 'River Water'],
+      datasets: [{ data: [towns, river], backgroundColor: ['#f4a261', '#48cae4'], borderWidth: 0 }]
     },
-    options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{labels:{color:'#94a3b8'}}}}
+    options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } } }
   });
 }
 
 function renderTimelineChart(data) {
   destroyChart('timeline');
-  // Merge all site timelines
   const weekMap = {};
   data.forEach(d => {
-    (d.timeline||[]).forEach(t => {
-      if(!weekMap[t.date]) weekMap[t.date]={towns:0,river:0};
+    (d.timeline || []).forEach(t => {
+      if (!weekMap[t.date]) weekMap[t.date] = { towns: 0, river: 0 };
       weekMap[t.date].towns += t.towns;
       weekMap[t.date].river += t.river;
     });
   });
   const weeks = Object.keys(weekMap).sort();
-  const ctx = document.getElementById('chart-timeline');
-  charts['timeline'] = new Chart(ctx,{
-    type:'line',
-    data:{
-      labels:weeks,
-      datasets:[
-        {label:'Towns Water',data:weeks.map(w=>weekMap[w].towns),borderColor:'#3b82f6',fill:true,backgroundColor:'#3b82f615',tension:.4,pointRadius:3},
-        {label:'River Water',data:weeks.map(w=>weekMap[w].river),borderColor:'#06b6d4',fill:true,backgroundColor:'#06b6d415',tension:.4,pointRadius:3},
+  const ctx = document.getElementById('chartTimeline');
+  charts['timeline'] = new Chart(ctx, {
+    type: 'line',
+    data: {
+      labels: weeks,
+      datasets: [
+        { label: 'Towns Water', data: weeks.map(w => weekMap[w].towns), borderColor: '#f4a261', fill: true, backgroundColor: 'rgba(244,162,97,0.1)', tension: .4, pointRadius: 3 },
+        { label: 'River Water', data: weeks.map(w => weekMap[w].river), borderColor: '#48cae4', fill: true, backgroundColor: 'rgba(72,202,228,0.1)', tension: .4, pointRadius: 3 },
       ]
     },
     options: chartOpts('m³')
   });
 }
 
-// ─── Site Dashboard ──────────────────────────────────────────
+// ─── Site Dashboard ───────────────────────────────────────────────────────────
 async function loadSiteDashboard(siteId) {
-  const from = document.getElementById('global-from').value;
-  const to   = document.getElementById('global-to').value;
+  const from = document.getElementById('globalFrom').value;
+  const to = document.getElementById('globalTo').value;
   const r = await fetch(`${API}/api/dashboard?site_id=${siteId}&from=${from}&to=${to}`);
   const d = await r.json();
 
-  // KPI cards
-  document.getElementById('site-kpis').innerHTML = `
-    <div class="card kpi"><h3>Total Usage</h3><div class="val">${fmt(d.total_m3)}</div><div class="sub">m³ total</div></div>
-    <div class="card kpi"><h3>Towns Water</h3><div class="val" style="color:var(--towns)">${fmt(d.towns_m3)}</div><div class="sub">m³ from mains</div></div>
-    <div class="card kpi"><h3>River Water</h3><div class="val" style="color:var(--river)">${fmt(d.river_m3)}</div><div class="sub">m³ from river</div></div>
-    <div class="card kpi"><h3>m³ / Tonne</h3><div class="val" style="color:var(--green)">${d.m3_per_tonne > 0 ? d.m3_per_tonne.toFixed(3) : '—'}</div><div class="sub">${fmt(d.total_tonnes)} t produced</div></div>
+  document.getElementById('siteKpiCards').innerHTML = `
+    <div class="col-6 col-xl-3"><div class="stat-card"><div class="stat-val">${fmt(d.total_m3)}</div><div class="stat-lbl">Total m³</div></div></div>
+    <div class="col-6 col-xl-3"><div class="stat-card"><div class="stat-val" style="color:var(--towns)">${fmt(d.towns_m3)}</div><div class="stat-lbl">Towns Water</div></div></div>
+    <div class="col-6 col-xl-3"><div class="stat-card"><div class="stat-val" style="color:var(--river)">${fmt(d.river_m3)}</div><div class="stat-lbl">River Water</div></div></div>
+    <div class="col-6 col-xl-3"><div class="stat-card"><div class="stat-val text-success">${d.m3_per_tonne > 0 ? d.m3_per_tonne.toFixed(3) : '—'}</div><div class="stat-lbl">m³/tonne (${fmt(d.total_tonnes)} t)</div></div></div>
   `;
 
-  // Dept chart
-  const depts = d.departments||[];
-  document.getElementById('dept-chart-title').textContent = `${d.site_name} – Department Usage (m³)`;
+  const depts = d.departments || [];
   destroyChart('dept');
-  charts['dept'] = new Chart(document.getElementById('chart-dept'),{
-    type:'bar',
-    data:{
-      labels:depts.map(x=>x.department),
-      datasets:[
-        {label:'Towns (m³)',data:depts.map(x=>x.towns_m3),backgroundColor:'#3b82f680',borderColor:'#3b82f6',borderWidth:1},
-        {label:'River (m³)',data:depts.map(x=>x.river_m3),backgroundColor:'#06b6d480',borderColor:'#06b6d4',borderWidth:1},
+  charts['dept'] = new Chart(document.getElementById('chartDept'), {
+    type: 'bar',
+    data: {
+      labels: depts.map(x => x.department),
+      datasets: [
+        { label: 'Towns (m³)', data: depts.map(x => x.towns_m3), backgroundColor: 'rgba(244,162,97,0.7)', borderColor: '#f4a261', borderWidth: 1 },
+        { label: 'River (m³)', data: depts.map(x => x.river_m3), backgroundColor: 'rgba(72,202,228,0.7)', borderColor: '#48cae4', borderWidth: 1 },
       ]
     },
     options: chartOpts('m³')
   });
 
-  // Pie
-  destroyChart('site-pie');
-  charts['site-pie'] = new Chart(document.getElementById('chart-site-pie'),{
-    type:'doughnut',
-    data:{
-      labels:['Towns Water','River Water'],
-      datasets:[{data:[d.towns_m3,d.river_m3],backgroundColor:['#3b82f6','#06b6d4'],borderWidth:0}]
+  destroyChart('sitePie');
+  charts['sitePie'] = new Chart(document.getElementById('chartSitePie'), {
+    type: 'doughnut',
+    data: {
+      labels: ['Towns Water', 'River Water'],
+      datasets: [{ data: [d.towns_m3, d.river_m3], backgroundColor: ['#f4a261', '#48cae4'], borderWidth: 0 }]
     },
-    options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{labels:{color:'#94a3b8'}}}}
+    options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } } }
   });
 
-  // Timeline
-  const tl = d.timeline||[];
-  destroyChart('site-timeline');
-  charts['site-timeline'] = new Chart(document.getElementById('chart-site-timeline'),{
-    type:'line',
-    data:{
-      labels:tl.map(t=>t.date),
-      datasets:[
-        {label:'Towns',data:tl.map(t=>t.towns),borderColor:'#3b82f6',fill:true,backgroundColor:'#3b82f615',tension:.4,pointRadius:3},
-        {label:'River',data:tl.map(t=>t.river),borderColor:'#06b6d4',fill:true,backgroundColor:'#06b6d415',tension:.4,pointRadius:3},
-        {label:'Total',data:tl.map(t=>t.total),borderColor:'#10b981',borderDash:[4,4],fill:false,tension:.4,pointRadius:2},
+  const tl = d.timeline || [];
+  destroyChart('siteTimeline');
+  charts['siteTimeline'] = new Chart(document.getElementById('chartSiteTimeline'), {
+    type: 'line',
+    data: {
+      labels: tl.map(t => t.date),
+      datasets: [
+        { label: 'Towns', data: tl.map(t => t.towns), borderColor: '#f4a261', fill: true, backgroundColor: 'rgba(244,162,97,0.1)', tension: .4, pointRadius: 3 },
+        { label: 'River', data: tl.map(t => t.river), borderColor: '#48cae4', fill: true, backgroundColor: 'rgba(72,202,228,0.1)', tension: .4, pointRadius: 3 },
+        { label: 'Total', data: tl.map(t => t.total), borderColor: '#2ecc71', borderDash: [4, 4], fill: false, tension: .4, pointRadius: 2 },
       ]
     },
     options: chartOpts('m³')
   });
 
-  // Dept table
-  const tbody = document.getElementById('dept-table');
-  const maxM3 = Math.max(...depts.map(d=>d.m3),1);
-  tbody.innerHTML = depts.map(dp => `
+  document.getElementById('deptTable').innerHTML = depts.map(dp => `
     <tr>
       <td><strong>${dp.department}</strong></td>
-      <td>${fmt(dp.m3)}</td>
-      <td><span class="badge towns">${fmt(dp.towns_m3)}</span></td>
-      <td><span class="badge river">${fmt(dp.river_m3)}</span></td>
-      <td>${fmt(dp.tonnes)}</td>
-      <td>${dp.m3_per_tonne > 0 ? dp.m3_per_tonne.toFixed(3) : '—'}</td>
-      <td>
-        <div class="bar-wrap">
-          <div class="bar-bg" style="width:120px">
-            <div class="bar-fill towns" style="width:${Math.round(dp.towns_m3/maxM3*100)}%"></div>
-          </div>
-          <div class="bar-bg" style="width:80px">
-            <div class="bar-fill river" style="width:${Math.round(dp.river_m3/maxM3*100)}%"></div>
-          </div>
-        </div>
-      </td>
+      <td class="text-end">${fmt(dp.m3)}</td>
+      <td class="text-end"><span class="badge badge-towns">${fmt(dp.towns_m3)}</span></td>
+      <td class="text-end"><span class="badge badge-river">${fmt(dp.river_m3)}</span></td>
+      <td class="text-end">${fmt(dp.tonnes)}</td>
+      <td class="text-end text-success"><strong>${dp.m3_per_tonne > 0 ? dp.m3_per_tonne.toFixed(3) : '—'}</strong></td>
     </tr>
   `).join('');
 }
 
-// ─── KPIs ────────────────────────────────────────────────────
+// ─── KPIs ─────────────────────────────────────────────────────────────────────
 async function loadKPIs() {
-  const r = await fetch(`${API}/api/kpis`);
+  const from = document.getElementById('globalFrom').value;
+  const to = document.getElementById('globalTo').value;
+  const r = await fetch(`${API}/api/kpis?from=${from}&to=${to}`);
   const data = await r.json();
 
-  document.getElementById('kpi-cards').innerHTML = data.map(d=>`
-    <div class="card kpi">
-      <h3>${d.site_name}</h3>
-      <div class="val" style="color:var(--green)">${d.m3_per_tonne > 0 ? d.m3_per_tonne.toFixed(3) : '—'}</div>
-      <div class="sub">m³ per tonne</div>
-      <div class="delta up">${fmt(d.total_m3)} m³</div>
+  document.getElementById('kpiCards').innerHTML = data.map(d => `
+    <div class="col-6 col-xl-3">
+      <div class="stat-card">
+        <div class="stat-val text-success">${d.m3_per_tonne > 0 ? d.m3_per_tonne.toFixed(3) : '—'}</div>
+        <div class="stat-lbl">${d.site_name} m³/tonne</div>
+        <div class="text-info small mt-1">${fmt(d.total_m3)} m³ total</div>
+      </div>
     </div>
   `).join('');
 
   destroyChart('efficiency');
-  charts['efficiency'] = new Chart(document.getElementById('chart-efficiency'),{
-    type:'bar',
-    data:{
-      labels:data.map(d=>d.site_name),
-      datasets:[{label:'m³/tonne',data:data.map(d=>d.m3_per_tonne),backgroundColor:['#3b82f6','#10b981','#f59e0b','#8b5cf6'],borderWidth:0,borderRadius:6}]
+  charts['efficiency'] = new Chart(document.getElementById('chartEfficiency'), {
+    type: 'bar',
+    data: {
+      labels: data.map(d => d.site_name),
+      datasets: [{ label: 'm³/tonne', data: data.map(d => d.m3_per_tonne), backgroundColor: ['#00b4d8', '#2ecc71', '#f39c12', '#9b59b6'], borderWidth: 0, borderRadius: 6 }]
     },
     options: chartOpts('m³/t')
   });
 
-  // m3/t trend (dummy trend using site comparison)
-  destroyChart('m3t-trend');
-  charts['m3t-trend'] = new Chart(document.getElementById('chart-m3t-trend'),{
-    type:'bar',
-    data:{
-      labels:data.map(d=>d.site_name),
-      datasets:[
-        {label:'Towns m³/t',data:data.map(d=>d.tonnes>0?Math.round(d.towns_m3/d.tonnes*1000)/1000:0),backgroundColor:'#3b82f680',borderColor:'#3b82f6',borderWidth:1},
-        {label:'River m³/t',data:data.map(d=>d.tonnes>0?Math.round(d.river_m3/d.tonnes*1000)/1000:0),backgroundColor:'#06b6d480',borderColor:'#06b6d4',borderWidth:1},
+  destroyChart('waterComparison');
+  charts['waterComparison'] = new Chart(document.getElementById('chartWaterComparison'), {
+    type: 'bar',
+    data: {
+      labels: data.map(d => d.site_name),
+      datasets: [
+        { label: 'Towns m³', data: data.map(d => d.towns_m3), backgroundColor: 'rgba(244,162,97,0.7)', borderColor: '#f4a261', borderWidth: 1 },
+        { label: 'River m³', data: data.map(d => d.river_m3), backgroundColor: 'rgba(72,202,228,0.7)', borderColor: '#48cae4', borderWidth: 1 },
       ]
     },
-    options: chartOpts('m³/t')
+    options: chartOpts('m³')
   });
 
-  const tbody = document.getElementById('kpi-table');
-  tbody.innerHTML = data.map(d=>`
+  document.getElementById('kpiTable').innerHTML = data.map(d => `
     <tr>
       <td><strong>${d.site_name}</strong></td>
-      <td>${fmt(d.total_m3)}</td>
-      <td><span class="badge towns">${fmt(d.towns_m3)}</span></td>
-      <td><span class="badge river">${fmt(d.river_m3)}</span></td>
-      <td>${fmt(d.tonnes)}</td>
-      <td><strong style="color:var(--green)">${d.m3_per_tonne > 0 ? d.m3_per_tonne.toFixed(3) : '—'}</strong></td>
-      <td>${d.total_m3>0?Math.round(d.towns_m3/d.total_m3*100)+'%':'—'}</td>
+      <td class="text-end">${fmt(d.total_m3)}</td>
+      <td class="text-end"><span class="badge badge-towns">${fmt(d.towns_m3)}</span></td>
+      <td class="text-end"><span class="badge badge-river">${fmt(d.river_m3)}</span></td>
+      <td class="text-end">${fmt(d.tonnes)}</td>
+      <td class="text-end text-success"><strong>${d.m3_per_tonne > 0 ? d.m3_per_tonne.toFixed(3) : '—'}</strong></td>
+      <td class="text-end">${d.total_m3 > 0 ? Math.round(d.towns_m3 / d.total_m3 * 100) + '%' : '—'}</td>
     </tr>
   `).join('');
 }
 
-// ─── Manual Input ────────────────────────────────────────────
-async function loadMetersForSite() {
-  const site = document.getElementById('in-site').value;
+// ─── Manual Input ─────────────────────────────────────────────────────────────
+function loadMetersForEntry() {
+  const site = document.getElementById('inSite').value;
   if (!site) return;
-  const meters = allMeters.filter(m=>m.site_id===site);
-  // Populate depts
-  const depts = [...new Set(meters.map(m=>m.department))];
-  const dSel = document.getElementById('in-dept');
-  dSel.innerHTML = '<option value="">All departments</option>' + depts.map(d=>`<option value="${d}">${d}</option>`).join('');
-  filterMeters();
+  const meters = allMeters.filter(m => m.site_id === site);
+  const depts = [...new Set(meters.map(m => m.department))];
+  document.getElementById('inDept').innerHTML = '<option value="">All departments</option>' + depts.map(d => `<option value="${d}">${d}</option>`).join('');
+  filterMetersForEntry();
 }
 
-function filterMeters() {
-  const site = document.getElementById('in-site').value;
-  const dept = document.getElementById('in-dept').value;
-  const meters = allMeters.filter(m=>m.site_id===site&&(dept===''||m.department===dept)&&m.source==='manual');
-  const mSel = document.getElementById('in-meter');
-  mSel.innerHTML = '<option value="">Select meter…</option>' + meters.map(m=>`<option value="${m.id}">[${m.water_type.toUpperCase()}] ${m.name} (${m.unit})</option>`).join('');
+function filterMetersForEntry() {
+  const site = document.getElementById('inSite').value;
+  const dept = document.getElementById('inDept').value;
+  const meters = allMeters.filter(m => m.site_id === site && (dept === '' || m.department === dept) && m.source === 'manual');
+  document.getElementById('inMeter').innerHTML = '<option value="">Select meter...</option>' + meters.map(m => `<option value="${m.id}">[${m.water_type.toUpperCase()}] ${m.name} (${m.unit})</option>`).join('');
 }
 
 async function submitReading() {
   const body = {
-    meter_id: document.getElementById('in-meter').value,
-    value: parseFloat(document.getElementById('in-value').value),
-    date: document.getElementById('in-date').value,
-    notes: document.getElementById('in-notes').value,
+    meter_id: document.getElementById('inMeter').value,
+    value: parseFloat(document.getElementById('inValue').value),
+    date: document.getElementById('inDate').value,
+    notes: document.getElementById('inNotes').value,
   };
-  if(!body.meter_id || isNaN(body.value)) { showAlert('input-alert','Please fill all required fields.','error'); return; }
-  const r = await fetch(`${API}/api/readings`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});
+  if (!body.meter_id || isNaN(body.value)) { showAlert('entryAlert', 'Please fill all required fields.', 'danger'); return; }
+  const r = await fetch(`${API}/api/readings`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) });
   const d = await r.json();
-  if(d.status==='ok'){
-    showAlert('input-alert','Reading saved successfully!','success');
-    document.getElementById('in-value').value='';
-    document.getElementById('in-notes').value='';
+  if (d.status === 'ok') {
+    showAlert('entryAlert', 'Reading saved successfully!', 'success');
+    document.getElementById('inValue').value = '';
+    document.getElementById('inNotes').value = '';
     loadRecentReadings();
   } else {
-    showAlert('input-alert', d.error||'Error saving reading.','error');
+    showAlert('entryAlert', d.error || 'Error saving reading.', 'danger');
   }
 }
 
@@ -796,45 +1088,43 @@ async function loadRecentReadings() {
   const data = await r.json();
   const recent = data.slice(-20).reverse();
   const mMap = {};
-  allMeters.forEach(m=>mMap[m.id]=m);
-  const tbody = document.getElementById('recent-readings');
-  tbody.innerHTML = recent.map(rd=>{
-    const m = mMap[rd.meter_id]||{};
+  allMeters.forEach(m => mMap[m.id] = m);
+  document.getElementById('recentReadings').innerHTML = recent.map(rd => {
+    const m = mMap[rd.meter_id] || {};
     return `<tr>
       <td>${fmtDate(rd.date)}</td>
-      <td style="font-size:11px">${m.name||rd.meter_id}</td>
-      <td>${rd.value?.toLocaleString()}</td>
-      <td>${rd.usage>0?'+'+fmt(toM3(rd.usage,m.unit||'m3'))+' m³':'—'}</td>
-      <td><span class="badge ${rd.water_type}">${rd.water_type}</span></td>
+      <td class="small">${m.name || rd.meter_id}</td>
+      <td class="text-end">${rd.value?.toLocaleString()}</td>
+      <td class="text-end">${rd.usage > 0 ? '+' + fmt(toM3(rd.usage, m.unit || 'm3')) : '—'}</td>
+      <td><span class="badge badge-${rd.water_type}">${rd.water_type}</span>${rd.is_estimated ? ' <span class="badge badge-estimated">Est</span>' : ''}</td>
     </tr>`;
   }).join('');
 }
 
-function toM3(v, unit) { return unit==='litres' ? v/1000 : v; }
+function toM3(v, unit) { return unit === 'litres' ? v / 1000 : v; }
 
-// ─── Tonnes ──────────────────────────────────────────────────
-async function loadDeptsForTonnes() {
-  const site = document.getElementById('t-site').value;
-  const depts = [...new Set(allMeters.filter(m=>m.site_id===site).map(m=>m.department))];
-  const sel = document.getElementById('t-dept');
-  sel.innerHTML = '<option value="">All (Site Total)</option>' + depts.map(d=>`<option value="${d}">${d}</option>`).join('');
+// ─── Tonnes ───────────────────────────────────────────────────────────────────
+function loadDeptsForTonnes() {
+  const site = document.getElementById('tSite').value;
+  const depts = [...new Set(allMeters.filter(m => m.site_id === site).map(m => m.department))];
+  document.getElementById('tDept').innerHTML = '<option value="">All (Site Total)</option>' + depts.map(d => `<option value="${d}">${d}</option>`).join('');
 }
 
 async function submitTonnes() {
   const body = {
-    site_id: document.getElementById('t-site').value,
-    department: document.getElementById('t-dept').value || 'Site Total',
-    tonnes: parseFloat(document.getElementById('t-value').value),
-    date: document.getElementById('t-date').value,
-    notes: document.getElementById('t-notes').value,
+    site_id: document.getElementById('tSite').value,
+    department: document.getElementById('tDept').value || 'Site Total',
+    tonnes: parseFloat(document.getElementById('tValue').value),
+    date: document.getElementById('tDate').value,
+    notes: document.getElementById('tNotes').value,
   };
-  if(!body.site_id || isNaN(body.tonnes)) { showAlert('tonnes-alert','Please fill all required fields.','error'); return; }
-  const r = await fetch(`${API}/api/tonnes`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});
+  if (!body.site_id || isNaN(body.tonnes)) { showAlert('tonnesAlert', 'Please fill all required fields.', 'danger'); return; }
+  const r = await fetch(`${API}/api/tonnes`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) });
   const d = await r.json();
-  if(d.status==='ok'){
-    showAlert('tonnes-alert','Tonnes saved!','success');
-    document.getElementById('t-value').value='';
-    document.getElementById('t-notes').value='';
+  if (d.status === 'ok') {
+    showAlert('tonnesAlert', 'Tonnes saved!', 'success');
+    document.getElementById('tValue').value = '';
+    document.getElementById('tNotes').value = '';
     loadRecentTonnes();
   }
 }
@@ -842,164 +1132,169 @@ async function submitTonnes() {
 async function loadRecentTonnes() {
   const r = await fetch(`${API}/api/tonnes`);
   const data = await r.json();
-  const siteNames = {rotherham:'Rotherham',stocksbridge:'Stocksbridge',brinsworth:'Brinsworth',wednesbury:'Wednesbury'};
-  const tbody = document.getElementById('recent-tonnes');
-  tbody.innerHTML = data.slice(-15).reverse().map(t=>`
-    <tr>
-      <td>${fmtDate(t.date)}</td>
-      <td>${siteNames[t.site_id]||t.site_id}</td>
-      <td>${t.department}</td>
-      <td>${t.tonnes.toLocaleString()}</td>
-    </tr>
+  const siteNames = { rotherham: 'Rotherham', stocksbridge: 'Stocksbridge', brinsworth: 'Brinsworth', wednesbury: 'Wednesbury' };
+  document.getElementById('recentTonnes').innerHTML = data.slice(-15).reverse().map(t => `
+    <tr><td>${fmtDate(t.date)}</td><td>${siteNames[t.site_id] || t.site_id}</td><td>${t.department}</td><td class="text-end">${t.tonnes.toLocaleString()}</td></tr>
   `).join('');
 }
 
-// ─── Search ──────────────────────────────────────────────────
+// ─── Search ───────────────────────────────────────────────────────────────────
 async function runSearch() {
-  const q = document.getElementById('sq-query').value;
-  const site = document.getElementById('sq-site').value;
-  const wt = document.getElementById('sq-type').value;
-  const from = document.getElementById('sq-from').value;
-  const to = document.getElementById('sq-to').value;
-  const params = new URLSearchParams({q,site_id:site,water_type:wt,from,to});
+  const params = new URLSearchParams({
+    q: document.getElementById('sqQuery').value,
+    site_id: document.getElementById('sqSite').value,
+    water_type: document.getElementById('sqType').value,
+    from: document.getElementById('sqFrom').value,
+    to: document.getElementById('sqTo').value
+  });
   const r = await fetch(`${API}/api/search?${params}`);
   const data = await r.json();
-  document.getElementById('search-count').textContent = `${data.length} results`;
-  const tbody = document.getElementById('search-results');
-  tbody.innerHTML = (data||[]).map(sr=>`
+  document.getElementById('searchCount').textContent = `${data.length} results`;
+  document.getElementById('searchResults').innerHTML = (data || []).map(sr => `
     <tr>
       <td>${fmtDate(sr.reading.date)}</td>
       <td>${sr.site_name}</td>
       <td>${sr.department}</td>
-      <td style="font-size:12px">${sr.meter_name}</td>
-      <td>${sr.reading.value?.toLocaleString()}</td>
-      <td>${sr.m3>0?sr.m3.toFixed(2):'—'}</td>
-      <td><span class="badge ${sr.reading.water_type}">${sr.reading.water_type}</span></td>
-      <td><span class="badge ${sr.reading.source}">${sr.reading.source}</span></td>
-      <td style="font-size:11px;color:var(--text3)">${sr.reading.notes||''}</td>
+      <td class="small">${sr.meter_name}</td>
+      <td class="text-end">${sr.reading.value?.toLocaleString()}</td>
+      <td class="text-end">${sr.m3 > 0 ? sr.m3.toFixed(2) : '—'}</td>
+      <td><span class="badge badge-${sr.reading.water_type}">${sr.reading.water_type}</span></td>
+      <td><span class="badge badge-${sr.reading.source}">${sr.reading.source}</span></td>
+      <td class="small text-muted">${sr.reading.notes || ''}</td>
     </tr>
-  `).join('') || '<tr><td colspan="9" style="text-align:center;color:var(--text3);padding:30px">No results found</td></tr>';
+  `).join('') || '<tr><td colspan="9" class="text-center text-muted py-4">No results found</td></tr>';
 }
 
 function clearSearch() {
-  ['sq-query','sq-site','sq-type','sq-from','sq-to'].forEach(id=>document.getElementById(id).value='');
-  document.getElementById('search-results').innerHTML='';
-  document.getElementById('search-count').textContent='';
+  ['sqQuery', 'sqSite', 'sqType', 'sqFrom', 'sqTo'].forEach(id => document.getElementById(id).value = '');
+  document.getElementById('searchResults').innerHTML = '';
+  document.getElementById('searchCount').textContent = '';
 }
 
-// ─── Reports ─────────────────────────────────────────────────
+// ─── Reports ──────────────────────────────────────────────────────────────────
 async function generateReport() {
-  const from = document.getElementById('rep-from').value;
-  const to   = document.getElementById('rep-to').value;
+  const from = document.getElementById('repFrom').value;
+  const to = document.getElementById('repTo').value;
   const r = await fetch(`${API}/api/report?from=${from}&to=${to}`);
   const rep = await r.json();
-  const el = document.getElementById('report-output');
-  el.innerHTML = `
-    <div class="card" style="margin-bottom:16px">
-      <div style="display:flex;justify-content:space-between;align-items:center">
-        <div>
-          <h2 style="font-size:18px">${rep.title}</h2>
-          <p style="font-size:12px;color:var(--text3)">Period: ${rep.period} | Generated: ${fmtDate(rep.generated)}</p>
+  document.getElementById('reportOutput').innerHTML = `
+    <div class="card mb-4">
+      <div class="card-header py-2 px-3"><strong>${rep.title}</strong></div>
+      <div class="card-body">
+        <p class="text-muted small mb-0">Period: ${rep.period} | Generated: ${fmtDate(rep.generated)}</p>
+      </div>
+    </div>
+    ${(rep.sites || []).map(s => `
+    <div class="card mb-3">
+      <div class="card-header py-2 px-3"><i class="bi bi-building me-1"></i> ${s.site_name}</div>
+      <div class="card-body">
+        <div class="row g-3 mb-3">
+          <div class="col-md-3"><div class="stat-card"><div class="stat-val">${fmt(s.total_m3)}</div><div class="stat-lbl">Total m³</div></div></div>
+          <div class="col-md-3"><div class="stat-card"><div class="stat-val" style="color:var(--towns)">${fmt(s.towns_m3)}</div><div class="stat-lbl">Towns m³</div></div></div>
+          <div class="col-md-3"><div class="stat-card"><div class="stat-val" style="color:var(--river)">${fmt(s.river_m3)}</div><div class="stat-lbl">River m³</div></div></div>
+          <div class="col-md-3"><div class="stat-card"><div class="stat-val text-success">${s.m3_per_tonne > 0 ? s.m3_per_tonne.toFixed(3) : '—'}</div><div class="stat-lbl">m³/tonne</div></div></div>
+        </div>
+        <div class="table-responsive">
+          <table class="table table-sm mb-0">
+            <thead><tr><th>Department</th><th class="text-end">Total m³</th><th class="text-end">Towns m³</th><th class="text-end">River m³</th><th class="text-end">Tonnes</th><th class="text-end">m³/tonne</th></tr></thead>
+            <tbody>${(s.departments || []).map(d => `<tr><td>${d.department}</td><td class="text-end">${fmt(d.m3)}</td><td class="text-end">${fmt(d.towns_m3)}</td><td class="text-end">${fmt(d.river_m3)}</td><td class="text-end">${fmt(d.tonnes)}</td><td class="text-end">${d.m3_per_tonne > 0 ? d.m3_per_tonne.toFixed(3) : '—'}</td></tr>`).join('')}</tbody>
+          </table>
         </div>
       </div>
-    </div>
-    ${(rep.sites||[]).map(s=>`
-    <div class="card" style="margin-bottom:16px">
-      <h3 style="font-size:14px;margin-bottom:16px">${s.site_name}</h3>
-      <div class="card-grid cols4" style="margin-bottom:16px">
-        <div class="kpi"><h3>Total m³</h3><div class="val" style="font-size:20px">${fmt(s.total_m3)}</div></div>
-        <div class="kpi"><h3>Towns Water</h3><div class="val" style="font-size:20px;color:var(--towns)">${fmt(s.towns_m3)}</div></div>
-        <div class="kpi"><h3>River Water</h3><div class="val" style="font-size:20px;color:var(--river)">${fmt(s.river_m3)}</div></div>
-        <div class="kpi"><h3>m³/tonne</h3><div class="val" style="font-size:20px;color:var(--green)">${s.m3_per_tonne>0?s.m3_per_tonne.toFixed(3):'—'}</div></div>
-      </div>
-      <div class="tbl-wrap">
-        <table>
-          <thead><tr><th>Department</th><th>Total m³</th><th>Towns m³</th><th>River m³</th><th>Tonnes</th><th>m³/tonne</th></tr></thead>
-          <tbody>${(s.departments||[]).map(d=>`
-            <tr><td>${d.department}</td><td>${fmt(d.m3)}</td><td>${fmt(d.towns_m3)}</td><td>${fmt(d.river_m3)}</td><td>${fmt(d.tonnes)}</td><td>${d.m3_per_tonne>0?d.m3_per_tonne.toFixed(3):'—'}</td></tr>
-          `).join('')}</tbody>
-        </table>
-      </div>
-    </div>
-    `).join('')}
-  `;
+    </div>`).join('')}`;
 }
 
 async function exportCSV() {
-  const from = document.getElementById('rep-from').value;
-  const to   = document.getElementById('rep-to').value;
+  const from = document.getElementById('repFrom').value;
+  const to = document.getElementById('repTo').value;
   const r = await fetch(`${API}/api/search?from=${from}&to=${to}`);
   const data = await r.json();
-  const headers = ['Date','Site','Department','Meter','Reading','Usage_m3','Water_Type','Source','Notes'];
-  const rows = data.map(sr=>[fmtDate(sr.reading.date),sr.site_name,sr.department,sr.meter_name,sr.reading.value,sr.m3,sr.reading.water_type,sr.reading.source,sr.reading.notes||'']);
-  const csv = [headers,...rows].map(r=>r.map(c=>`"${c}"`).join(',')).join('\n');
+  const headers = ['Date', 'Site', 'Department', 'Meter', 'Reading', 'Usage_m3', 'Water_Type', 'Source', 'Notes'];
+  const rows = data.map(sr => [fmtDate(sr.reading.date), sr.site_name, sr.department, sr.meter_name, sr.reading.value, sr.m3, sr.reading.water_type, sr.reading.source, sr.reading.notes || '']);
+  const csv = [headers, ...rows].map(r => r.map(c => `"${c}"`).join(',')).join('\n');
   const a = document.createElement('a');
-  a.href = 'data:text/csv;charset=utf-8,'+encodeURIComponent(csv);
+  a.href = 'data:text/csv;charset=utf-8,' + encodeURIComponent(csv);
   a.download = `water_usage_${from}_${to}.csv`;
   a.click();
 }
 
-// ─── Integrations ────────────────────────────────────────────
+// ─── Integrations ─────────────────────────────────────────────────────────────
 async function configEEmon() {
-  const body = {base_url: document.getElementById('ee-url').value, username: document.getElementById('ee-user').value, password: document.getElementById('ee-pass').value};
-  const r = await fetch(`${API}/api/eemon/sync`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});
+  const body = { base_url: document.getElementById('eeUrl').value, username: document.getElementById('eeUser').value, password: document.getElementById('eePass').value };
+  const r = await fetch(`${API}/api/eemon/sync`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) });
   const d = await r.json();
-  const el = document.getElementById('ee-status');
-  el.style.display='block';
-  el.textContent = d.message;
+  document.getElementById('eeStatus').innerHTML = `<div class="alert alert-info">${d.message}</div>`;
 }
 
 async function configTrend() {
-  const body = {base_url: document.getElementById('tr-url').value, api_key: document.getElementById('tr-key').value};
-  const r = await fetch(`${API}/api/trend/sync`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});
+  const body = { base_url: document.getElementById('trUrl').value, api_key: document.getElementById('trKey').value };
+  const r = await fetch(`${API}/api/trend/sync`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) });
   const d = await r.json();
-  const el = document.getElementById('tr-status');
-  el.style.display='block';
-  el.textContent = d.message;
+  document.getElementById('trStatus').innerHTML = `<div class="alert alert-info">${d.message}</div>`;
 }
 
-function populateManualMeters() {
-  const groups = {rot:['rotherham'],sto:['stocksbridge'],bri:['brinsworth'],wed:['wednesbury']};
-  Object.entries(groups).forEach(([key,siteIds])=>{
-    const el = document.getElementById('manual-'+key);
-    const meters = allMeters.filter(m=>siteIds.includes(m.site_id)&&m.source==='manual');
-    el.innerHTML = meters.map(m=>`<span class="badge manual" title="${m.feed}">${m.name}</span>`).join('');
+// ─── Admin ────────────────────────────────────────────────────────────────────
+async function runAutoFillAll() {
+  const site = document.getElementById('afSite').value;
+  const r = await fetch(`${API}/api/admin/autofill-all`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ site_id: site })
   });
-}
-
-// ─── Seed ────────────────────────────────────────────────────
-async function seedData() {
-  const btn = event.target;
-  btn.textContent='Loading…'; btn.disabled=true;
-  const r = await fetch(`${API}/api/seed`,{method:'POST'});
   const d = await r.json();
-  btn.textContent='Load Sample Data'; btn.disabled=false;
-  showAlert('dash-alert',`Sample data loaded: ${d.readings} readings imported.`,'success');
-  setTimeout(()=>loadDashboard(),200);
+  document.getElementById('afStatus').innerHTML = `<div class="alert alert-${d.status === 'completed' ? 'success' : 'warning'}">${d.message}</div>`;
+  if (d.filled > 0) loadRecentReadings();
 }
 
-// ─── Helpers ─────────────────────────────────────────────────
-function fmt(n){ if(!n) return '—'; return n.toLocaleString('en-GB',{maximumFractionDigits:1}); }
-function fmtDate(d){ if(!d) return '—'; return new Date(d).toLocaleDateString('en-GB',{day:'2-digit',month:'short',year:'numeric'}); }
+function confirmClearData() {
+  if (confirm('Are you sure you want to clear all readings and tonnes data? This cannot be undone.')) {
+    clearAllData();
+  }
+}
 
-function showAlert(id, msg, type) {
-  const el = document.getElementById(id);
-  if(!el) return;
-  el.innerHTML = `<div class="alert ${type}">${msg}</div>`;
-  setTimeout(()=>{ if(el) el.innerHTML=''; }, 4000);
+async function clearAllData() {
+  const r = await fetch(`${API}/api/admin/clear-data`, { method: 'POST' });
+  const d = await r.json();
+  showAlert('alertContainer', d.message, 'success');
+  loadDashboard();
+  loadRecentReadings();
+  loadRecentTonnes();
+}
+
+async function loadSampleData() {
+  const r = await fetch(`${API}/api/seed`, { method: 'POST' });
+  const d = await r.json();
+  showAlert('alertContainer', `Sample data loaded: ${d.readings} readings imported.`, 'success');
+  setTimeout(() => {
+    loadDashboard();
+    loadRecentReadings();
+    loadRecentTonnes();
+  }, 200);
+}
+
+// ─── Helpers ──────────────────────────────────────────────────────────────────
+function fmt(n) { if (!n) return '—'; return n.toLocaleString('en-GB', { maximumFractionDigits: 1 }); }
+function fmtDate(d) { if (!d) return '—'; return new Date(d).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' }); }
+
+function showAlert(containerId, msg, type) {
+  const el = document.getElementById(containerId);
+  if (!el) return;
+  el.innerHTML = `<div class="alert alert-${type} alert-dismissible fade show" role="alert">
+    ${msg}<button type="button" class="btn-close" data-bs-dismiss="alert"></button></div>`;
+  setTimeout(() => { if (el) el.innerHTML = ''; }, 5000);
 }
 
 function destroyChart(key) {
-  if(charts[key]){ charts[key].destroy(); delete charts[key]; }
+  if (charts[key]) { charts[key].destroy(); delete charts[key]; }
 }
 
 function chartOpts(yLabel) {
   return {
-    responsive:true, maintainAspectRatio:false,
-    plugins:{legend:{labels:{color:'#94a3b8',font:{size:11}}}},
-    scales:{
-      x:{ticks:{color:'#64748b',font:{size:10}},grid:{color:'#2d314820'}},
-      y:{ticks:{color:'#64748b',font:{size:10}},grid:{color:'#2d314840'},title:{display:true,text:yLabel,color:'#64748b',font:{size:11}}}
+    responsive: true, maintainAspectRatio: false,
+    plugins: { legend: { labels: { font: { size: 11 } } } },
+    scales: {
+      x: { ticks: { font: { size: 10 } }, grid: { color: 'rgba(128,128,128,0.1)' } },
+      y: { ticks: { font: { size: 10 } }, grid: { color: 'rgba(128,128,128,0.2)' }, title: { display: true, text: yLabel, font: { size: 11 } } }
     }
   };
 }

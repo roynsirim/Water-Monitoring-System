@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Water Management System | Speciality Steels</title>
+  <title>Water Intensity Monitoring | Speciality Steels</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
   <style>
@@ -92,7 +92,7 @@
 <!-- Sidebar -->
 <nav class="sidebar">
   <div class="sidebar-logo">
-    <div class="brand"><i class="bi bi-droplet-fill me-1"></i> WaterMgmt</div>
+    <div class="brand"><i class="bi bi-droplet-fill me-1"></i> Water Intensity Monitoring</div>
     <div class="sub">Speciality Steels UK</div>
   </div>
   <div class="mt-2 flex-grow-1">
@@ -248,6 +248,7 @@
             <div class="table-responsive">
               <table class="table table-hover mb-0">
                 <thead><tr>
+                  <th style="width:30px;"></th>
                   <th>Department</th><th class="text-end">Total m³</th><th class="text-end">Towns m³</th>
                   <th class="text-end">River m³</th><th class="text-end">Tonnes</th><th class="text-end">m³/tonne</th>
                 </tr></thead>
@@ -256,6 +257,7 @@
             </div>
           </div>
         </div>
+        <div id="deptDetails"></div>
       </div>
     </div>
   </div>
@@ -975,14 +977,14 @@ async function loadSiteDashboard(siteId) {
       datasets: [
         { label: 'Towns', data: tl.map(t => t.towns), borderColor: '#f4a261', fill: true, backgroundColor: 'rgba(244,162,97,0.1)', tension: .4, pointRadius: 3 },
         { label: 'River', data: tl.map(t => t.river), borderColor: '#48cae4', fill: true, backgroundColor: 'rgba(72,202,228,0.1)', tension: .4, pointRadius: 3 },
-        { label: 'Total', data: tl.map(t => t.total), borderColor: '#2ecc71', borderDash: [4, 4], fill: false, tension: .4, pointRadius: 2 },
       ]
     },
     options: chartOpts('m³')
   });
 
   document.getElementById('deptTable').innerHTML = depts.map(dp => `
-    <tr>
+    <tr class="dept-row" onclick="toggleDeptExpand('${dp.department}', '${currentSite}')" style="cursor:pointer;">
+      <td><span class="dept-expand-icon" data-dept="${dp.department}"><i class="bi bi-chevron-right"></i></span></td>
       <td><strong>${dp.department}</strong></td>
       <td class="text-end">${fmt(dp.m3)}</td>
       <td class="text-end"><span class="badge badge-towns">${fmt(dp.towns_m3)}</span></td>
@@ -991,6 +993,7 @@ async function loadSiteDashboard(siteId) {
       <td class="text-end text-success"><strong>${dp.m3_per_tonne > 0 ? dp.m3_per_tonne.toFixed(3) : '—'}</strong></td>
     </tr>
   `).join('');
+  document.getElementById('deptDetails').innerHTML = '';
 }
 
 // ─── KPIs ─────────────────────────────────────────────────────────────────────
@@ -1297,6 +1300,138 @@ function chartOpts(yLabel) {
       y: { ticks: { font: { size: 10 } }, grid: { color: 'rgba(128,128,128,0.2)' }, title: { display: true, text: yLabel, font: { size: 11 } } }
     }
   };
+}
+
+// ─── Department Expansion ─────────────────────────────────────────────────────
+async function toggleDeptExpand(deptName, siteId) {
+  const expandIcon = document.querySelector(`.dept-expand-icon[data-dept="${deptName}"] i`);
+  const detailsContainer = document.getElementById('deptDetails');
+  const existingDetail = document.getElementById(`dept-detail-${deptName}`);
+  
+  if (existingDetail) {
+    // Toggle collapse
+    existingDetail.remove();
+    expandIcon.className = 'bi bi-chevron-right';
+    return;
+  }
+  
+  // Load and display meters for this department
+  expandIcon.className = 'bi bi-chevron-down';
+  await loadDeptMeters(deptName, siteId);
+}
+
+async function loadDeptMeters(deptName, siteId) {
+  const from = document.getElementById('globalFrom').value;
+  const to = document.getElementById('globalTo').value;
+  
+  // Get meters for this department
+  const metersRes = await fetch(`${API}/api/meters?site_id=${siteId}`);
+  const allMeters = await metersRes.json();
+  const deptMeters = allMeters.filter(m => m.department === deptName);
+  
+  if (deptMeters.length === 0) {
+    showAlert('alertContainer', `No meters found for department: ${deptName}`, 'warning');
+    return;
+  }
+  
+  // Get readings for these meters
+  const readingsRes = await fetch(`${API}/api/readings?site_id=${siteId}&from=${from}&to=${to}`);
+  const allReadings = await readingsRes.json();
+  
+  // Aggregate readings by meter
+  const meterReadings = {};
+  deptMeters.forEach(m => {
+    meterReadings[m.id] = {
+      meter: m,
+      total: 0,
+      towns: 0,
+      river: 0,
+      readings: []
+    };
+  });
+  
+  allReadings.forEach(rd => {
+    if (meterReadings[rd.meter_id]) {
+      const usageM3 = toM3(rd.usage, deptMeters.find(m => m.id === rd.meter_id)?.unit || 'm3');
+      meterReadings[rd.meter_id].total += usageM3;
+      meterReadings[rd.meter_id].readings.push(rd);
+      if (rd.water_type === 'towns') {
+        meterReadings[rd.meter_id].towns += usageM3;
+      } else if (rd.water_type === 'river') {
+        meterReadings[rd.meter_id].river += usageM3;
+      }
+    }
+  });
+  
+  // Build detail card
+  const detailsContainer = document.getElementById('deptDetails');
+  const detailHtml = `
+    <div id="dept-detail-${deptName}" class="card mt-3">
+      <div class="card-header py-2 px-3">
+        <i class="bi bi-droplet-fill me-1"></i> Meters in ${deptName}
+      </div>
+      <div class="card-body">
+        <div class="row g-3">
+          <div class="col-lg-6">
+            <div style="position:relative;height:280px;">
+              <canvas id="deptMeterChart-${deptName}"></canvas>
+            </div>
+          </div>
+          <div class="col-lg-6">
+            <div class="table-responsive" style="max-height:300px;overflow-y:auto;">
+              <table class="table table-sm table-hover mb-0">
+                <thead><tr>
+                  <th>Meter</th>
+                  <th class="text-end">Total m³</th>
+                  <th class="text-end">Towns m³</th>
+                  <th class="text-end">River m³</th>
+                </tr></thead>
+                <tbody>
+                  ${deptMeters.map(m => {
+                    const data = meterReadings[m.id];
+                    return `<tr>
+                      <td class="small">${m.name}</td>
+                      <td class="text-end small">${fmt(data.total)}</td>
+                      <td class="text-end small"><span class="badge badge-towns">${fmt(data.towns)}</span></td>
+                      <td class="text-end small"><span class="badge badge-river">${fmt(data.river)}</span></td>
+                    </tr>`;
+                  }).join('')}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  `;
+  
+  detailsContainer.innerHTML = detailHtml;
+  
+  // Create meter chart
+  const meterLabels = deptMeters.map(m => m.name);
+  const meterTowns = deptMeters.map(m => meterReadings[m.id].towns);
+  const meterRiver = deptMeters.map(m => meterReadings[m.id].river);
+  
+  destroyChart(`deptMeter-${deptName}`);
+  const ctx = document.getElementById(`deptMeterChart-${deptName}`);
+  charts[`deptMeter-${deptName}`] = new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels: meterLabels,
+      datasets: [
+        { label: 'Towns (m³)', data: meterTowns, backgroundColor: 'rgba(244,162,97,0.7)', borderColor: '#f4a261', borderWidth: 1 },
+        { label: 'River (m³)', data: meterRiver, backgroundColor: 'rgba(72,202,228,0.7)', borderColor: '#48cae4', borderWidth: 1 },
+      ]
+    },
+    options: chartOpts('m³')
+  });
+}
+
+function toM3(v, unit) {
+  if (unit === 'litres') {
+    return v / 1000.0;
+  }
+  return v;
 }
 </script>
 </body>

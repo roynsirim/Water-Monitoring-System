@@ -113,7 +113,7 @@ type TonnesEntry struct {
 // ─── User Preferences ─────────────────────────────────────────────────────────
 
 type UserPreferences struct {
-	Theme            string `json:"theme"`              // dark, light
+	Theme            string `json:"theme"` // dark, light
 	AutoFillEnabled  bool   `json:"auto_fill_enabled"`
 	DefaultDateRange int    `json:"default_date_range"` // Days
 }

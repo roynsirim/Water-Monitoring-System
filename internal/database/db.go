@@ -24,14 +24,14 @@ type DB struct {
 // Open loads the database from the specified JSON file path
 func Open(path string) (*DB, error) {
 	db := &DB{path: path}
-	
+
 	data, err := os.ReadFile(path)
 	if err == nil {
 		if err := json.Unmarshal(data, db); err != nil {
 			return nil, fmt.Errorf("parsing database: %w", err)
 		}
 	}
-	
+
 	// Initialize with defaults if empty
 	if len(db.Meters) == 0 {
 		db.Meters = SeedMeters()
@@ -45,7 +45,7 @@ func Open(path string) (*DB, error) {
 	if db.Tonnes == nil {
 		db.Tonnes = []models.TonnesEntry{}
 	}
-	
+
 	return db, nil
 }
 
@@ -80,11 +80,11 @@ func (db *DB) GetSiteNames() map[string]string {
 func (db *DB) GetMeters(siteID string) []models.Meter {
 	db.mu.RLock()
 	defer db.mu.RUnlock()
-	
+
 	if siteID == "" {
 		return db.Meters
 	}
-	
+
 	result := []models.Meter{}
 	for _, m := range db.Meters {
 		if m.SiteID == siteID {
@@ -98,7 +98,7 @@ func (db *DB) GetMeters(siteID string) []models.Meter {
 func (db *DB) GetMeter(id string) *models.Meter {
 	db.mu.RLock()
 	defer db.mu.RUnlock()
-	
+
 	for i := range db.Meters {
 		if db.Meters[i].ID == id {
 			return &db.Meters[i]
@@ -111,7 +111,7 @@ func (db *DB) GetMeter(id string) *models.Meter {
 func (db *DB) GetMeterMap() map[string]models.Meter {
 	db.mu.RLock()
 	defer db.mu.RUnlock()
-	
+
 	m := make(map[string]models.Meter)
 	for _, meter := range db.Meters {
 		m[meter.ID] = meter
@@ -125,9 +125,9 @@ func (db *DB) GetMeterMap() map[string]models.Meter {
 func (db *DB) AddReading(r models.Reading) error {
 	db.mu.Lock()
 	defer db.mu.Unlock()
-	
+
 	r.ID = fmt.Sprintf("%d", time.Now().UnixNano())
-	
+
 	// Calculate usage from last reading
 	var last float64
 	for i := len(db.Readings) - 1; i >= 0; i-- {
@@ -139,7 +139,7 @@ func (db *DB) AddReading(r models.Reading) error {
 	if last > 0 && r.Value > last {
 		r.Usage = r.Value - last
 	}
-	
+
 	db.Readings = append(db.Readings, r)
 	return db.Save()
 }
@@ -148,7 +148,7 @@ func (db *DB) AddReading(r models.Reading) error {
 func (db *DB) GetReadings(siteID, meterID string, from, to time.Time) []models.Reading {
 	db.mu.RLock()
 	defer db.mu.RUnlock()
-	
+
 	result := []models.Reading{}
 	for _, rd := range db.Readings {
 		if siteID != "" && rd.SiteID != siteID {
@@ -172,7 +172,7 @@ func (db *DB) GetReadings(siteID, meterID string, from, to time.Time) []models.R
 func (db *DB) GetLastReadingTimes() map[string]time.Time {
 	db.mu.RLock()
 	defer db.mu.RUnlock()
-	
+
 	last := make(map[string]time.Time)
 	for _, rd := range db.Readings {
 		if t, ok := last[rd.MeterID]; !ok || rd.Date.After(t) {
@@ -188,7 +188,7 @@ func (db *DB) GetLastReadingTimes() map[string]time.Time {
 func (db *DB) AddTonnes(t models.TonnesEntry) error {
 	db.mu.Lock()
 	defer db.mu.Unlock()
-	
+
 	t.ID = fmt.Sprintf("%d", time.Now().UnixNano())
 	db.Tonnes = append(db.Tonnes, t)
 	return db.Save()
@@ -198,7 +198,7 @@ func (db *DB) AddTonnes(t models.TonnesEntry) error {
 func (db *DB) GetTonnes(siteID string, from, to time.Time) []models.TonnesEntry {
 	db.mu.RLock()
 	defer db.mu.RUnlock()
-	
+
 	result := []models.TonnesEntry{}
 	for _, t := range db.Tonnes {
 		if siteID != "" && t.SiteID != siteID {
@@ -221,13 +221,13 @@ func (db *DB) GetTonnes(siteID string, from, to time.Time) []models.TonnesEntry 
 func (db *DB) AutoFillMissingData(meterID string, targetDate time.Time) *models.Reading {
 	db.mu.RLock()
 	defer db.mu.RUnlock()
-	
+
 	// Get readings for this meter in last 30 days
 	thirtyDaysAgo := targetDate.AddDate(0, 0, -30)
 	var totalUsage float64
 	var count int
 	var lastReading *models.Reading
-	
+
 	for i := len(db.Readings) - 1; i >= 0; i-- {
 		rd := db.Readings[i]
 		if rd.MeterID == meterID {
@@ -240,15 +240,15 @@ func (db *DB) AutoFillMissingData(meterID string, targetDate time.Time) *models.
 			}
 		}
 	}
-	
+
 	if count == 0 || lastReading == nil {
 		return nil
 	}
-	
+
 	avgDailyUsage := totalUsage / float64(count*7) // Convert weekly to daily
 	daysSinceLast := int(targetDate.Sub(lastReading.Date).Hours() / 24)
 	estimatedUsage := avgDailyUsage * float64(daysSinceLast)
-	
+
 	// Find meter for water type
 	var waterType models.WaterType
 	var siteID string
@@ -259,7 +259,7 @@ func (db *DB) AutoFillMissingData(meterID string, targetDate time.Time) *models.
 			break
 		}
 	}
-	
+
 	return &models.Reading{
 		MeterID:     meterID,
 		SiteID:      siteID,
@@ -286,7 +286,7 @@ func (db *DB) GetPreferences() models.UserPreferences {
 func (db *DB) UpdatePreferences(prefs models.UserPreferences) error {
 	db.mu.Lock()
 	defer db.mu.Unlock()
-	
+
 	if prefs.Theme != "" {
 		db.Preferences.Theme = prefs.Theme
 	}
@@ -294,7 +294,7 @@ func (db *DB) UpdatePreferences(prefs models.UserPreferences) error {
 	if prefs.DefaultDateRange > 0 {
 		db.Preferences.DefaultDateRange = prefs.DefaultDateRange
 	}
-	
+
 	return db.Save()
 }
 
@@ -313,7 +313,7 @@ func (db *DB) GetConnectionStatus() models.ConnectionStatus {
 func (db *DB) ClearData() error {
 	db.mu.Lock()
 	defer db.mu.Unlock()
-	
+
 	db.Readings = []models.Reading{}
 	db.Tonnes = []models.TonnesEntry{}
 	return db.Save()
@@ -325,10 +325,10 @@ func (db *DB) ClearData() error {
 func (db *DB) SeedSampleData() (int, error) {
 	db.mu.Lock()
 	defer db.mu.Unlock()
-	
+
 	db.Readings = []models.Reading{}
 	seedSampleReadings(db)
-	
+
 	if err := db.Save(); err != nil {
 		return 0, err
 	}

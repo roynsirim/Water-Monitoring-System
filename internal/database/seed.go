@@ -13,35 +13,35 @@ func SeedMeters() []models.Meter {
 	return []models.Meter{
 		// ── ROTHERHAM ──────────────────────────────────────────────────────
 		// TCM Feed
-		{ID: "r-tmg", SiteID: models.SiteRotherham, Department: models.DeptTCM, Name: "Thrybergh Main Gate", WaterType: models.TownsWater, Feed: "TCM Feed", Source: models.SourceManual, Unit: "m3", IsActive: true},
-		{ID: "r-tgh", SiteID: models.SiteRotherham, Department: models.DeptTCM, Name: "Thrybergh Gate House", WaterType: models.TownsWater, Feed: "TCM Feed", Source: models.SourceManual, Unit: "m3", IsActive: true},
 		{ID: "r-tbm", SiteID: models.SiteRotherham, Department: models.DeptTCM, Name: "TBM Tunnel", WaterType: models.TownsWater, Feed: "TCM Feed", Source: models.SourceManual, Unit: "m3", IsActive: true},
-		{ID: "r-vc", SiteID: models.SiteRotherham, Department: models.DeptTCM, Name: "Visitors Centre + Transport", WaterType: models.TownsWater, Feed: "TCM Feed", Source: models.SourceManual, Unit: "m3", IsActive: true},
-		{ID: "r-tbmr", SiteID: models.SiteRotherham, Department: models.DeptTCM, Name: "TBM River", WaterType: models.RiverWater, Feed: "TCM Feed", Source: models.SourceManual, Unit: "m3", IsActive: true},
-		{ID: "r-rwtp", SiteID: models.SiteRotherham, Department: models.DeptTCM, Name: "RWTP", WaterType: models.BothWater, Feed: "TCM Feed", Source: models.SourceManual, Unit: "m3", IsActive: true},
-		{ID: "r-jw", SiteID: models.SiteRotherham, Department: models.DeptTCM, Name: "Jet Wash (Transport)", WaterType: models.TownsWater, Feed: "TCM Feed", Source: models.SourceManual, Unit: "m3", IsActive: true},
+		{ID: "r-tbmr", SiteID: models.SiteRotherham, Department: models.DeptTCM, Name: "TBM Amenities", WaterType: models.RiverWater, Feed: "TCM Feed", Source: models.SourceManual, Unit: "m3", IsActive: true},
 		// ACP Department
-		{ID: "r-acp", SiteID: models.SiteRotherham, Department: models.DeptACP, Name: "ACP Main Feed", WaterType: models.TownsWater, Feed: "TCM Feed", Source: models.SourceManual, Unit: "m3", IsActive: true},
+		{ID: "r-acp", SiteID: models.SiteRotherham, Department: models.DeptACP, Name: "ACP Towns Water", WaterType: models.TownsWater, Feed: "TCM Feed", Source: models.SourceManual, Unit: "m3", IsActive: true},
+		{ID: "r-aocc", SiteID: models.SiteRotherham, Department: models.DeptACP, Name: "AOCC", WaterType: models.TownsWater, Feed: "Aldwarke Lane", Source: models.SourceManual, Unit: "m3", IsActive: true},
 		{ID: "r-ks", SiteID: models.SiteRotherham, Department: models.DeptACP, Name: "Kress Square", WaterType: models.TownsWater, Feed: "TCM Feed", Source: models.SourceManual, Unit: "m3", IsActive: true},
 		{ID: "r-vd", SiteID: models.SiteRotherham, Department: models.DeptACP, Name: "VAC Degasser", WaterType: models.TownsWater, Feed: "TCM Feed", Source: models.SourceManual, Unit: "m3", IsActive: true},
 		{ID: "r-abcrw", SiteID: models.SiteRotherham, Department: models.DeptACP, Name: "ABC RW", WaterType: models.RiverWater, Feed: "TCM Feed", Source: models.SourceManual, Unit: "m3", IsActive: true},
 		{ID: "r-abctw", SiteID: models.SiteRotherham, Department: models.DeptACP, Name: "ABC Towns Water", WaterType: models.TownsWater, Feed: "TCM Feed", Source: models.SourceManual, Unit: "m3", IsActive: true},
 		{ID: "r-ams", SiteID: models.SiteRotherham, Department: models.DeptACP, Name: "AMS Amenities", WaterType: models.TownsWater, Feed: "TCM Feed", Source: models.SourceManual, Unit: "m3", IsActive: true},
 		// BBR Department
+		{ID: "r-ago", SiteID: models.SiteRotherham, Department: models.DeptBBR, Name: "AGO", WaterType: models.TownsWater, Feed: "Green Lane", Source: models.SourceManual, Unit: "m3", IsActive: true},
 		{ID: "r-bbr", SiteID: models.SiteRotherham, Department: models.DeptBBR, Name: "BBR", WaterType: models.TownsWater, Feed: "Aldwarke Lane", Source: models.SourceManual, Unit: "m3", IsActive: true},
 		{ID: "r-bs", SiteID: models.SiteRotherham, Department: models.DeptBBR, Name: "Bike Shed", WaterType: models.TownsWater, Feed: "Aldwarke Lane", Source: models.SourceManual, Unit: "m3", IsActive: true},
-		{ID: "r-aocc", SiteID: models.SiteRotherham, Department: models.DeptBBR, Name: "AOCC", WaterType: models.TownsWater, Feed: "Aldwarke Lane", Source: models.SourceManual, Unit: "m3", IsActive: true},
+		{ID: "r-cew", SiteID: models.SiteRotherham, Department: models.DeptBBR, Name: "CEW Graveyard", WaterType: models.TownsWater, Feed: "Green Lane", Source: models.SourceManual, Unit: "m3", IsActive: true},
 		// Aldwarke Lane Feed
 		{ID: "r-boc", SiteID: models.SiteRotherham, Department: models.DeptAldwarke, Name: "BOC", WaterType: models.TownsWater, Feed: "Aldwarke Lane", Source: models.SourceManual, Unit: "m3", IsActive: true},
-		{ID: "r-cgl", SiteID: models.SiteRotherham, Department: models.DeptAldwarke, Name: "Cap Gemini - Car Scrap (Left)", WaterType: models.TownsWater, Feed: "Aldwarke Lane", Source: models.SourceManual, Unit: "m3", IsActive: true},
+		{ID: "r-cgl", SiteID: models.SiteRotherham, Department: models.DeptAldwarke, Name: "APM", WaterType: models.TownsWater, Feed: "Aldwarke Lane", Source: models.SourceManual, Unit: "m3", IsActive: true},
 		{ID: "r-cgr", SiteID: models.SiteRotherham, Department: models.DeptAldwarke, Name: "Cap Gemini - Car Scrap (Right)", WaterType: models.TownsWater, Feed: "Aldwarke Lane", Source: models.SourceManual, Unit: "m3", IsActive: true},
 		{ID: "r-th", SiteID: models.SiteRotherham, Department: models.DeptAldwarke, Name: "Test House", WaterType: models.TownsWater, Feed: "Aldwarke Lane", Source: models.SourceManual, Unit: "m3", IsActive: true},
-		// Green Lane Feed
-		{ID: "r-cew", SiteID: models.SiteRotherham, Department: models.DeptGreenLane, Name: "CEW Graveyard", WaterType: models.TownsWater, Feed: "Green Lane", Source: models.SourceManual, Unit: "m3", IsActive: true},
-		{ID: "r-ago", SiteID: models.SiteRotherham, Department: models.DeptGreenLane, Name: "AGO", WaterType: models.TownsWater, Feed: "Green Lane", Source: models.SourceManual, Unit: "m3", IsActive: true},
+		// General Feed
+		{ID: "r-tmg", SiteID: models.SiteRotherham, Department: models.DeptGeneral, Name: "Thrybergh Main Gate", WaterType: models.TownsWater, Feed: "TCM Feed", Source: models.SourceManual, Unit: "m3", IsActive: true},
+		{ID: "r-tgh", SiteID: models.SiteRotherham, Department: models.DeptGeneral, Name: "Thrybergh Gate House", WaterType: models.TownsWater, Feed: "TCM Feed", Source: models.SourceManual, Unit: "m3", IsActive: true},
+		{ID: "r-rwtp", SiteID: models.SiteRotherham, Department: models.DeptGeneral, Name: "RWTP", WaterType: models.BothWater, Feed: "TCM Feed", Source: models.SourceManual, Unit: "m3", IsActive: true},
+		{ID: "r-vc", SiteID: models.SiteRotherham, Department: models.DeptGeneral, Name: "Visitors Centre + Transport", WaterType: models.TownsWater, Feed: "TCM Feed", Source: models.SourceManual, Unit: "m3", IsActive: true},
+		{ID: "r-jw", SiteID: models.SiteRotherham, Department: models.DeptGeneral, Name: "Jet Wash (Transport)", WaterType: models.TownsWater, Feed: "TCM Feed", Source: models.SourceManual, Unit: "m3", IsActive: true},
 
 		// ── STOCKSBRIDGE ───────────────────────────────────────────────────
-		// Towns Water - East Bank
+		// Towns Water 
 		{ID: "s-rms1", SiteID: models.SiteStocksbridge, Department: models.DeptRemelt, Name: "RMS 1", WaterType: models.TownsWater, Feed: "East Bank", Source: models.SourceEEmon, Unit: "litres", IsActive: true},
 		{ID: "s-rms2", SiteID: models.SiteStocksbridge, Department: models.DeptRemelt, Name: "RMS 2", WaterType: models.TownsWater, Feed: "East Bank", Source: models.SourceEEmon, Unit: "litres", IsActive: true},
 		{ID: "s-vim", SiteID: models.SiteStocksbridge, Department: models.DeptRemelt, Name: "VIM", WaterType: models.TownsWater, Feed: "East Bank", Source: models.SourceEEmon, Unit: "litres", IsActive: true},
@@ -49,7 +49,7 @@ func SeedMeters() []models.Meter {
 		{ID: "s-bm17", SiteID: models.SiteStocksbridge, Department: models.DeptBilletMill, Name: "BM Meter 17", WaterType: models.TownsWater, Feed: "East Bank", Source: models.SourceEEmon, Unit: "litres", IsActive: true},
 		{ID: "s-bms14", SiteID: models.SiteStocksbridge, Department: models.DeptBilletMill, Name: "BM Saws Meter 14", WaterType: models.TownsWater, Feed: "East Bank", Source: models.SourceEEmon, Unit: "litres", IsActive: true},
 		{ID: "s-croft", SiteID: models.SiteStocksbridge, Department: models.DeptCroft, Name: "Croft Supply", WaterType: models.TownsWater, Feed: "East Bank", Source: models.SourceEEmon, Unit: "litres", IsActive: true},
-		// River Water - West Bank
+		// River Water 
 		{ID: "s-wq1", SiteID: models.SiteStocksbridge, Department: models.DeptWestBank, Name: "Water Quench 1", WaterType: models.RiverWater, Feed: "West Bank", Source: models.SourceEEmon, Unit: "litres", IsActive: true},
 		{ID: "s-wq2", SiteID: models.SiteStocksbridge, Department: models.DeptWestBank, Name: "Water Quench 2", WaterType: models.RiverWater, Feed: "West Bank", Source: models.SourceEEmon, Unit: "litres", IsActive: true},
 		{ID: "s-sb", SiteID: models.SiteStocksbridge, Department: models.DeptSpringBank, Name: "Spring Bank", WaterType: models.RiverWater, Feed: "Spring Bank", Source: models.SourceEEmon, Unit: "litres", IsActive: true},

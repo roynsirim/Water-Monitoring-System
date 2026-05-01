@@ -43,7 +43,6 @@ const (
 	DeptACP       = "ACP"
 	DeptBBR       = "BBR"
 	DeptAldwarke  = "Aldwarke"
-	DeptGreenLane = "Green Lane"
 	DeptGeneral   = "General"
 	// Stocksbridge
 	DeptRemelt     = "Remelt"

@@ -81,14 +81,23 @@ func (db *DB) GetMeters(siteID string) []models.Meter {
 	db.mu.RLock()
 	defer db.mu.RUnlock()
 
+	var result []models.Meter
 	if siteID == "" {
-		return db.Meters
+		result = append(result, db.Meters...)
+	} else {
+		for _, m := range db.Meters {
+			if m.SiteID == siteID {
+				result = append(result, m)
+			}
+		}
 	}
 
-	result := []models.Meter{}
-	for _, m := range db.Meters {
-		if m.SiteID == siteID {
-			result = append(result, m)
+	// Sort by name
+	for i := 0; i < len(result)-1; i++ {
+		for j := 0; j < len(result)-i-1; j++ {
+			if result[j].Name > result[j+1].Name {
+				result[j], result[j+1] = result[j+1], result[j]
+			}
 		}
 	}
 	return result

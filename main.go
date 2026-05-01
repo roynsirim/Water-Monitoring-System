@@ -44,7 +44,7 @@ func main() {
 	api.RegisterRoutes(mux, handler, cfg.Frontend.Path)
 
 	// ── Start Server ──────────────────────────────────────────────────────
-	log.Println("Water Management System - Speciality Steels UK")
+	log.Println("Water Intensity Monitoring - Speciality Steels UK")
 	log.Printf("Server: http://localhost:%d", cfg.Server.Port)
 	log.Fatal(http.ListenAndServe(cfg.Address(), mux))
 }

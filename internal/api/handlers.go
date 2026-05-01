@@ -270,6 +270,15 @@ func (h *Handler) HandleDashboard(w http.ResponseWriter, r *http.Request) {
 			})
 		}
 
+		// Sort departments alphabetically
+		for i := 0; i < len(d.Departments)-1; i++ {
+			for j := 0; j < len(d.Departments)-i-1; j++ {
+				if d.Departments[j].Department > d.Departments[j+1].Department {
+					d.Departments[j], d.Departments[j+1] = d.Departments[j+1], d.Departments[j]
+				}
+			}
+		}
+
 		// Timeline - weekly aggregation
 		weeks := map[string][2]float64{}
 		for wk, v := range weekTowns {

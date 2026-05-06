@@ -54,7 +54,9 @@ func SeedMeters() []models.Meter {
 		{ID: "s-wq2", SiteID: models.SiteStocksbridge, Department: models.DeptWestBank, Name: "Water Quench 2", WaterType: models.RiverWater, Feed: "West Bank", Source: models.SourceEEmon, Unit: "litres", IsActive: true},
 		{ID: "s-sb", SiteID: models.SiteStocksbridge, Department: models.DeptSpringBank, Name: "Spring Bank", WaterType: models.RiverWater, Feed: "Spring Bank", Source: models.SourceEEmon, Unit: "litres", IsActive: true},
 		// Manual meters
-		{ID: "s-wbg", SiteID: models.SiteStocksbridge, Department: models.DeptWestBank, Name: "West Bank Gardens", WaterType: models.TownsWater, Feed: "West Bank", Source: models.SourceManual, Unit: "m3", IsActive: true},
+		{ID: "s-wbwa", SiteID: models.SiteStocksbridge, Department: models.DeptWestBank, Name: "West Bank Water Abstraction Meter", WaterType: models.RiverWater, Feed: "West Bank", Source: models.SourceManual, Unit: "m3", IsActive: true},
+		{ID: "s-wbw", SiteID: models.SiteStocksbridge, Department: models.DeptWestBank, Name: "West Bank Water", WaterType: models.RiverWater, Feed: "West Bank", Source: models.SourceManual, Unit: "m3", IsActive: true},
+		{ID: "s-wbg", SiteID: models.SiteStocksbridge, Department: models.DeptWestBank, Name: "West Bank Gardens", WaterType: models.RiverWater, Feed: "West Bank", Source: models.SourceManual, Unit: "m3", IsActive: true},
 		{ID: "s-g2", SiteID: models.SiteStocksbridge, Department: models.DeptGeneral, Name: "No.2 Gate Meter", WaterType: models.TownsWater, Feed: "East Bank", Source: models.SourceManual, Unit: "m3", IsActive: true},
 		{ID: "s-g1", SiteID: models.SiteStocksbridge, Department: models.DeptGeneral, Name: "No.1 Gate (Hawthorne Brook)", WaterType: models.TownsWater, Feed: "East Bank", Source: models.SourceManual, Unit: "m3", IsActive: true},
 		{ID: "s-ebte", SiteID: models.SiteStocksbridge, Department: models.DeptEastBank, Name: "EB Trade Effluent", WaterType: models.TownsWater, Feed: "East Bank", Source: models.SourceManual, Unit: "m3", IsActive: true},

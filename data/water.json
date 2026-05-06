@@ -375,6 +375,28 @@
       "is_active": true
     },
     {
+      "id": "s-wbwa",
+      "site_id": "stocksbridge",
+      "department": "West Bank",
+      "name": "West Bank Water Abstraction Meter",
+      "water_type": "river",
+      "feed": "West Bank",
+      "source": "manual",
+      "unit": "m3",
+      "is_active": true
+    },
+    {
+      "id": "s-wbw",
+      "site_id": "stocksbridge",
+      "department": "West Bank",
+      "name": "West Bank Water",
+      "water_type": "river",
+      "feed": "West Bank",
+      "source": "manual",
+      "unit": "m3",
+      "is_active": true
+    },
+    {
       "id": "s-g2",
       "site_id": "stocksbridge",
       "department": "General",

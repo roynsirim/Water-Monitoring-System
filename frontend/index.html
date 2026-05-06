@@ -1044,9 +1044,10 @@ async function loadKPIs() {
       <td class="text-end"><span class="badge badge-river">${fmt(d.river_m3)}</span></td>
       <td class="text-end">${fmt(d.tonnes)}</td>
       <td class="text-end text-success"><strong>${d.m3_per_tonne > 0 ? d.m3_per_tonne.toFixed(3) : '—'}</strong></td>
-      <td class="text-end">${d.total_m3 > 0 ? Math.round(d.towns_m3 / d.total_m3 * 100) + '%' : '—'}</td>
+      <td class="text-end">${d.total_m3 > 0 ? (d.towns_m3 / d.total_m3 * 100).toFixed(2) + '%' : '—'}</td>
     </tr>
   `).join('');
+
 }
 
 // ─── Manual Input ─────────────────────────────────────────────────────────────

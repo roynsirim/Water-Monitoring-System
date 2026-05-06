@@ -748,7 +748,7 @@ async function loadKPIs() {
       <td><span class="badge river">${fmt(d.river_m3)}</span></td>
       <td>${fmt(d.tonnes)}</td>
       <td><strong style="color:var(--green)">${d.m3_per_tonne > 0 ? d.m3_per_tonne.toFixed(3) : '—'}</strong></td>
-      <td>${d.total_m3>0?Math.round(d.towns_m3/d.total_m3*100)+'%':'—'}</td>
+      <td>${d.total_m3>0?(d.towns_m3/d.total_m3*100).toFixed(2)+'%':'—'}</td>
     </tr>
   `).join('');
 }

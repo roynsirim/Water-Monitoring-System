@@ -196,6 +196,11 @@ func (h *Handler) HandleDashboard(w http.ResponseWriter, r *http.Request) {
 			continue
 		}
 
+		// Only count main meters for totals
+		if !m.IsMainMeter {
+			continue
+		}
+
 		dk := deptKey{rd.SiteID, m.Department}
 		wk := weekKey{rd.SiteID, rd.Date.Format("2006-W") + fmt.Sprintf("%02d", rd.Date.Day()/7+1)}
 
@@ -360,6 +365,10 @@ func (h *Handler) HandleKPIs(w http.ResponseWriter, r *http.Request) {
 	readings := h.db.GetReadings("", "", from, to)
 	for _, rd := range readings {
 		m := meterMap[rd.MeterID]
+		// Only count main meters for KPI totals
+		if !m.IsMainMeter {
+			continue
+		}
 		u := toM3(rd.Usage, m.Unit)
 		if u <= 0 {
 			continue

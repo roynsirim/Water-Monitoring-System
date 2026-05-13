@@ -39,11 +39,11 @@ func DefaultSites() []Site {
 // ─── Departments ──────────────────────────────────────────────────────────────
 
 const (
-	DeptTCM       = "TCM"
-	DeptACP       = "ACP"
-	DeptBBR       = "BBR"
-	DeptAldwarke  = "Aldwarke"
-	DeptGeneral   = "General"
+	DeptTCM                 = "TCM"
+	DeptACP                 = "ACP"
+	DeptBBR                 = "BBR"
+	DeptEngineeringServices = "Engineering Services"
+	DeptGeneral             = "General" // Used by other sites
 	// Stocksbridge
 	DeptRemelt     = "Remelt"
 	DeptBilletMill = "Billet Mill"
@@ -72,15 +72,16 @@ const (
 // ─── Meter ────────────────────────────────────────────────────────────────────
 
 type Meter struct {
-	ID         string    `json:"id"`
-	SiteID     string    `json:"site_id"`
-	Department string    `json:"department"`
-	Name       string    `json:"name"`
-	WaterType  WaterType `json:"water_type"`
-	Feed       string    `json:"feed"`
-	Source     string    `json:"source"` // manual, eemon, trend
-	Unit       string    `json:"unit"`   // m3, litres
-	IsActive   bool      `json:"is_active"`
+	ID          string    `json:"id"`
+	SiteID      string    `json:"site_id"`
+	Department  string    `json:"department"`
+	Name        string    `json:"name"`
+	WaterType   WaterType `json:"water_type"`
+	Feed        string    `json:"feed"`
+	Source      string    `json:"source"` // manual, eemon, trend
+	Unit        string    `json:"unit"`   // m3, litres
+	IsActive    bool      `json:"is_active"`
+	IsMainMeter bool      `json:"is_main_meter,omitempty"` // true for main meters
 }
 
 // ─── Reading ──────────────────────────────────────────────────────────────────

@@ -12,36 +12,25 @@ import (
 func SeedMeters() []models.Meter {
 	return []models.Meter{
 		// ── ROTHERHAM ──────────────────────────────────────────────────────
-		// TCM Feed
-		{ID: "r-tbm", SiteID: models.SiteRotherham, Department: models.DeptTCM, Name: "TBM Tunnel", WaterType: models.TownsWater, Feed: "TCM Feed", Source: models.SourceManual, Unit: "m3", IsActive: true},
-		{ID: "r-tbmr", SiteID: models.SiteRotherham, Department: models.DeptTCM, Name: "TBM Amenities", WaterType: models.RiverWater, Feed: "TCM Feed", Source: models.SourceManual, Unit: "m3", IsActive: true},
 		// ACP Department
-		{ID: "r-acp", SiteID: models.SiteRotherham, Department: models.DeptACP, Name: "ACP Towns Water", WaterType: models.TownsWater, Feed: "TCM Feed", Source: models.SourceManual, Unit: "m3", IsActive: true},
+		{ID: "r-acp", SiteID: models.SiteRotherham, Department: models.DeptACP, Name: "ACP", WaterType: models.TownsWater, Feed: "TCM Feed", Source: models.SourceManual, Unit: "m3", IsActive: true, IsMainMeter: true},
+		{ID: "r-abctw", SiteID: models.SiteRotherham, Department: models.DeptACP, Name: "ABC TW", WaterType: models.TownsWater, Feed: "TCM Feed", Source: models.SourceManual, Unit: "m3", IsActive: true},
+		{ID: "r-ams", SiteID: models.SiteRotherham, Department: models.DeptACP, Name: "AMS Amenities", WaterType: models.TownsWater, Feed: "TCM Feed", Source: models.SourceManual, Unit: "m3", IsActive: true},
 		{ID: "r-aocc", SiteID: models.SiteRotherham, Department: models.DeptACP, Name: "AOCC", WaterType: models.TownsWater, Feed: "Aldwarke Lane", Source: models.SourceManual, Unit: "m3", IsActive: true},
 		{ID: "r-ks", SiteID: models.SiteRotherham, Department: models.DeptACP, Name: "Kress Square", WaterType: models.TownsWater, Feed: "TCM Feed", Source: models.SourceManual, Unit: "m3", IsActive: true},
 		{ID: "r-vd", SiteID: models.SiteRotherham, Department: models.DeptACP, Name: "VAC Degasser", WaterType: models.TownsWater, Feed: "TCM Feed", Source: models.SourceManual, Unit: "m3", IsActive: true},
-		{ID: "r-abcrw", SiteID: models.SiteRotherham, Department: models.DeptACP, Name: "ABC RW", WaterType: models.RiverWater, Feed: "TCM Feed", Source: models.SourceManual, Unit: "m3", IsActive: true},
-		{ID: "r-abctw", SiteID: models.SiteRotherham, Department: models.DeptACP, Name: "ABC Towns Water", WaterType: models.TownsWater, Feed: "TCM Feed", Source: models.SourceManual, Unit: "m3", IsActive: true},
-		{ID: "r-ams", SiteID: models.SiteRotherham, Department: models.DeptACP, Name: "AMS Amenities", WaterType: models.TownsWater, Feed: "TCM Feed", Source: models.SourceManual, Unit: "m3", IsActive: true},
 		// BBR Department
-		{ID: "r-ago", SiteID: models.SiteRotherham, Department: models.DeptBBR, Name: "AGO", WaterType: models.TownsWater, Feed: "Green Lane", Source: models.SourceManual, Unit: "m3", IsActive: true},
-		{ID: "r-bbr", SiteID: models.SiteRotherham, Department: models.DeptBBR, Name: "BBR", WaterType: models.TownsWater, Feed: "Aldwarke Lane", Source: models.SourceManual, Unit: "m3", IsActive: true},
-		{ID: "r-bs", SiteID: models.SiteRotherham, Department: models.DeptBBR, Name: "Bike Shed", WaterType: models.TownsWater, Feed: "Aldwarke Lane", Source: models.SourceManual, Unit: "m3", IsActive: true},
-		{ID: "r-cew", SiteID: models.SiteRotherham, Department: models.DeptBBR, Name: "CEW Graveyard", WaterType: models.TownsWater, Feed: "Green Lane", Source: models.SourceManual, Unit: "m3", IsActive: true},
-		// Aldwarke Lane Feed
-		{ID: "r-boc", SiteID: models.SiteRotherham, Department: models.DeptAldwarke, Name: "BOC", WaterType: models.TownsWater, Feed: "Aldwarke Lane", Source: models.SourceManual, Unit: "m3", IsActive: true},
-		{ID: "r-cgl", SiteID: models.SiteRotherham, Department: models.DeptAldwarke, Name: "APM", WaterType: models.TownsWater, Feed: "Aldwarke Lane", Source: models.SourceManual, Unit: "m3", IsActive: true},
-		{ID: "r-cgr", SiteID: models.SiteRotherham, Department: models.DeptAldwarke, Name: "Cap Gemini - Car Scrap (Right)", WaterType: models.TownsWater, Feed: "Aldwarke Lane", Source: models.SourceManual, Unit: "m3", IsActive: true},
-		{ID: "r-th", SiteID: models.SiteRotherham, Department: models.DeptAldwarke, Name: "Test House", WaterType: models.TownsWater, Feed: "Aldwarke Lane", Source: models.SourceManual, Unit: "m3", IsActive: true},
-		// General Feed
-		{ID: "r-tmg", SiteID: models.SiteRotherham, Department: models.DeptGeneral, Name: "Thrybergh Main Gate", WaterType: models.TownsWater, Feed: "TCM Feed", Source: models.SourceManual, Unit: "m3", IsActive: true},
-		{ID: "r-tgh", SiteID: models.SiteRotherham, Department: models.DeptGeneral, Name: "Thrybergh Gate House", WaterType: models.TownsWater, Feed: "TCM Feed", Source: models.SourceManual, Unit: "m3", IsActive: true},
-		{ID: "r-rwtp", SiteID: models.SiteRotherham, Department: models.DeptGeneral, Name: "RWTP", WaterType: models.BothWater, Feed: "TCM Feed", Source: models.SourceManual, Unit: "m3", IsActive: true},
-		{ID: "r-vc", SiteID: models.SiteRotherham, Department: models.DeptGeneral, Name: "Visitors Centre + Transport", WaterType: models.TownsWater, Feed: "TCM Feed", Source: models.SourceManual, Unit: "m3", IsActive: true},
-		{ID: "r-jw", SiteID: models.SiteRotherham, Department: models.DeptGeneral, Name: "Jet Wash (Transport)", WaterType: models.TownsWater, Feed: "TCM Feed", Source: models.SourceManual, Unit: "m3", IsActive: true},
+		{ID: "r-bbr", SiteID: models.SiteRotherham, Department: models.DeptBBR, Name: "BBR - Greenlane", WaterType: models.TownsWater, Feed: "Aldwarke Lane", Source: models.SourceManual, Unit: "m3", IsActive: true, IsMainMeter: true},
+		// TCM Department
+		{ID: "r-tbm", SiteID: models.SiteRotherham, Department: models.DeptTCM, Name: "TCM - Tunnel", WaterType: models.TownsWater, Feed: "TCM Feed", Source: models.SourceManual, Unit: "m3", IsActive: true, IsMainMeter: true},
+		// Engineering Services Department
+		{ID: "r-cew", SiteID: models.SiteRotherham, Department: models.DeptEngineeringServices, Name: "Cew Graveyard", WaterType: models.TownsWater, Feed: "Green Lane", Source: models.SourceManual, Unit: "m3", IsActive: true, IsMainMeter: true},
+		{ID: "r-ago", SiteID: models.SiteRotherham, Department: models.DeptEngineeringServices, Name: "AGO", WaterType: models.TownsWater, Feed: "Green Lane", Source: models.SourceManual, Unit: "m3", IsActive: true},
+		{ID: "r-cgl", SiteID: models.SiteRotherham, Department: models.DeptEngineeringServices, Name: "APM", WaterType: models.TownsWater, Feed: "Aldwarke Lane", Source: models.SourceManual, Unit: "m3", IsActive: true},
+		{ID: "r-boc", SiteID: models.SiteRotherham, Department: models.DeptEngineeringServices, Name: "BOC", WaterType: models.TownsWater, Feed: "Aldwarke Lane", Source: models.SourceManual, Unit: "m3", IsActive: true},
 
 		// ── STOCKSBRIDGE ───────────────────────────────────────────────────
-		// Towns Water 
+		// Towns Water
 		{ID: "s-rms1", SiteID: models.SiteStocksbridge, Department: models.DeptRemelt, Name: "RMS 1", WaterType: models.TownsWater, Feed: "East Bank", Source: models.SourceEEmon, Unit: "litres", IsActive: true},
 		{ID: "s-rms2", SiteID: models.SiteStocksbridge, Department: models.DeptRemelt, Name: "RMS 2", WaterType: models.TownsWater, Feed: "East Bank", Source: models.SourceEEmon, Unit: "litres", IsActive: true},
 		{ID: "s-vim", SiteID: models.SiteStocksbridge, Department: models.DeptRemelt, Name: "VIM", WaterType: models.TownsWater, Feed: "East Bank", Source: models.SourceEEmon, Unit: "litres", IsActive: true},
@@ -49,7 +38,7 @@ func SeedMeters() []models.Meter {
 		{ID: "s-bm17", SiteID: models.SiteStocksbridge, Department: models.DeptBilletMill, Name: "BM Meter 17", WaterType: models.TownsWater, Feed: "East Bank", Source: models.SourceEEmon, Unit: "litres", IsActive: true},
 		{ID: "s-bms14", SiteID: models.SiteStocksbridge, Department: models.DeptBilletMill, Name: "BM Saws Meter 14", WaterType: models.TownsWater, Feed: "East Bank", Source: models.SourceEEmon, Unit: "litres", IsActive: true},
 		{ID: "s-croft", SiteID: models.SiteStocksbridge, Department: models.DeptCroft, Name: "Croft Supply", WaterType: models.TownsWater, Feed: "East Bank", Source: models.SourceEEmon, Unit: "litres", IsActive: true},
-		// River Water 
+		// River Water
 		{ID: "s-wq1", SiteID: models.SiteStocksbridge, Department: models.DeptWestBank, Name: "Water Quench 1", WaterType: models.RiverWater, Feed: "West Bank", Source: models.SourceEEmon, Unit: "litres", IsActive: true},
 		{ID: "s-wq2", SiteID: models.SiteStocksbridge, Department: models.DeptWestBank, Name: "Water Quench 2", WaterType: models.RiverWater, Feed: "West Bank", Source: models.SourceEEmon, Unit: "litres", IsActive: true},
 		{ID: "s-sb", SiteID: models.SiteStocksbridge, Department: models.DeptSpringBank, Name: "Spring Bank", WaterType: models.RiverWater, Feed: "Spring Bank", Source: models.SourceEEmon, Unit: "litres", IsActive: true},
@@ -90,33 +79,33 @@ func seedSampleReadings(db *DB) {
 	makeID := func() string { return fmt.Sprintf("%d", time.Now().UnixNano()) }
 
 	// Rotherham weekly readings (23 weeks of data)
-	rotherhamRows := [][19]float64{
-		{122732, 4154, 6410, 56339, 612372, 404781, 886932, 103675, 9276930, 430129, 237717, 58170, 47144, 50420, 53362, 90087, 2158, 81, 349253},
-		{122748, 4155, 6423, 56339, 612372, 404781, 887060, 103694, 9279635, 432449, 242580, 63034, 47145, 50423, 53362, 90087, 2163, 82, 349253},
-		{122765, 4155, 6444, 56339, 612372, 404781, 887208, 103715, 9282337, 434384, 247431, 67859, 47145, 50426, 53362, 90087, 2168, 82, 349253},
-		{122778, 4157, 6456, 56339, 612372, 404781, 887332, 103733, 9285069, 435659, 251680, 72091, 47145, 50430, 53362, 90088, 2174, 82, 349253},
-		{122789, 4159, 6467, 56339, 612372, 404781, 887455, 103749, 9287612, 435891, 254847, 75246, 47145, 50434, 53362, 90088, 2179, 82, 349253},
-		{122800, 4160, 6479, 56339, 612372, 404781, 887576, 103765, 9290313, 436051, 257977, 78355, 47145, 50437, 53362, 90088, 2183, 82, 349253},
-		{122814, 4160, 6491, 56340, 612372, 404781, 887576, 103784, 9292913, 436204, 260953, 81309, 47144, 50440, 53362, 90088, 2191, 82, 349253},
-		{122829, 4161, 6503, 56340, 612372, 404781, 887576, 103796, 9295551, 436501, 264135, 84472, 47145, 50444, 53362, 90088, 2194, 88, 349253},
-		{122839, 4161, 6537, 56340, 612372, 404781, 887576, 103801, 9302665, 437121, 272580, 92865, 47145, 50451, 53362, 90086, 2201, 88, 349253},
-		{122847, 4162, 6542, 56340, 612372, 404781, 887576, 103813, 9303396, 437245, 273504, 93793, 47145, 50452, 53362, 90088, 2203, 88, 349253},
-		{123314, 4166, 6549, 56340, 612372, 404781, 887576, 103834, 9306427, 437991, 277527, 97795, 47145, 50518, 53362, 91568, 2203, 84, 349253},
-		{123337, 4168, 6549, 56340, 612372, 404781, 887576, 103861, 9309562, 438272, 281268, 101502, 47168, 50523, 53362, 91656, 2214, 84, 350654},
-		{123351, 4170, 6549, 56340, 612372, 404781, 887576, 103877, 9311927, 438562, 284033, 104250, 47168, 50526, 53362, 91657, 2225, 84, 350654},
-		{123372, 4171, 6549, 56340, 612372, 404781, 887576, 103899, 9314663, 438644, 287293, 107490, 47168, 50530, 53362, 91659, 2225, 84, 350654},
-		{123397, 4171, 6549, 56340, 612372, 404781, 887576, 103921, 9317478, 439399, 291101, 111275, 47168, 50534, 53362, 91662, 2234, 84, 350654},
-		{123421, 4172, 6549, 56341, 612373, 404781, 887576, 103948, 9320648, 439692, 294906, 115055, 47168, 50539, 53362, 91664, 2235, 85, 350828},
-		{123440, 4172, 6549, 56341, 612373, 404781, 887576, 103967, 9323057, 440037, 297889, 118020, 47168, 50542, 53362, 91669, 2241, 85, 350828},
-		{123460, 4172, 6549, 56341, 612373, 404781, 887576, 103989, 9325874, 440922, 301864, 121974, 47168, 50546, 53362, 91776, 2245, 85, 350828},
-		{123490, 4174, 6549, 56341, 612373, 404781, 887576, 104007, 9328657, 441622, 305602, 125692, 47168, 50550, 53362, 91780, 2249, 86, 350829},
-		{123523, 4176, 6549, 56340, 612373, 404781, 887576, 104028, 9331469, 442237, 309293, 129359, 47168, 50555, 53362, 91782, 2254, 86, 350829},
-		{123547, 4176, 6549, 56340, 612373, 404781, 887576, 104047, 9334187, 442589, 312612, 132657, 47168, 50558, 53362, 91784, 2260, 86, 350829},
-		{123574, 4176, 6549, 56341, 612373, 404781, 887576, 104064, 9337073, 442887, 316063, 136086, 47168, 50566, 53362, 91802, 2263, 86, 350829},
-		{123600, 4176, 6549, 56341, 612373, 404781, 887576, 104080, 9339928, 443200, 319481, 139483, 47168, 50571, 53362, 91804, 2268, 86, 350829},
+	rotherhamRows := [][10]float64{
+		{122732, 4154, 6410, 56339, 612372, 404781, 886932, 103675, 9276930, 430129},
+		{122748, 4155, 6423, 56339, 612372, 404781, 887060, 103694, 9279635, 432449},
+		{122765, 4155, 6444, 56339, 612372, 404781, 887208, 103715, 9282337, 434384},
+		{122778, 4157, 6456, 56339, 612372, 404781, 887332, 103733, 9285069, 435659},
+		{122789, 4159, 6467, 56339, 612372, 404781, 887455, 103749, 9287612, 435891},
+		{122800, 4160, 6479, 56339, 612372, 404781, 887576, 103765, 9290313, 436051},
+		{122814, 4160, 6491, 56340, 612372, 404781, 887576, 103784, 9292913, 436204},
+		{122829, 4161, 6503, 56340, 612372, 404781, 887576, 103796, 9295551, 436501},
+		{122839, 4161, 6537, 56340, 612372, 404781, 887576, 103801, 9302665, 437121},
+		{122847, 4162, 6542, 56340, 612372, 404781, 887576, 103813, 9303396, 437245},
+		{123314, 4166, 6549, 56340, 612372, 404781, 887576, 103834, 9306427, 437991},
+		{123337, 4168, 6549, 56340, 612372, 404781, 887576, 103861, 9309562, 438272},
+		{123351, 4170, 6549, 56340, 612372, 404781, 887576, 103877, 9311927, 438562},
+		{123372, 4171, 6549, 56340, 612372, 404781, 887576, 103899, 9314663, 438644},
+		{123397, 4171, 6549, 56340, 612372, 404781, 887576, 103921, 9317478, 439399},
+		{123421, 4172, 6549, 56341, 612373, 404781, 887576, 103948, 9320648, 439692},
+		{123440, 4172, 6549, 56341, 612373, 404781, 887576, 103967, 9323057, 440037},
+		{123460, 4172, 6549, 56341, 612373, 404781, 887576, 103989, 9325874, 440922},
+		{123490, 4174, 6549, 56341, 612373, 404781, 887576, 104007, 9328657, 441622},
+		{123523, 4176, 6549, 56340, 612373, 404781, 887576, 104028, 9331469, 442237},
+		{123547, 4176, 6549, 56340, 612373, 404781, 887576, 104047, 9334187, 442589},
+		{123574, 4176, 6549, 56341, 612373, 404781, 887576, 104064, 9337073, 442887},
+		{123600, 4176, 6549, 56341, 612373, 404781, 887576, 104080, 9339928, 443200},
 	}
 
-	meterIDs := []string{"r-bbr", "r-bs", "r-aocc", "r-ks", "r-vd", "r-abcrw", "r-abctw", "r-ams", "r-tbmr", "r-tbm", "r-tgh", "r-tmg", "r-tbmr", "r-boc", "r-cgl", "r-cgr", "r-th", "r-jw", "r-rwtp"}
+	meterIDs := []string{"r-acp", "r-abctw", "r-ams", "r-aocc", "r-ks", "r-vd", "r-bbr", "r-tbm", "r-cew", "r-boc"}
 	meterMap := make(map[string]models.Meter)
 	for _, m := range db.Meters {
 		meterMap[m.ID] = m
@@ -247,12 +236,15 @@ func seedSampleReadings(db *DB) {
 		{ID: makeID(), SiteID: models.SiteRotherham, Department: models.DeptACP, Tonnes: 8500, Date: m3ago},
 		{ID: makeID(), SiteID: models.SiteRotherham, Department: models.DeptBBR, Tonnes: 3200, Date: m3ago},
 		{ID: makeID(), SiteID: models.SiteRotherham, Department: models.DeptTCM, Tonnes: 12000, Date: m3ago},
+		{ID: makeID(), SiteID: models.SiteRotherham, Department: models.DeptEngineeringServices, Tonnes: 2000, Date: m3ago},
 		{ID: makeID(), SiteID: models.SiteRotherham, Department: models.DeptACP, Tonnes: 9100, Date: m2ago},
 		{ID: makeID(), SiteID: models.SiteRotherham, Department: models.DeptBBR, Tonnes: 3400, Date: m2ago},
 		{ID: makeID(), SiteID: models.SiteRotherham, Department: models.DeptTCM, Tonnes: 11800, Date: m2ago},
+		{ID: makeID(), SiteID: models.SiteRotherham, Department: models.DeptEngineeringServices, Tonnes: 2100, Date: m2ago},
 		{ID: makeID(), SiteID: models.SiteRotherham, Department: models.DeptACP, Tonnes: 9300, Date: m1ago},
 		{ID: makeID(), SiteID: models.SiteRotherham, Department: models.DeptBBR, Tonnes: 3500, Date: m1ago},
 		{ID: makeID(), SiteID: models.SiteRotherham, Department: models.DeptTCM, Tonnes: 12300, Date: m1ago},
+		{ID: makeID(), SiteID: models.SiteRotherham, Department: models.DeptEngineeringServices, Tonnes: 2200, Date: m1ago},
 		{ID: makeID(), SiteID: models.SiteStocksbridge, Department: models.DeptRemelt, Tonnes: 15000, Date: m3ago},
 		{ID: makeID(), SiteID: models.SiteStocksbridge, Department: models.DeptBilletMill, Tonnes: 22000, Date: m3ago},
 		{ID: makeID(), SiteID: models.SiteStocksbridge, Department: models.DeptRemelt, Tonnes: 14500, Date: m2ago},

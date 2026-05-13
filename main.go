@@ -36,6 +36,11 @@ func main() {
 	}
 	log.Printf("Database ready: %s", cfg.Database.Path)
 
+	// Save initial data if new database
+	if err := db.Save(); err != nil {
+		log.Printf("Warning: failed to save database: %v", err)
+	}
+
 	// ── HTTP Handler ──────────────────────────────────────────────────────
 	handler := api.NewHandler(db)
 

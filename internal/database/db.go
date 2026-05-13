@@ -35,6 +35,8 @@ func Open(path string) (*DB, error) {
 	// Initialize with defaults if empty
 	if len(db.Meters) == 0 {
 		db.Meters = SeedMeters()
+		// Seed sample data when creating fresh database
+		seedSampleReadings(db)
 	}
 	if db.Preferences.Theme == "" {
 		db.Preferences = models.DefaultPreferences()

@@ -1,10 +1,14 @@
 package main
 
 import (
+	"context"
 	"log"
 	"net/http"
 	"os"
+	"os/signal"
 	"path/filepath"
+	"syscall"
+	"time"
 
 	"water-monitoring-system/internal/api"
 	"water-monitoring-system/internal/config"
@@ -21,6 +25,11 @@ func main() {
 			log.Printf("Warning: config load error: %v (using defaults)", err)
 			cfg = config.Default()
 		}
+	}
+
+	// Allow env var override for API key (covers both config-file and no-config paths)
+	if envKey := os.Getenv("WMS_API_KEY"); envKey != "" {
+		cfg.Auth.APIKey = envKey
 	}
 
 	// ── Ensure data directory exists ──────────────────────────────────────
@@ -46,10 +55,39 @@ func main() {
 
 	// ── Routes ────────────────────────────────────────────────────────────
 	mux := http.NewServeMux()
-	api.RegisterRoutes(mux, handler, cfg.Frontend.Path)
+	api.RegisterRoutes(mux, handler, cfg.Frontend.Path, cfg.Auth.APIKey)
 
-	// ── Start Server ──────────────────────────────────────────────────────
-	log.Println("Water Intensity Monitoring - Speciality Steels UK")
-	log.Printf("Server: http://localhost:%d", cfg.Server.Port)
-	log.Fatal(http.ListenAndServe(cfg.Address(), mux))
+	// ── Start Server with Graceful Shutdown ───────────────────────────────
+	srv := &http.Server{
+		Addr:    cfg.Address(),
+		Handler: mux,
+	}
+
+	// Channel to listen for interrupt signals
+	quit := make(chan os.Signal, 1)
+	signal.Notify(quit, syscall.SIGINT, syscall.SIGTERM)
+
+	go func() {
+		log.Println("Water Intensity Monitoring - Speciality Steels UK")
+		if cfg.Auth.APIKey != "" {
+			log.Println("API key authentication: ENABLED")
+		} else {
+			log.Println("API key authentication: DISABLED (dev mode)")
+		}
+		log.Printf("Server: http://localhost:%d", cfg.Server.Port)
+		if err := srv.ListenAndServe(); err != nil && err != http.ErrServerClosed {
+			log.Fatalf("Server error: %v", err)
+		}
+	}()
+
+	<-quit
+	log.Println("Shutting down server...")
+
+	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+	defer cancel()
+
+	if err := srv.Shutdown(ctx); err != nil {
+		log.Fatalf("Server forced to shutdown: %v", err)
+	}
+	log.Println("Server stopped gracefully")
 }

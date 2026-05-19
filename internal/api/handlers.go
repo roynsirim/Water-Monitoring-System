@@ -31,6 +31,10 @@ func (h *Handler) respond(w http.ResponseWriter, code int, v any) {
 	json.NewEncoder(w).Encode(v)
 }
 
+func (h *Handler) decodeJSON(r *http.Request, v any) error {
+	return json.NewDecoder(r.Body).Decode(v)
+}
+
 func parseDate(s string) time.Time {
 	formats := []string{"2006-01-02", "02/01/2006", time.RFC3339}
 	for _, f := range formats {
@@ -71,7 +75,19 @@ func (h *Handler) HandleReadings(w http.ResponseWriter, r *http.Request) {
 			Date    string  `json:"date"`
 			Notes   string  `json:"notes"`
 		}
-		json.NewDecoder(r.Body).Decode(&body)
+		if err := h.decodeJSON(r, &body); err != nil {
+			h.respond(w, 400, map[string]string{"error": "invalid JSON: " + err.Error()})
+			return
+		}
+
+		if body.MeterID == "" {
+			h.respond(w, 400, map[string]string{"error": "meter_id is required"})
+			return
+		}
+		if body.Value < 0 {
+			h.respond(w, 400, map[string]string{"error": "value must not be negative"})
+			return
+		}
 
 		meter := h.db.GetMeter(body.MeterID)
 		if meter == nil {
@@ -121,7 +137,18 @@ func (h *Handler) HandleReadings(w http.ResponseWriter, r *http.Request) {
 func (h *Handler) HandleTonnes(w http.ResponseWriter, r *http.Request) {
 	if r.Method == http.MethodPost {
 		var body models.TonnesEntry
-		json.NewDecoder(r.Body).Decode(&body)
+		if err := h.decodeJSON(r, &body); err != nil {
+			h.respond(w, 400, map[string]string{"error": "invalid JSON: " + err.Error()})
+			return
+		}
+		if body.SiteID == "" {
+			h.respond(w, 400, map[string]string{"error": "site_id is required"})
+			return
+		}
+		if body.Tonnes < 0 {
+			h.respond(w, 400, map[string]string{"error": "tonnes must not be negative"})
+			return
+		}
 		if body.Date.IsZero() {
 			body.Date = time.Now()
 		}
@@ -202,7 +229,8 @@ func (h *Handler) HandleDashboard(w http.ResponseWriter, r *http.Request) {
 		}
 
 		dk := deptKey{rd.SiteID, m.Department}
-		wk := weekKey{rd.SiteID, rd.Date.Format("2006-W") + fmt.Sprintf("%02d", rd.Date.Day()/7+1)}
+		year, week := rd.Date.ISOWeek()
+		wk := weekKey{rd.SiteID, fmt.Sprintf("%d-W%02d", year, week)}
 
 		deptM3[dk] += usageM3
 		st := siteTotals[rd.SiteID]
@@ -276,13 +304,9 @@ func (h *Handler) HandleDashboard(w http.ResponseWriter, r *http.Request) {
 		}
 
 		// Sort departments alphabetically
-		for i := 0; i < len(d.Departments)-1; i++ {
-			for j := 0; j < len(d.Departments)-i-1; j++ {
-				if d.Departments[j].Department > d.Departments[j+1].Department {
-					d.Departments[j], d.Departments[j+1] = d.Departments[j+1], d.Departments[j]
-				}
-			}
-		}
+		sort.Slice(d.Departments, func(i, j int) bool {
+			return d.Departments[i].Department < d.Departments[j].Department
+		})
 
 		// Timeline - weekly aggregation
 		weeks := map[string][2]float64{}
@@ -552,7 +576,10 @@ func (h *Handler) HandlePreferences(w http.ResponseWriter, r *http.Request) {
 
 	if r.Method == http.MethodPut || r.Method == http.MethodPost {
 		var prefs models.UserPreferences
-		json.NewDecoder(r.Body).Decode(&prefs)
+		if err := h.decodeJSON(r, &prefs); err != nil {
+			h.respond(w, 400, map[string]string{"error": "invalid JSON: " + err.Error()})
+			return
+		}
 		if err := h.db.UpdatePreferences(prefs); err != nil {
 			h.respond(w, 500, map[string]string{"error": err.Error()})
 			return
@@ -573,7 +600,10 @@ func (h *Handler) HandleAutoFill(w http.ResponseWriter, r *http.Request) {
 		MeterID    string `json:"meter_id"`
 		TargetDate string `json:"target_date"`
 	}
-	json.NewDecoder(r.Body).Decode(&body)
+	if err := h.decodeJSON(r, &body); err != nil {
+		h.respond(w, 400, map[string]string{"error": "invalid JSON: " + err.Error()})
+		return
+	}
 
 	targetDate := time.Now()
 	if body.TargetDate != "" {
@@ -619,7 +649,10 @@ func (h *Handler) HandleAutoFillAll(w http.ResponseWriter, r *http.Request) {
 		SiteID     string `json:"site_id"`
 		TargetDate string `json:"target_date"`
 	}
-	json.NewDecoder(r.Body).Decode(&body)
+	if err := h.decodeJSON(r, &body); err != nil {
+		h.respond(w, 400, map[string]string{"error": "invalid JSON: " + err.Error()})
+		return
+	}
 
 	targetDate := time.Now()
 	if body.TargetDate != "" {

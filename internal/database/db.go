@@ -4,9 +4,11 @@ import (
 	"encoding/json"
 	"fmt"
 	"os"
+	"sort"
 	"sync"
 	"time"
 
+	"github.com/google/uuid"
 	"water-monitoring-system/internal/models"
 )
 
@@ -95,13 +97,9 @@ func (db *DB) GetMeters(siteID string) []models.Meter {
 	}
 
 	// Sort by name
-	for i := 0; i < len(result)-1; i++ {
-		for j := 0; j < len(result)-i-1; j++ {
-			if result[j].Name > result[j+1].Name {
-				result[j], result[j+1] = result[j+1], result[j]
-			}
-		}
-	}
+	sort.Slice(result, func(i, j int) bool {
+		return result[i].Name < result[j].Name
+	})
 	return result
 }
 
@@ -137,7 +135,7 @@ func (db *DB) AddReading(r models.Reading) error {
 	db.mu.Lock()
 	defer db.mu.Unlock()
 
-	r.ID = fmt.Sprintf("%d", time.Now().UnixNano())
+	r.ID = uuid.New().String()
 
 	// Calculate usage from last reading
 	var last float64
@@ -200,7 +198,7 @@ func (db *DB) AddTonnes(t models.TonnesEntry) error {
 	db.mu.Lock()
 	defer db.mu.Unlock()
 
-	t.ID = fmt.Sprintf("%d", time.Now().UnixNano())
+	t.ID = uuid.New().String()
 	db.Tonnes = append(db.Tonnes, t)
 	return db.Save()
 }

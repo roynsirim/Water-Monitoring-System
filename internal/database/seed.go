@@ -1,10 +1,10 @@
 package database
 
 import (
-	"fmt"
 	"sort"
 	"time"
 
+	"github.com/google/uuid"
 	"water-monitoring-system/internal/models"
 )
 
@@ -76,7 +76,7 @@ func SeedMeters() []models.Meter {
 // seedSampleReadings populates sample readings data
 func seedSampleReadings(db *DB) {
 	baseDate := time.Now().AddDate(0, -6, 0)
-	makeID := func() string { return fmt.Sprintf("%d", time.Now().UnixNano()) }
+	makeID := func() string { return uuid.New().String() }
 
 	// Rotherham weekly readings (23 weeks of data)
 	rotherhamRows := [][10]float64{
@@ -128,7 +128,6 @@ func seedSampleReadings(db *DB) {
 				Source:    models.SourceManual,
 				WaterType: m.WaterType,
 			})
-			time.Sleep(time.Nanosecond)
 		}
 	}
 
@@ -157,7 +156,6 @@ func seedSampleReadings(db *DB) {
 			Source:    models.SourceEEmon,
 			WaterType: m.WaterType,
 		})
-		time.Sleep(time.Nanosecond)
 	}
 
 	// Brinsworth readings
@@ -183,7 +181,6 @@ func seedSampleReadings(db *DB) {
 			Source:    m.Source,
 			WaterType: m.WaterType,
 		})
-		time.Sleep(time.Nanosecond)
 	}
 
 	// Wednesbury readings
@@ -209,7 +206,6 @@ func seedSampleReadings(db *DB) {
 			Source:    m.Source,
 			WaterType: m.WaterType,
 		})
-		time.Sleep(time.Nanosecond)
 	}
 
 	// Compute usage deltas

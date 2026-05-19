@@ -4,51 +4,42 @@ import (
 	"net/http"
 )
 
-// WithCORS wraps a handler with CORS headers
-func WithCORS(h http.HandlerFunc) http.HandlerFunc {
-	return func(w http.ResponseWriter, r *http.Request) {
-		w.Header().Set("Access-Control-Allow-Origin", "*")
-		w.Header().Set("Access-Control-Allow-Methods", "GET,POST,PUT,DELETE,OPTIONS")
-		w.Header().Set("Access-Control-Allow-Headers", "Content-Type")
-		if r.Method == http.MethodOptions {
-			w.WriteHeader(204)
-			return
-		}
-		h(w, r)
-	}
+// wrap applies CORS, body limit, and auth middleware
+func wrap(h http.HandlerFunc, apiKey string) http.HandlerFunc {
+	return WithCORS(WithBodyLimit(WithAuth(h, apiKey)))
 }
 
 // RegisterRoutes wires all HTTP routes onto the given ServeMux
-func RegisterRoutes(mux *http.ServeMux, h *Handler, frontendPath string) {
+func RegisterRoutes(mux *http.ServeMux, h *Handler, frontendPath, apiKey string) {
 	// API endpoints - Reference data
-	mux.HandleFunc("/api/sites", WithCORS(h.HandleSites))
-	mux.HandleFunc("/api/meters", WithCORS(h.HandleMeters))
+	mux.HandleFunc("/api/sites", wrap(h.HandleSites, apiKey))
+	mux.HandleFunc("/api/meters", wrap(h.HandleMeters, apiKey))
 
 	// API endpoints - Data
-	mux.HandleFunc("/api/readings", WithCORS(h.HandleReadings))
-	mux.HandleFunc("/api/tonnes", WithCORS(h.HandleTonnes))
+	mux.HandleFunc("/api/readings", wrap(h.HandleReadings, apiKey))
+	mux.HandleFunc("/api/tonnes", wrap(h.HandleTonnes, apiKey))
 
 	// API endpoints - Dashboard & Reports
-	mux.HandleFunc("/api/dashboard", WithCORS(h.HandleDashboard))
-	mux.HandleFunc("/api/search", WithCORS(h.HandleSearch))
-	mux.HandleFunc("/api/report", WithCORS(h.HandleReport))
-	mux.HandleFunc("/api/kpis", WithCORS(h.HandleKPIs))
+	mux.HandleFunc("/api/dashboard", wrap(h.HandleDashboard, apiKey))
+	mux.HandleFunc("/api/search", wrap(h.HandleSearch, apiKey))
+	mux.HandleFunc("/api/report", wrap(h.HandleReport, apiKey))
+	mux.HandleFunc("/api/kpis", wrap(h.HandleKPIs, apiKey))
 
 	// API endpoints - Seeding
-	mux.HandleFunc("/api/seed", WithCORS(h.HandleSeed))
+	mux.HandleFunc("/api/seed", wrap(h.HandleSeed, apiKey))
 
 	// API endpoints - External integrations
-	mux.HandleFunc("/api/eemon/sync", WithCORS(h.HandleEEmonSync))
-	mux.HandleFunc("/api/trend/sync", WithCORS(h.HandleTrendSync))
+	mux.HandleFunc("/api/eemon/sync", wrap(h.HandleEEmonSync, apiKey))
+	mux.HandleFunc("/api/trend/sync", wrap(h.HandleTrendSync, apiKey))
 
 	// API endpoints - Admin
-	mux.HandleFunc("/api/admin/preferences", WithCORS(h.HandlePreferences))
-	mux.HandleFunc("/api/admin/autofill", WithCORS(h.HandleAutoFill))
-	mux.HandleFunc("/api/admin/autofill-all", WithCORS(h.HandleAutoFillAll))
-	mux.HandleFunc("/api/admin/connection-status", WithCORS(h.HandleConnectionStatus))
-	mux.HandleFunc("/api/admin/clear-data", WithCORS(h.HandleClearData))
+	mux.HandleFunc("/api/admin/preferences", wrap(h.HandlePreferences, apiKey))
+	mux.HandleFunc("/api/admin/autofill", wrap(h.HandleAutoFill, apiKey))
+	mux.HandleFunc("/api/admin/autofill-all", wrap(h.HandleAutoFillAll, apiKey))
+	mux.HandleFunc("/api/admin/connection-status", wrap(h.HandleConnectionStatus, apiKey))
+	mux.HandleFunc("/api/admin/clear-data", wrap(h.HandleClearData, apiKey))
 
-	// Serve frontend
+	// Serve frontend (no auth required)
 	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
 		http.ServeFile(w, r, frontendPath)
 	})

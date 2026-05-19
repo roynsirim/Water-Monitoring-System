@@ -11,6 +11,7 @@ type Config struct {
 	Server   ServerConfig   `json:"server"`
 	Database DatabaseConfig `json:"database"`
 	Frontend FrontendConfig `json:"frontend"`
+	Auth     AuthConfig     `json:"auth"`
 	EEmon    EEmonConfig    `json:"eemon"`
 	Trend    TrendConfig    `json:"trend"`
 }
@@ -29,6 +30,11 @@ type DatabaseConfig struct {
 // FrontendConfig contains frontend settings
 type FrontendConfig struct {
 	Path string `json:"path"`
+}
+
+// AuthConfig contains authentication settings
+type AuthConfig struct {
+	APIKey string `json:"api_key"` // If empty, auth is disabled (dev mode)
 }
 
 // EEmonConfig contains EEmon integration settings
@@ -60,6 +66,9 @@ func Default() *Config {
 		Frontend: FrontendConfig{
 			Path: "./frontend/index.html",
 		},
+		Auth: AuthConfig{
+			APIKey: "", // Empty = auth disabled (dev mode)
+		},
 		EEmon: EEmonConfig{
 			Enabled: false,
 			SiteID:  "stocksbridge",
@@ -85,6 +94,11 @@ func Load(path string) (*Config, error) {
 
 	if err := json.Unmarshal(data, cfg); err != nil {
 		return nil, fmt.Errorf("parsing config file: %w", err)
+	}
+
+	// Allow environment variable to override API key
+	if envKey := os.Getenv("WMS_API_KEY"); envKey != "" {
+		cfg.Auth.APIKey = envKey
 	}
 
 	return cfg, nil

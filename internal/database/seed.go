@@ -4,8 +4,9 @@ import (
 	"sort"
 	"time"
 
-	"github.com/google/uuid"
 	"water-monitoring-system/internal/models"
+
+	"github.com/google/uuid"
 )
 
 // SeedMeters returns the default meter configuration

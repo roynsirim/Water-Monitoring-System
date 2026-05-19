@@ -8,8 +8,9 @@ import (
 	"sync"
 	"time"
 
-	"github.com/google/uuid"
 	"water-monitoring-system/internal/models"
+
+	"github.com/google/uuid"
 )
 
 // DB wraps the JSON file database with thread-safe operations

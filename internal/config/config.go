@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"os"
+	"time"
 )
 
 // Config holds all application configuration
@@ -24,7 +25,9 @@ type ServerConfig struct {
 
 // DatabaseConfig contains database settings
 type DatabaseConfig struct {
-	Path string `json:"path"`
+	Path   string `json:"path"`
+	Driver string `json:"driver"` // json | postgres | mysql (json is built-in default)
+	DSN    string `json:"dsn"`    // e.g. postgres://user:pass@host:5432/wms?sslmode=disable
 }
 
 // FrontendConfig contains frontend settings
@@ -34,7 +37,13 @@ type FrontendConfig struct {
 
 // AuthConfig contains authentication settings
 type AuthConfig struct {
-	APIKey string `json:"api_key"` // If empty, auth is disabled (dev mode)
+	APIKey               string        `json:"api_key"`             // legacy machine key (kept for back-compat)
+	JWTSecret            string        `json:"jwt_secret"`          // HMAC signing secret for session tokens
+	SessionTTL           time.Duration `json:"session_ttl"`         // e.g. 12h
+	BcryptCost           int           `json:"bcrypt_cost"`         // 10-14
+	AllowRegistration    bool          `json:"allow_registration"`  // public sign-up?
+	DefaultAdminEmail    string        `json:"default_admin_email"` // bootstrap admin
+	DefaultAdminPassword string        `json:"default_admin_password"`
 }
 
 // EEmonConfig contains EEmon integration settings
@@ -67,7 +76,13 @@ func Default() *Config {
 			Path: "./frontend/index.html",
 		},
 		Auth: AuthConfig{
-			APIKey: "", // Empty = auth disabled (dev mode)
+			APIKey:               "", // Empty = legacy auth disabled (dev mode)
+			JWTSecret:            "",
+			SessionTTL:           12 * time.Hour,
+			BcryptCost:           12,
+			AllowRegistration:    false,
+			DefaultAdminEmail:    "admin@example.com",
+			DefaultAdminPassword: "ChangeMe!123",
 		},
 		EEmon: EEmonConfig{
 			Enabled: false,
@@ -107,4 +122,34 @@ func Load(path string) (*Config, error) {
 // Address returns the server address as host:port
 func (c *Config) Address() string {
 	return fmt.Sprintf("%s:%d", c.Server.Host, c.Server.Port)
+}
+
+// Validate checks configuration values are within acceptable bounds.
+// Returns an error describing the first invalid setting encountered.
+func (c *Config) Validate() error {
+	// Port
+	if c.Server.Port < 1 || c.Server.Port > 65535 {
+		return fmt.Errorf("server.port must be 1-65535, got %d", c.Server.Port)
+	}
+	// Bcrypt cost
+	if c.Auth.BcryptCost < 10 || c.Auth.BcryptCost > 16 {
+		return fmt.Errorf("auth.bcrypt_cost must be 10-16, got %d", c.Auth.BcryptCost)
+	}
+	// Session TTL
+	if c.Auth.SessionTTL < time.Minute || c.Auth.SessionTTL > 30*24*time.Hour {
+		return fmt.Errorf("auth.session_ttl must be 1m-30d, got %s", c.Auth.SessionTTL)
+	}
+	// Database path required for JSON driver
+	if c.Database.Driver == "" || c.Database.Driver == "json" {
+		if c.Database.Path == "" {
+			return fmt.Errorf("database.path required for JSON driver")
+		}
+	}
+	// DSN required for SQL drivers
+	if c.Database.Driver == "postgres" || c.Database.Driver == "mysql" {
+		if c.Database.DSN == "" {
+			return fmt.Errorf("database.dsn required for %s driver", c.Database.Driver)
+		}
+	}
+	return nil
 }

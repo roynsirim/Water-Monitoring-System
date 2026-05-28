@@ -32,7 +32,7 @@ func SeedMeters() []models.Meter {
 
 		// ── STOCKSBRIDGE ───────────────────────────────────────────────────
 		// Towns Water
-		{ID: "s-rms1", SiteID: models.SiteStocksbridge, Department: models.DeptRemelt, Name: "RMS 1", WaterType: models.TownsWater, Feed: "East Bank", Source: models.SourceEEmon, Unit: "litres", IsActive: true},
+		{ID: "s-rms1", SiteID: models.SiteStocksbridge, Department: models.DeptRemelt, Name: "RMS 1", WaterType: models.TownsWater, Feed: "East Bank", Source: models.SourceEEmon, Unit: "litres", IsActive: true, IsMainMeter: true},
 		{ID: "s-rms2", SiteID: models.SiteStocksbridge, Department: models.DeptRemelt, Name: "RMS 2", WaterType: models.TownsWater, Feed: "East Bank", Source: models.SourceEEmon, Unit: "litres", IsActive: true},
 		{ID: "s-vim", SiteID: models.SiteStocksbridge, Department: models.DeptRemelt, Name: "VIM", WaterType: models.TownsWater, Feed: "East Bank", Source: models.SourceEEmon, Unit: "litres", IsActive: true},
 		{ID: "s-bm16", SiteID: models.SiteStocksbridge, Department: models.DeptBilletMill, Name: "BM Meter 16", WaterType: models.TownsWater, Feed: "East Bank", Source: models.SourceEEmon, Unit: "litres", IsActive: true},
@@ -57,18 +57,18 @@ func SeedMeters() []models.Meter {
 		{ID: "s-wbcht", SiteID: models.SiteStocksbridge, Department: models.DeptWestBank, Name: "West Bank CHT", WaterType: models.TownsWater, Feed: "West Bank", Source: models.SourceEEmon, Unit: "litres", IsActive: true},
 		{ID: "s-bbr", SiteID: models.SiteStocksbridge, Department: models.DeptBilletMill, Name: "Billet Bank Reeler", WaterType: models.TownsWater, Feed: "East Bank", Source: models.SourceEEmon, Unit: "litres", IsActive: true},
 		{ID: "s-esr1", SiteID: models.SiteStocksbridge, Department: models.DeptEastBank, Name: "ESR 1", WaterType: models.TownsWater, Feed: "East Bank", Source: models.SourceEEmon, Unit: "litres", IsActive: true},
-		{ID: "s-eb", SiteID: models.SiteStocksbridge, Department: models.DeptEastBank, Name: "East Bank Total", WaterType: models.TownsWater, Feed: "East Bank", Source: models.SourceEEmon, Unit: "litres", IsActive: true},
+		{ID: "s-eb", SiteID: models.SiteStocksbridge, Department: models.DeptEastBank, Name: "East Bank Total", WaterType: models.TownsWater, Feed: "East Bank", Source: models.SourceEEmon, Unit: "litres", IsActive: true, IsMainMeter: true},
 
 		// ── BRINSWORTH ─────────────────────────────────────────────────────
-		{ID: "b-ttw", SiteID: models.SiteBrinsworth, Department: models.DeptGeneral, Name: "Total Towns Water", WaterType: models.TownsWater, Feed: "Towns", Source: models.SourceManual, Unit: "m3", IsActive: true},
-		{ID: "b-glr", SiteID: models.SiteBrinsworth, Department: models.DeptGeneral, Name: "Grange Lane Reservoir (Riverside Pumphouse)", WaterType: models.RiverWater, Feed: "River", Source: models.SourceManual, Unit: "m3", IsActive: true},
+		{ID: "b-ttw", SiteID: models.SiteBrinsworth, Department: models.DeptGeneral, Name: "Total Towns Water", WaterType: models.TownsWater, Feed: "Towns", Source: models.SourceManual, Unit: "m3", IsActive: true, IsMainMeter: true},
+		{ID: "b-glr", SiteID: models.SiteBrinsworth, Department: models.DeptGeneral, Name: "Grange Lane Reservoir (Riverside Pumphouse)", WaterType: models.RiverWater, Feed: "River", Source: models.SourceManual, Unit: "m3", IsActive: true, IsMainMeter: true},
 		{ID: "b-hmr", SiteID: models.SiteBrinsworth, Department: models.DeptHotMill, Name: "Hot Mill River Water Meter", WaterType: models.RiverWater, Feed: "River", Source: models.SourceTrend, Unit: "m3", IsActive: true},
 		{ID: "b-hrp", SiteID: models.SiteBrinsworth, Department: models.DeptHRP, Name: "HRP River Water Meter", WaterType: models.RiverWater, Feed: "River", Source: models.SourceTrend, Unit: "m3", IsActive: true},
 		{ID: "b-cmr", SiteID: models.SiteBrinsworth, Department: models.DeptColdMill, Name: "Cold Mill River Water Meter", WaterType: models.RiverWater, Feed: "River", Source: models.SourceTrend, Unit: "m3", IsActive: true},
 
 		// ── WEDNESBURY ─────────────────────────────────────────────────────
-		{ID: "w-m1", SiteID: models.SiteWednesbury, Department: models.DeptGeneral, Name: "Main Meter 1", WaterType: models.TownsWater, Feed: "Mains", Source: models.SourceManual, Unit: "m3", IsActive: true},
-		{ID: "w-m2", SiteID: models.SiteWednesbury, Department: models.DeptGeneral, Name: "Main Meter 2", WaterType: models.TownsWater, Feed: "Mains", Source: models.SourceManual, Unit: "m3", IsActive: true},
+		{ID: "w-m1", SiteID: models.SiteWednesbury, Department: models.DeptGeneral, Name: "Main Meter 1", WaterType: models.TownsWater, Feed: "Mains", Source: models.SourceManual, Unit: "m3", IsActive: true, IsMainMeter: true},
+		{ID: "w-m2", SiteID: models.SiteWednesbury, Department: models.DeptGeneral, Name: "Main Meter 2", WaterType: models.TownsWater, Feed: "Mains", Source: models.SourceManual, Unit: "m3", IsActive: true, IsMainMeter: true},
 		{ID: "w-pro", SiteID: models.SiteWednesbury, Department: models.DeptProduction, Name: "Production Meter", WaterType: models.TownsWater, Feed: "Mains", Source: models.SourceManual, Unit: "m3", IsActive: true},
 		{ID: "w-ame", SiteID: models.SiteWednesbury, Department: models.DeptAmenities, Name: "Amenities Meter", WaterType: models.TownsWater, Feed: "Mains", Source: models.SourceManual, Unit: "m3", IsActive: true},
 	}

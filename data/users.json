@@ -1,0 +1,219 @@
+{
+  "users": [
+    {
+      "id": "198f6498-057e-4a08-996a-ec91073cdbe0",
+      "email": "admin@example.com",
+      "name": "Administrator",
+      "role": "admin",
+      "is_active": true,
+      "password_hash": "$pbkdf2-sha256$i=120000$Xgi9hr2Cjkro58fP3fKAuA$WrqBzuBrD/qGXeJoUARd2oFTXlvOR7fzYTHYXhSpajg",
+      "must_change_password": true,
+      "last_login_at": "2026-05-27T16:05:07.520454+01:00",
+      "failed_attempts": 0,
+      "created_at": "2026-05-27T15:54:45.572654+01:00",
+      "updated_at": "2026-05-27T16:05:07.520456+01:00"
+    },
+    {
+      "id": "506565d1-43cf-41ed-92c8-d78dbc90c5b8",
+      "email": "uchedingba@gmail.com",
+      "name": "Nice",
+      "role": "user",
+      "is_active": true,
+      "password_hash": "$pbkdf2-sha256$i=120000$vB8xTF9y1TXpzlUNtk+T8w$eLfWV5rm6R5ezKd4W9HolmZDTg4rTNBBq25ECZ9dI+c",
+      "must_change_password": true,
+      "last_login_at": "2026-05-27T16:02:49.972602+01:00",
+      "failed_attempts": 0,
+      "created_at": "2026-05-27T16:02:30.834971+01:00",
+      "updated_at": "2026-05-27T16:02:49.972603+01:00"
+    }
+  ],
+  "sessions": [
+    {
+      "id": "5fb68a9b-55e2-4e5f-b322-11a77c0e4d41",
+      "user_id": "198f6498-057e-4a08-996a-ec91073cdbe0",
+      "token_hash": "39a632a28ccb2ba73568594864cd7d8ed8794a525b52b15441b626d78294ab82",
+      "ip": "[::1]",
+      "user_agent": "curl/8.7.1",
+      "issued_at": "2026-05-27T15:54:47.604063+01:00",
+      "expires_at": "2026-05-28T03:54:47.604063+01:00"
+    },
+    {
+      "id": "d3ad4114-fc77-4ce8-a133-e97d1f52116e",
+      "user_id": "198f6498-057e-4a08-996a-ec91073cdbe0",
+      "token_hash": "a8ed11497cd3f02dd4e20c696f4fa464bf7a41236f5007ab422ed9add02e123f",
+      "ip": "[::1]",
+      "user_agent": "curl/8.7.1",
+      "issued_at": "2026-05-27T15:54:55.029537+01:00",
+      "expires_at": "2026-05-28T03:54:55.029537+01:00"
+    },
+    {
+      "id": "0ce6a262-592a-4b42-bb6e-51602d75606a",
+      "user_id": "198f6498-057e-4a08-996a-ec91073cdbe0",
+      "token_hash": "d620b901c41e4c8e195794de8cbcd7fa57a2ae30a5eb63baebcb67b4253a0a3f",
+      "ip": "[::1]",
+      "user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 Safari/537.36",
+      "issued_at": "2026-05-27T16:01:57.885955+01:00",
+      "expires_at": "2026-05-28T04:01:57.885955+01:00",
+      "revoked_at": "2026-05-27T16:02:38.794484+01:00"
+    },
+    {
+      "id": "c299c56e-e933-4c18-8e76-c5a3f3559021",
+      "user_id": "506565d1-43cf-41ed-92c8-d78dbc90c5b8",
+      "token_hash": "48dfeee8caaf5a8e7df65f8b62b304a9077a8555fa468071501fe12fadc9486a",
+      "ip": "[::1]",
+      "user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 Safari/537.36",
+      "issued_at": "2026-05-27T16:02:49.970001+01:00",
+      "expires_at": "2026-05-28T04:02:49.970001+01:00",
+      "revoked_at": "2026-05-27T16:04:40.513+01:00"
+    },
+    {
+      "id": "a5d34b03-bf9e-471a-91ed-5c9638852608",
+      "user_id": "198f6498-057e-4a08-996a-ec91073cdbe0",
+      "token_hash": "bb6e9357f8cd8ad4eb1fc3e214160ae12ad918403bd351e9eac998e2d4a1757f",
+      "ip": "[::1]",
+      "user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 Safari/537.36",
+      "issued_at": "2026-05-27T16:05:07.519373+01:00",
+      "expires_at": "2026-05-28T04:05:07.519373+01:00"
+    }
+  ],
+  "activity": [
+    {
+      "id": "2c1a4eca-4e10-4d07-a138-f51e6d84174e",
+      "user_id": "198f6498-057e-4a08-996a-ec91073cdbe0",
+      "user_email": "admin@example.com",
+      "action": "login",
+      "resource": "5fb68a9b-55e2-4e5f-b322-11a77c0e4d41",
+      "ip": "[::1]",
+      "user_agent": "curl/8.7.1",
+      "status": "success",
+      "created_at": "2026-05-27T15:54:47.610154+01:00"
+    },
+    {
+      "id": "e9b6b427-23ff-494b-843c-15a25a7c5ad0",
+      "user_id": "198f6498-057e-4a08-996a-ec91073cdbe0",
+      "user_email": "admin@example.com",
+      "action": "login",
+      "resource": "d3ad4114-fc77-4ce8-a133-e97d1f52116e",
+      "ip": "[::1]",
+      "user_agent": "curl/8.7.1",
+      "status": "success",
+      "created_at": "2026-05-27T15:54:55.032678+01:00"
+    },
+    {
+      "id": "56499aac-8a47-489a-a2dc-b903142cbc2f",
+      "user_id": "",
+      "user_email": "uchedingba@gmail.com",
+      "action": "login",
+      "resource": "",
+      "ip": "[::1]",
+      "user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 Safari/537.36",
+      "status": "failure",
+      "detail": "no such user",
+      "created_at": "2026-05-27T16:00:48.868576+01:00"
+    },
+    {
+      "id": "6cd6423b-cc06-44ef-a1d3-cd114964b486",
+      "user_id": "",
+      "user_email": "uchedingba@gmail.com",
+      "action": "login",
+      "resource": "",
+      "ip": "[::1]",
+      "user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 Safari/537.36",
+      "status": "failure",
+      "detail": "no such user",
+      "created_at": "2026-05-27T16:01:00.600758+01:00"
+    },
+    {
+      "id": "a692334d-4be4-4c62-879c-9fdf6712c7c8",
+      "user_id": "",
+      "user_email": "uchedingba@gmail.com",
+      "action": "login",
+      "resource": "",
+      "ip": "[::1]",
+      "user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 Safari/537.36",
+      "status": "failure",
+      "detail": "no such user",
+      "created_at": "2026-05-27T16:01:12.934159+01:00"
+    },
+    {
+      "id": "2e113697-dddc-482e-8025-5bac1de824a4",
+      "user_id": "",
+      "user_email": "uchedingba@gmail.com",
+      "action": "login",
+      "resource": "",
+      "ip": "[::1]",
+      "user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 Safari/537.36",
+      "status": "failure",
+      "detail": "no such user",
+      "created_at": "2026-05-27T16:01:26.098895+01:00"
+    },
+    {
+      "id": "c2840c07-009b-45a7-8d35-1d32121c560c",
+      "user_id": "198f6498-057e-4a08-996a-ec91073cdbe0",
+      "user_email": "admin@example.com",
+      "action": "login",
+      "resource": "0ce6a262-592a-4b42-bb6e-51602d75606a",
+      "ip": "[::1]",
+      "user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 Safari/537.36",
+      "status": "success",
+      "created_at": "2026-05-27T16:01:57.888111+01:00"
+    },
+    {
+      "id": "c5a01a70-4c7c-4341-b077-11ee6394f482",
+      "user_id": "198f6498-057e-4a08-996a-ec91073cdbe0",
+      "user_email": "admin@example.com",
+      "action": "create_user",
+      "resource": "506565d1-43cf-41ed-92c8-d78dbc90c5b8",
+      "ip": "[::1]",
+      "user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 Safari/537.36",
+      "status": "success",
+      "detail": "created uchedingba@gmail.com",
+      "created_at": "2026-05-27T16:02:30.837242+01:00"
+    },
+    {
+      "id": "0071691b-7a8a-46db-871f-9b5bd8aad6ad",
+      "user_id": "198f6498-057e-4a08-996a-ec91073cdbe0",
+      "user_email": "admin@example.com",
+      "action": "logout",
+      "resource": "0ce6a262-592a-4b42-bb6e-51602d75606a",
+      "ip": "[::1]",
+      "user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 Safari/537.36",
+      "status": "success",
+      "created_at": "2026-05-27T16:02:38.796384+01:00"
+    },
+    {
+      "id": "87797db1-62d1-4e44-88da-1da0674cce4e",
+      "user_id": "506565d1-43cf-41ed-92c8-d78dbc90c5b8",
+      "user_email": "uchedingba@gmail.com",
+      "action": "login",
+      "resource": "c299c56e-e933-4c18-8e76-c5a3f3559021",
+      "ip": "[::1]",
+      "user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 Safari/537.36",
+      "status": "success",
+      "created_at": "2026-05-27T16:02:49.978027+01:00"
+    },
+    {
+      "id": "620d6a0a-65a6-40bd-b62c-14d85c76715c",
+      "user_id": "506565d1-43cf-41ed-92c8-d78dbc90c5b8",
+      "user_email": "uchedingba@gmail.com",
+      "action": "logout",
+      "resource": "c299c56e-e933-4c18-8e76-c5a3f3559021",
+      "ip": "[::1]",
+      "user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 Safari/537.36",
+      "status": "success",
+      "created_at": "2026-05-27T16:04:40.518347+01:00"
+    },
+    {
+      "id": "546f804d-256c-4c61-b18f-89b44a42eecf",
+      "user_id": "198f6498-057e-4a08-996a-ec91073cdbe0",
+      "user_email": "admin@example.com",
+      "action": "login",
+      "resource": "a5d34b03-bf9e-471a-91ed-5c9638852608",
+      "ip": "[::1]",
+      "user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 Safari/537.36",
+      "status": "success",
+      "created_at": "2026-05-27T16:05:07.52126+01:00"
+    }
+  ],
+  "resets": []
+}

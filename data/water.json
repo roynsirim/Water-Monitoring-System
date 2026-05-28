@@ -145,7 +145,8 @@
       "feed": "East Bank",
       "source": "eemon",
       "unit": "litres",
-      "is_active": true
+      "is_active": true,
+      "is_main_meter": true
     },
     {
       "id": "s-rms2",
@@ -387,7 +388,8 @@
       "feed": "East Bank",
       "source": "eemon",
       "unit": "litres",
-      "is_active": true
+      "is_active": true,
+      "is_main_meter": true
     },
     {
       "id": "b-ttw",
@@ -398,7 +400,8 @@
       "feed": "Towns",
       "source": "manual",
       "unit": "m3",
-      "is_active": true
+      "is_active": true,
+      "is_main_meter": true
     },
     {
       "id": "b-glr",
@@ -409,7 +412,8 @@
       "feed": "River",
       "source": "manual",
       "unit": "m3",
-      "is_active": true
+      "is_active": true,
+      "is_main_meter": true
     },
     {
       "id": "b-hmr",
@@ -453,7 +457,8 @@
       "feed": "Mains",
       "source": "manual",
       "unit": "m3",
-      "is_active": true
+      "is_active": true,
+      "is_main_meter": true
     },
     {
       "id": "w-m2",
@@ -464,7 +469,8 @@
       "feed": "Mains",
       "source": "manual",
       "unit": "m3",
-      "is_active": true
+      "is_active": true,
+      "is_main_meter": true
     },
     {
       "id": "w-pro",
@@ -491,33 +497,3042 @@
   ],
   "readings": [
     {
-      "id": "ea1404a0-b67f-4575-b67f-f14e6ae5e837",
-      "meter_id": "r-acp",
+      "id": "7fe3ad92-f052-496f-ab9e-35aa4489ca87",
+      "meter_id": "r-ams",
       "site_id": "rotherham",
-      "value": 125000,
+      "value": 6410,
       "usage": 0,
-      "date": "2026-05-19T00:00:00Z",
+      "date": "2025-11-27T15:53:50.619014+01:00",
       "source": "manual",
-      "notes": "test",
       "water_type": "towns"
     },
     {
-      "id": "0578367c-d33e-4413-b9e3-0d3b50b24249",
+      "id": "2675c275-8472-49dc-bf13-122138ff01ec",
+      "meter_id": "r-ams",
+      "site_id": "rotherham",
+      "value": 6423,
+      "usage": 13,
+      "date": "2025-12-04T15:53:50.619014+01:00",
+      "source": "manual",
+      "water_type": "towns"
+    },
+    {
+      "id": "0f76ab8d-7ec1-45de-8818-3d5b43b503f8",
+      "meter_id": "r-ams",
+      "site_id": "rotherham",
+      "value": 6444,
+      "usage": 21,
+      "date": "2025-12-11T15:53:50.619014+01:00",
+      "source": "manual",
+      "water_type": "towns"
+    },
+    {
+      "id": "3997f1db-f3ed-46a5-b764-f56ed235fd3b",
+      "meter_id": "r-ams",
+      "site_id": "rotherham",
+      "value": 6456,
+      "usage": 12,
+      "date": "2025-12-18T15:53:50.619014+01:00",
+      "source": "manual",
+      "water_type": "towns"
+    },
+    {
+      "id": "83a43678-b99d-4585-ad07-5cb25e80cf8f",
+      "meter_id": "r-ams",
+      "site_id": "rotherham",
+      "value": 6467,
+      "usage": 11,
+      "date": "2025-12-25T15:53:50.619014+01:00",
+      "source": "manual",
+      "water_type": "towns"
+    },
+    {
+      "id": "b0b2295a-d84e-4e85-aa0a-83c52ed0eeb4",
+      "meter_id": "r-ams",
+      "site_id": "rotherham",
+      "value": 6479,
+      "usage": 12,
+      "date": "2026-01-01T15:53:50.619014+01:00",
+      "source": "manual",
+      "water_type": "towns"
+    },
+    {
+      "id": "a2b2ecec-fe72-4f09-9608-b8073146ad02",
+      "meter_id": "r-ams",
+      "site_id": "rotherham",
+      "value": 6491,
+      "usage": 12,
+      "date": "2026-01-08T15:53:50.619014+01:00",
+      "source": "manual",
+      "water_type": "towns"
+    },
+    {
+      "id": "3b713170-9f3f-43a2-b1d2-859836f32e4d",
+      "meter_id": "r-ams",
+      "site_id": "rotherham",
+      "value": 6503,
+      "usage": 12,
+      "date": "2026-01-15T15:53:50.619014+01:00",
+      "source": "manual",
+      "water_type": "towns"
+    },
+    {
+      "id": "d6765064-a7ec-4ea1-aeec-775b9c4e5c33",
+      "meter_id": "r-ams",
+      "site_id": "rotherham",
+      "value": 6537,
+      "usage": 34,
+      "date": "2026-01-22T15:53:50.619014+01:00",
+      "source": "manual",
+      "water_type": "towns"
+    },
+    {
+      "id": "584ede28-1f10-4c2b-b633-3575d9aaffac",
+      "meter_id": "r-ams",
+      "site_id": "rotherham",
+      "value": 6542,
+      "usage": 5,
+      "date": "2026-01-29T15:53:50.619014+01:00",
+      "source": "manual",
+      "water_type": "towns"
+    },
+    {
+      "id": "5c0f1086-f6dc-410e-8036-269ae957cc6e",
+      "meter_id": "r-ams",
+      "site_id": "rotherham",
+      "value": 6549,
+      "usage": 7,
+      "date": "2026-02-05T15:53:50.619014+01:00",
+      "source": "manual",
+      "water_type": "towns"
+    },
+    {
+      "id": "a8edf59e-fbc8-4a71-b1c7-50db3fe63ae2",
+      "meter_id": "r-ams",
+      "site_id": "rotherham",
+      "value": 6549,
+      "usage": 0,
+      "date": "2026-02-12T15:53:50.619014+01:00",
+      "source": "manual",
+      "water_type": "towns"
+    },
+    {
+      "id": "bcbee5c5-ab19-4568-b0e9-4c4de3d0113d",
+      "meter_id": "r-ams",
+      "site_id": "rotherham",
+      "value": 6549,
+      "usage": 0,
+      "date": "2026-02-19T15:53:50.619014+01:00",
+      "source": "manual",
+      "water_type": "towns"
+    },
+    {
+      "id": "81332d3b-4744-453c-9758-d28132ad5f09",
+      "meter_id": "r-ams",
+      "site_id": "rotherham",
+      "value": 6549,
+      "usage": 0,
+      "date": "2026-02-26T15:53:50.619014+01:00",
+      "source": "manual",
+      "water_type": "towns"
+    },
+    {
+      "id": "fa6da51e-ba42-4f64-a6fa-839093dec69b",
+      "meter_id": "r-ams",
+      "site_id": "rotherham",
+      "value": 6549,
+      "usage": 0,
+      "date": "2026-03-05T15:53:50.619014+01:00",
+      "source": "manual",
+      "water_type": "towns"
+    },
+    {
+      "id": "4cd196d1-cd26-4970-85df-4b60c054ae3e",
+      "meter_id": "r-ams",
+      "site_id": "rotherham",
+      "value": 6549,
+      "usage": 0,
+      "date": "2026-03-12T15:53:50.619014+01:00",
+      "source": "manual",
+      "water_type": "towns"
+    },
+    {
+      "id": "7724083e-6b89-4937-967e-e7d03e34802b",
+      "meter_id": "r-ams",
+      "site_id": "rotherham",
+      "value": 6549,
+      "usage": 0,
+      "date": "2026-03-19T15:53:50.619014+01:00",
+      "source": "manual",
+      "water_type": "towns"
+    },
+    {
+      "id": "3b3c2cbb-a49a-4d6e-9994-f6a2383026bd",
+      "meter_id": "r-ams",
+      "site_id": "rotherham",
+      "value": 6549,
+      "usage": 0,
+      "date": "2026-03-26T15:53:50.619014+01:00",
+      "source": "manual",
+      "water_type": "towns"
+    },
+    {
+      "id": "511553c9-185b-4c4f-9008-8fba46d313aa",
+      "meter_id": "r-ams",
+      "site_id": "rotherham",
+      "value": 6549,
+      "usage": 0,
+      "date": "2026-04-02T15:53:50.619014+01:00",
+      "source": "manual",
+      "water_type": "towns"
+    },
+    {
+      "id": "96547816-ff60-4d90-8404-cd4c7a1eefdf",
+      "meter_id": "r-ams",
+      "site_id": "rotherham",
+      "value": 6549,
+      "usage": 0,
+      "date": "2026-04-09T15:53:50.619014+01:00",
+      "source": "manual",
+      "water_type": "towns"
+    },
+    {
+      "id": "e305be32-7b0f-4962-b63f-df021e742f25",
+      "meter_id": "r-ams",
+      "site_id": "rotherham",
+      "value": 6549,
+      "usage": 0,
+      "date": "2026-04-16T15:53:50.619014+01:00",
+      "source": "manual",
+      "water_type": "towns"
+    },
+    {
+      "id": "81f689d7-94cf-4fac-a5b6-afdb2cbd9111",
+      "meter_id": "r-ams",
+      "site_id": "rotherham",
+      "value": 6549,
+      "usage": 0,
+      "date": "2026-04-23T15:53:50.619014+01:00",
+      "source": "manual",
+      "water_type": "towns"
+    },
+    {
+      "id": "49a2f068-fb24-4f47-8105-98db48ef9fe6",
+      "meter_id": "r-ams",
+      "site_id": "rotherham",
+      "value": 6549,
+      "usage": 0,
+      "date": "2026-04-30T15:53:50.619014+01:00",
+      "source": "manual",
+      "water_type": "towns"
+    },
+    {
+      "id": "514d314b-4cf4-46b6-af97-20c0922d091b",
+      "meter_id": "s-sb",
+      "site_id": "stocksbridge",
+      "value": 100,
+      "usage": 0,
+      "date": "2026-01-27T15:53:50.619803+01:00",
+      "source": "eemon",
+      "water_type": "river"
+    },
+    {
+      "id": "d1a5ae8f-bbae-4033-a07d-178266959b54",
+      "meter_id": "s-sb",
+      "site_id": "stocksbridge",
+      "value": 105,
+      "usage": 5,
+      "date": "2026-04-27T15:53:50.619803+01:00",
+      "source": "eemon",
+      "water_type": "river"
+    },
+    {
+      "id": "03a40e4d-bc63-4fee-9bd5-cd3de0e2067a",
+      "meter_id": "s-eb",
+      "site_id": "stocksbridge",
+      "value": 2018210,
+      "usage": 0,
+      "date": "2026-01-27T15:53:50.619803+01:00",
+      "source": "eemon",
+      "water_type": "towns"
+    },
+    {
+      "id": "db3edd87-d1c9-49b0-8c15-c236a6ef7255",
+      "meter_id": "s-eb",
+      "site_id": "stocksbridge",
+      "value": 2150000,
+      "usage": 131790,
+      "date": "2026-04-27T15:53:50.619803+01:00",
+      "source": "eemon",
+      "water_type": "towns"
+    },
+    {
+      "id": "ddb9fcfb-c9cf-44b9-af89-ac0e63edebcf",
+      "meter_id": "b-ttw",
+      "site_id": "brinsworth",
+      "value": 45000,
+      "usage": 0,
+      "date": "2026-02-27T15:53:50.619862+01:00",
+      "source": "manual",
+      "water_type": "towns"
+    },
+    {
+      "id": "89452940-c55e-4a6b-b0f2-be329cecf2a4",
+      "meter_id": "b-ttw",
+      "site_id": "brinsworth",
+      "value": 48500,
+      "usage": 3500,
+      "date": "2026-03-29T15:53:50.619862+01:00",
+      "source": "manual",
+      "water_type": "towns"
+    },
+    {
+      "id": "4afedb28-b67e-45ec-a8b2-5c5763fb2181",
+      "meter_id": "b-ttw",
+      "site_id": "brinsworth",
+      "value": 52000,
+      "usage": 3500,
+      "date": "2026-04-28T15:53:50.619862+01:00",
+      "source": "manual",
+      "water_type": "towns"
+    },
+    {
+      "id": "1871369b-99a9-474b-97ae-f1cf0c9cdc5c",
+      "meter_id": "b-ttw",
+      "site_id": "brinsworth",
+      "value": 55500,
+      "usage": 3500,
+      "date": "2026-05-28T15:53:50.619862+01:00",
+      "source": "manual",
+      "water_type": "towns"
+    },
+    {
+      "id": "9e3f9d0c-ed95-4b08-b2dc-9a8612d16d62",
+      "meter_id": "b-glr",
+      "site_id": "brinsworth",
+      "value": 120000,
+      "usage": 0,
+      "date": "2026-02-27T15:53:50.619862+01:00",
+      "source": "manual",
+      "water_type": "river"
+    },
+    {
+      "id": "7fb43c51-e00d-43f3-a2e8-baaf58352fd5",
+      "meter_id": "b-glr",
+      "site_id": "brinsworth",
+      "value": 128000,
+      "usage": 8000,
+      "date": "2026-03-29T15:53:50.619862+01:00",
+      "source": "manual",
+      "water_type": "river"
+    },
+    {
+      "id": "c466c687-c50d-4bba-bec3-0ab11da1742b",
+      "meter_id": "b-glr",
+      "site_id": "brinsworth",
+      "value": 135000,
+      "usage": 7000,
+      "date": "2026-04-28T15:53:50.619862+01:00",
+      "source": "manual",
+      "water_type": "river"
+    },
+    {
+      "id": "bd8d677b-d850-4327-9af8-27258d943a42",
+      "meter_id": "b-glr",
+      "site_id": "brinsworth",
+      "value": 142000,
+      "usage": 7000,
+      "date": "2026-05-28T15:53:50.619862+01:00",
+      "source": "manual",
+      "water_type": "river"
+    },
+    {
+      "id": "10d88ddc-a4cd-4e81-897c-74ffdb246fe3",
+      "meter_id": "b-hrp",
+      "site_id": "brinsworth",
+      "value": 32000,
+      "usage": 0,
+      "date": "2026-02-27T15:53:50.619862+01:00",
+      "source": "trend",
+      "water_type": "river"
+    },
+    {
+      "id": "0ab729d4-b00c-45ce-b436-bf9cf5c84d21",
+      "meter_id": "b-hrp",
+      "site_id": "brinsworth",
+      "value": 35000,
+      "usage": 3000,
+      "date": "2026-03-29T15:53:50.619862+01:00",
+      "source": "trend",
+      "water_type": "river"
+    },
+    {
+      "id": "642b713c-7a32-4ac5-9af4-6d6ef0b2f406",
+      "meter_id": "b-hrp",
+      "site_id": "brinsworth",
+      "value": 38000,
+      "usage": 3000,
+      "date": "2026-04-28T15:53:50.619862+01:00",
+      "source": "trend",
+      "water_type": "river"
+    },
+    {
+      "id": "6fd0edc3-086d-487e-9649-8079919bbd94",
+      "meter_id": "b-hrp",
+      "site_id": "brinsworth",
+      "value": 41000,
+      "usage": 3000,
+      "date": "2026-05-28T15:53:50.619862+01:00",
+      "source": "trend",
+      "water_type": "river"
+    },
+    {
+      "id": "f2039ea6-e15a-48b3-af3d-cd6b7acdae05",
+      "meter_id": "w-ame",
+      "site_id": "wednesbury",
+      "value": 3200,
+      "usage": 0,
+      "date": "2026-02-27T15:53:50.619937+01:00",
+      "source": "manual",
+      "water_type": "towns"
+    },
+    {
+      "id": "22efc477-b37c-44a4-a096-cdf3551da077",
+      "meter_id": "w-ame",
+      "site_id": "wednesbury",
+      "value": 3450,
+      "usage": 250,
+      "date": "2026-03-29T15:53:50.619937+01:00",
+      "source": "manual",
+      "water_type": "towns"
+    },
+    {
+      "id": "584868e4-4046-4c08-8ca9-c75f6fe44b99",
+      "meter_id": "w-ame",
+      "site_id": "wednesbury",
+      "value": 3700,
+      "usage": 250,
+      "date": "2026-04-28T15:53:50.619937+01:00",
+      "source": "manual",
+      "water_type": "towns"
+    },
+    {
+      "id": "35d5493b-2103-4eb6-81ed-7eafd290d22a",
+      "meter_id": "w-ame",
+      "site_id": "wednesbury",
+      "value": 3950,
+      "usage": 250,
+      "date": "2026-05-28T15:53:50.619937+01:00",
+      "source": "manual",
+      "water_type": "towns"
+    },
+    {
+      "id": "4b1d6a67-a11e-4209-93b4-0f3f6ea31419",
+      "meter_id": "s-rms2",
+      "site_id": "stocksbridge",
+      "value": 1286108,
+      "usage": 0,
+      "date": "2026-01-27T15:53:50.619803+01:00",
+      "source": "eemon",
+      "water_type": "towns"
+    },
+    {
+      "id": "d83dc8f6-5011-42c5-8648-032952288e77",
+      "meter_id": "s-rms2",
+      "site_id": "stocksbridge",
+      "value": 1320000,
+      "usage": 33892,
+      "date": "2026-04-27T15:53:50.619803+01:00",
+      "source": "eemon",
+      "water_type": "towns"
+    },
+    {
+      "id": "4b82d975-4f83-49ee-ba0c-1e1bf527740d",
+      "meter_id": "s-vim",
+      "site_id": "stocksbridge",
+      "value": 2447,
+      "usage": 0,
+      "date": "2026-01-27T15:53:50.619803+01:00",
+      "source": "eemon",
+      "water_type": "towns"
+    },
+    {
+      "id": "70002a60-0501-4d96-9641-b1af737f3b0a",
+      "meter_id": "s-vim",
+      "site_id": "stocksbridge",
+      "value": 2650,
+      "usage": 203,
+      "date": "2026-04-27T15:53:50.619803+01:00",
+      "source": "eemon",
+      "water_type": "towns"
+    },
+    {
+      "id": "2236f2e6-35f7-47d9-8589-dd3dae4cf379",
+      "meter_id": "r-vd",
+      "site_id": "rotherham",
+      "value": 404781,
+      "usage": 0,
+      "date": "2025-11-27T15:53:50.619014+01:00",
+      "source": "manual",
+      "water_type": "towns"
+    },
+    {
+      "id": "9e5e09a5-6176-460b-b556-414a077d8546",
+      "meter_id": "r-vd",
+      "site_id": "rotherham",
+      "value": 404781,
+      "usage": 0,
+      "date": "2025-12-04T15:53:50.619014+01:00",
+      "source": "manual",
+      "water_type": "towns"
+    },
+    {
+      "id": "3be790d2-f921-4b8d-ada7-54b3be98b2c8",
+      "meter_id": "r-vd",
+      "site_id": "rotherham",
+      "value": 404781,
+      "usage": 0,
+      "date": "2025-12-11T15:53:50.619014+01:00",
+      "source": "manual",
+      "water_type": "towns"
+    },
+    {
+      "id": "6ce10efa-fcc5-4ca2-ae3a-1a52790d5569",
+      "meter_id": "r-vd",
+      "site_id": "rotherham",
+      "value": 404781,
+      "usage": 0,
+      "date": "2025-12-18T15:53:50.619014+01:00",
+      "source": "manual",
+      "water_type": "towns"
+    },
+    {
+      "id": "31da57d6-4dc9-4832-bbb5-3f31e0733e1d",
+      "meter_id": "r-vd",
+      "site_id": "rotherham",
+      "value": 404781,
+      "usage": 0,
+      "date": "2025-12-25T15:53:50.619014+01:00",
+      "source": "manual",
+      "water_type": "towns"
+    },
+    {
+      "id": "14cd53a0-c635-48b1-a5d6-66c22e22ea44",
+      "meter_id": "r-vd",
+      "site_id": "rotherham",
+      "value": 404781,
+      "usage": 0,
+      "date": "2026-01-01T15:53:50.619014+01:00",
+      "source": "manual",
+      "water_type": "towns"
+    },
+    {
+      "id": "19f38321-8ad9-4187-ba19-192211fae982",
+      "meter_id": "r-vd",
+      "site_id": "rotherham",
+      "value": 404781,
+      "usage": 0,
+      "date": "2026-01-08T15:53:50.619014+01:00",
+      "source": "manual",
+      "water_type": "towns"
+    },
+    {
+      "id": "19a7f485-6fcf-41f5-8164-3672ab05c4b6",
+      "meter_id": "r-vd",
+      "site_id": "rotherham",
+      "value": 404781,
+      "usage": 0,
+      "date": "2026-01-15T15:53:50.619014+01:00",
+      "source": "manual",
+      "water_type": "towns"
+    },
+    {
+      "id": "eac15049-c0ef-4505-a1d7-81c8fd000f08",
+      "meter_id": "r-vd",
+      "site_id": "rotherham",
+      "value": 404781,
+      "usage": 0,
+      "date": "2026-01-22T15:53:50.619014+01:00",
+      "source": "manual",
+      "water_type": "towns"
+    },
+    {
+      "id": "ecdc4bc5-15ff-4061-86db-bd0f6c2a2bcb",
+      "meter_id": "r-vd",
+      "site_id": "rotherham",
+      "value": 404781,
+      "usage": 0,
+      "date": "2026-01-29T15:53:50.619014+01:00",
+      "source": "manual",
+      "water_type": "towns"
+    },
+    {
+      "id": "b18dfd43-6b3f-4e00-9c6d-e3667aa98247",
+      "meter_id": "r-vd",
+      "site_id": "rotherham",
+      "value": 404781,
+      "usage": 0,
+      "date": "2026-02-05T15:53:50.619014+01:00",
+      "source": "manual",
+      "water_type": "towns"
+    },
+    {
+      "id": "08b329e3-0797-4fd4-a65d-54a7cf4d4b88",
+      "meter_id": "r-vd",
+      "site_id": "rotherham",
+      "value": 404781,
+      "usage": 0,
+      "date": "2026-02-12T15:53:50.619014+01:00",
+      "source": "manual",
+      "water_type": "towns"
+    },
+    {
+      "id": "dea63c6a-243c-47c3-abe2-14d7fd89d0df",
+      "meter_id": "r-vd",
+      "site_id": "rotherham",
+      "value": 404781,
+      "usage": 0,
+      "date": "2026-02-19T15:53:50.619014+01:00",
+      "source": "manual",
+      "water_type": "towns"
+    },
+    {
+      "id": "4e62ae91-af97-497b-bfe1-36f18e0e5764",
+      "meter_id": "r-vd",
+      "site_id": "rotherham",
+      "value": 404781,
+      "usage": 0,
+      "date": "2026-02-26T15:53:50.619014+01:00",
+      "source": "manual",
+      "water_type": "towns"
+    },
+    {
+      "id": "109ccff3-a76a-4280-a372-fcbc82de5705",
+      "meter_id": "r-vd",
+      "site_id": "rotherham",
+      "value": 404781,
+      "usage": 0,
+      "date": "2026-03-05T15:53:50.619014+01:00",
+      "source": "manual",
+      "water_type": "towns"
+    },
+    {
+      "id": "abf571ed-6b36-47ac-afb8-108aec105f77",
+      "meter_id": "r-vd",
+      "site_id": "rotherham",
+      "value": 404781,
+      "usage": 0,
+      "date": "2026-03-12T15:53:50.619014+01:00",
+      "source": "manual",
+      "water_type": "towns"
+    },
+    {
+      "id": "c70e3aac-947c-42be-9b9c-2d9ecf486ef1",
+      "meter_id": "r-vd",
+      "site_id": "rotherham",
+      "value": 404781,
+      "usage": 0,
+      "date": "2026-03-19T15:53:50.619014+01:00",
+      "source": "manual",
+      "water_type": "towns"
+    },
+    {
+      "id": "ee50bf40-bc78-46cf-8625-f150f699c782",
+      "meter_id": "r-vd",
+      "site_id": "rotherham",
+      "value": 404781,
+      "usage": 0,
+      "date": "2026-03-26T15:53:50.619014+01:00",
+      "source": "manual",
+      "water_type": "towns"
+    },
+    {
+      "id": "c02d90d2-dea9-4046-9a2f-9fb5439b182c",
+      "meter_id": "r-vd",
+      "site_id": "rotherham",
+      "value": 404781,
+      "usage": 0,
+      "date": "2026-04-02T15:53:50.619014+01:00",
+      "source": "manual",
+      "water_type": "towns"
+    },
+    {
+      "id": "06c79ea9-44c7-4953-b47a-3fa9d95ff1fc",
+      "meter_id": "r-vd",
+      "site_id": "rotherham",
+      "value": 404781,
+      "usage": 0,
+      "date": "2026-04-09T15:53:50.619014+01:00",
+      "source": "manual",
+      "water_type": "towns"
+    },
+    {
+      "id": "f8fde359-053b-4aba-a213-88d52e78c1fa",
+      "meter_id": "r-vd",
+      "site_id": "rotherham",
+      "value": 404781,
+      "usage": 0,
+      "date": "2026-04-16T15:53:50.619014+01:00",
+      "source": "manual",
+      "water_type": "towns"
+    },
+    {
+      "id": "4455b2b1-916a-41c9-9b3b-aca47810e098",
+      "meter_id": "r-vd",
+      "site_id": "rotherham",
+      "value": 404781,
+      "usage": 0,
+      "date": "2026-04-23T15:53:50.619014+01:00",
+      "source": "manual",
+      "water_type": "towns"
+    },
+    {
+      "id": "64576b43-0e66-42e2-bc92-4085d5058a11",
+      "meter_id": "r-vd",
+      "site_id": "rotherham",
+      "value": 404781,
+      "usage": 0,
+      "date": "2026-04-30T15:53:50.619014+01:00",
+      "source": "manual",
+      "water_type": "towns"
+    },
+    {
+      "id": "4b97d577-860a-40c5-84fb-c7044f9f448c",
+      "meter_id": "r-bbr",
+      "site_id": "rotherham",
+      "value": 886932,
+      "usage": 0,
+      "date": "2025-11-27T15:53:50.619014+01:00",
+      "source": "manual",
+      "water_type": "towns"
+    },
+    {
+      "id": "9646f319-9b00-4c04-8dc4-f69aacc2648d",
+      "meter_id": "r-bbr",
+      "site_id": "rotherham",
+      "value": 887060,
+      "usage": 128,
+      "date": "2025-12-04T15:53:50.619014+01:00",
+      "source": "manual",
+      "water_type": "towns"
+    },
+    {
+      "id": "8b437ddd-9fa3-4ae4-9f31-79411d98db61",
+      "meter_id": "r-bbr",
+      "site_id": "rotherham",
+      "value": 887208,
+      "usage": 148,
+      "date": "2025-12-11T15:53:50.619014+01:00",
+      "source": "manual",
+      "water_type": "towns"
+    },
+    {
+      "id": "5f15505a-4735-432c-9438-90cfcb67cbe5",
+      "meter_id": "r-bbr",
+      "site_id": "rotherham",
+      "value": 887332,
+      "usage": 124,
+      "date": "2025-12-18T15:53:50.619014+01:00",
+      "source": "manual",
+      "water_type": "towns"
+    },
+    {
+      "id": "37153a0f-3d19-4e0b-80b1-96d0d4a711f2",
+      "meter_id": "r-bbr",
+      "site_id": "rotherham",
+      "value": 887455,
+      "usage": 123,
+      "date": "2025-12-25T15:53:50.619014+01:00",
+      "source": "manual",
+      "water_type": "towns"
+    },
+    {
+      "id": "5d8839c4-5006-479d-9460-96b80309198e",
+      "meter_id": "r-bbr",
+      "site_id": "rotherham",
+      "value": 887576,
+      "usage": 121,
+      "date": "2026-01-01T15:53:50.619014+01:00",
+      "source": "manual",
+      "water_type": "towns"
+    },
+    {
+      "id": "3730a594-8a52-40ab-938a-8884ddfb3f99",
+      "meter_id": "r-bbr",
+      "site_id": "rotherham",
+      "value": 887576,
+      "usage": 0,
+      "date": "2026-01-08T15:53:50.619014+01:00",
+      "source": "manual",
+      "water_type": "towns"
+    },
+    {
+      "id": "fa577834-9c46-42a4-a266-bd023bbe6344",
+      "meter_id": "r-bbr",
+      "site_id": "rotherham",
+      "value": 887576,
+      "usage": 0,
+      "date": "2026-01-15T15:53:50.619014+01:00",
+      "source": "manual",
+      "water_type": "towns"
+    },
+    {
+      "id": "a125cbef-7bfa-4d4e-92f6-32e984d65dec",
+      "meter_id": "r-bbr",
+      "site_id": "rotherham",
+      "value": 887576,
+      "usage": 0,
+      "date": "2026-01-22T15:53:50.619014+01:00",
+      "source": "manual",
+      "water_type": "towns"
+    },
+    {
+      "id": "ba257ff8-ddea-4d4c-adb9-6b640a15e4f8",
+      "meter_id": "r-bbr",
+      "site_id": "rotherham",
+      "value": 887576,
+      "usage": 0,
+      "date": "2026-01-29T15:53:50.619014+01:00",
+      "source": "manual",
+      "water_type": "towns"
+    },
+    {
+      "id": "74059c4c-8143-4cd2-a6ca-9acf9d50d1b2",
+      "meter_id": "r-bbr",
+      "site_id": "rotherham",
+      "value": 887576,
+      "usage": 0,
+      "date": "2026-02-05T15:53:50.619014+01:00",
+      "source": "manual",
+      "water_type": "towns"
+    },
+    {
+      "id": "f29690bb-8d4c-4633-a9ba-b1c743fe17d5",
+      "meter_id": "r-bbr",
+      "site_id": "rotherham",
+      "value": 887576,
+      "usage": 0,
+      "date": "2026-02-12T15:53:50.619014+01:00",
+      "source": "manual",
+      "water_type": "towns"
+    },
+    {
+      "id": "abcb47b9-5d87-4ae4-9288-3b30ab5432b6",
+      "meter_id": "r-bbr",
+      "site_id": "rotherham",
+      "value": 887576,
+      "usage": 0,
+      "date": "2026-02-19T15:53:50.619014+01:00",
+      "source": "manual",
+      "water_type": "towns"
+    },
+    {
+      "id": "78835ac2-4497-461c-80d4-03dd28005d8f",
+      "meter_id": "r-bbr",
+      "site_id": "rotherham",
+      "value": 887576,
+      "usage": 0,
+      "date": "2026-02-26T15:53:50.619014+01:00",
+      "source": "manual",
+      "water_type": "towns"
+    },
+    {
+      "id": "079be915-ea6c-4964-a446-a9cb2528fa8d",
+      "meter_id": "r-bbr",
+      "site_id": "rotherham",
+      "value": 887576,
+      "usage": 0,
+      "date": "2026-03-05T15:53:50.619014+01:00",
+      "source": "manual",
+      "water_type": "towns"
+    },
+    {
+      "id": "c911e5c8-08e6-4ef6-888b-a976d916c6bb",
+      "meter_id": "r-bbr",
+      "site_id": "rotherham",
+      "value": 887576,
+      "usage": 0,
+      "date": "2026-03-12T15:53:50.619014+01:00",
+      "source": "manual",
+      "water_type": "towns"
+    },
+    {
+      "id": "50d89445-2cf2-4e67-ba3e-acf58baaa30d",
+      "meter_id": "r-bbr",
+      "site_id": "rotherham",
+      "value": 887576,
+      "usage": 0,
+      "date": "2026-03-19T15:53:50.619014+01:00",
+      "source": "manual",
+      "water_type": "towns"
+    },
+    {
+      "id": "d051cdb4-2358-4012-8705-8fb8df407e0a",
+      "meter_id": "r-bbr",
+      "site_id": "rotherham",
+      "value": 887576,
+      "usage": 0,
+      "date": "2026-03-26T15:53:50.619014+01:00",
+      "source": "manual",
+      "water_type": "towns"
+    },
+    {
+      "id": "2d280ad0-7be2-4c67-91ac-83c7309a9791",
+      "meter_id": "r-bbr",
+      "site_id": "rotherham",
+      "value": 887576,
+      "usage": 0,
+      "date": "2026-04-02T15:53:50.619014+01:00",
+      "source": "manual",
+      "water_type": "towns"
+    },
+    {
+      "id": "d679fb84-4dd9-404d-b168-c06aa803199c",
+      "meter_id": "r-bbr",
+      "site_id": "rotherham",
+      "value": 887576,
+      "usage": 0,
+      "date": "2026-04-09T15:53:50.619014+01:00",
+      "source": "manual",
+      "water_type": "towns"
+    },
+    {
+      "id": "a61cc768-da13-42dd-9ad1-a9042aa7ca3a",
+      "meter_id": "r-bbr",
+      "site_id": "rotherham",
+      "value": 887576,
+      "usage": 0,
+      "date": "2026-04-16T15:53:50.619014+01:00",
+      "source": "manual",
+      "water_type": "towns"
+    },
+    {
+      "id": "8f3cf8fc-4f6c-4fbd-a5ed-ec4ca0bf148b",
+      "meter_id": "r-bbr",
+      "site_id": "rotherham",
+      "value": 887576,
+      "usage": 0,
+      "date": "2026-04-23T15:53:50.619014+01:00",
+      "source": "manual",
+      "water_type": "towns"
+    },
+    {
+      "id": "1724f781-d5b8-4204-b859-4c785cc3ea09",
+      "meter_id": "r-bbr",
+      "site_id": "rotherham",
+      "value": 887576,
+      "usage": 0,
+      "date": "2026-04-30T15:53:50.619014+01:00",
+      "source": "manual",
+      "water_type": "towns"
+    },
+    {
+      "id": "ca98fe5d-0d31-454c-b54b-2483adfb1345",
+      "meter_id": "r-cew",
+      "site_id": "rotherham",
+      "value": 9276930,
+      "usage": 0,
+      "date": "2025-11-27T15:53:50.619014+01:00",
+      "source": "manual",
+      "water_type": "towns"
+    },
+    {
+      "id": "d0948d72-696f-4c88-a4a9-a628cf43e94f",
+      "meter_id": "r-cew",
+      "site_id": "rotherham",
+      "value": 9279635,
+      "usage": 2705,
+      "date": "2025-12-04T15:53:50.619014+01:00",
+      "source": "manual",
+      "water_type": "towns"
+    },
+    {
+      "id": "e2f12886-7e68-4353-831a-2c860b7a7df2",
+      "meter_id": "r-cew",
+      "site_id": "rotherham",
+      "value": 9282337,
+      "usage": 2702,
+      "date": "2025-12-11T15:53:50.619014+01:00",
+      "source": "manual",
+      "water_type": "towns"
+    },
+    {
+      "id": "27f63acd-2d34-4896-92c8-802b69479b45",
+      "meter_id": "r-cew",
+      "site_id": "rotherham",
+      "value": 9285069,
+      "usage": 2732,
+      "date": "2025-12-18T15:53:50.619014+01:00",
+      "source": "manual",
+      "water_type": "towns"
+    },
+    {
+      "id": "3d1d6abd-d118-4faf-b335-c11549d0bced",
+      "meter_id": "r-cew",
+      "site_id": "rotherham",
+      "value": 9287612,
+      "usage": 2543,
+      "date": "2025-12-25T15:53:50.619014+01:00",
+      "source": "manual",
+      "water_type": "towns"
+    },
+    {
+      "id": "a2cf216b-f073-4612-8ae0-4178ced8e9a1",
+      "meter_id": "r-cew",
+      "site_id": "rotherham",
+      "value": 9290313,
+      "usage": 2701,
+      "date": "2026-01-01T15:53:50.619014+01:00",
+      "source": "manual",
+      "water_type": "towns"
+    },
+    {
+      "id": "f95d09b9-62b8-44cb-b539-eccf4e92cee9",
+      "meter_id": "r-cew",
+      "site_id": "rotherham",
+      "value": 9292913,
+      "usage": 2600,
+      "date": "2026-01-08T15:53:50.619014+01:00",
+      "source": "manual",
+      "water_type": "towns"
+    },
+    {
+      "id": "7e7a22fd-f7e7-4348-89ee-024befa47538",
+      "meter_id": "r-cew",
+      "site_id": "rotherham",
+      "value": 9295551,
+      "usage": 2638,
+      "date": "2026-01-15T15:53:50.619014+01:00",
+      "source": "manual",
+      "water_type": "towns"
+    },
+    {
+      "id": "efb9f310-76d7-467f-b369-8953fd06ef37",
+      "meter_id": "r-cew",
+      "site_id": "rotherham",
+      "value": 9302665,
+      "usage": 7114,
+      "date": "2026-01-22T15:53:50.619014+01:00",
+      "source": "manual",
+      "water_type": "towns"
+    },
+    {
+      "id": "9c303b19-b14f-4c52-9f5e-d41e1d7b770d",
+      "meter_id": "r-cew",
+      "site_id": "rotherham",
+      "value": 9303396,
+      "usage": 731,
+      "date": "2026-01-29T15:53:50.619014+01:00",
+      "source": "manual",
+      "water_type": "towns"
+    },
+    {
+      "id": "651c8837-5609-440b-acac-acd356144957",
+      "meter_id": "r-cew",
+      "site_id": "rotherham",
+      "value": 9306427,
+      "usage": 3031,
+      "date": "2026-02-05T15:53:50.619014+01:00",
+      "source": "manual",
+      "water_type": "towns"
+    },
+    {
+      "id": "5c9d2548-0065-4010-acad-0b44d9e56051",
+      "meter_id": "r-cew",
+      "site_id": "rotherham",
+      "value": 9309562,
+      "usage": 3135,
+      "date": "2026-02-12T15:53:50.619014+01:00",
+      "source": "manual",
+      "water_type": "towns"
+    },
+    {
+      "id": "d25ca323-d3e4-4863-aa1c-c3d2639464a8",
+      "meter_id": "r-cew",
+      "site_id": "rotherham",
+      "value": 9311927,
+      "usage": 2365,
+      "date": "2026-02-19T15:53:50.619014+01:00",
+      "source": "manual",
+      "water_type": "towns"
+    },
+    {
+      "id": "fc58e3aa-3442-4c85-9057-5f45df545da9",
+      "meter_id": "r-cew",
+      "site_id": "rotherham",
+      "value": 9314663,
+      "usage": 2736,
+      "date": "2026-02-26T15:53:50.619014+01:00",
+      "source": "manual",
+      "water_type": "towns"
+    },
+    {
+      "id": "0a5ff0f5-4e43-413a-b51d-ab779da5e99e",
+      "meter_id": "r-cew",
+      "site_id": "rotherham",
+      "value": 9317478,
+      "usage": 2815,
+      "date": "2026-03-05T15:53:50.619014+01:00",
+      "source": "manual",
+      "water_type": "towns"
+    },
+    {
+      "id": "c7ff06b5-36be-4543-999c-a704c8bc27f6",
+      "meter_id": "r-cew",
+      "site_id": "rotherham",
+      "value": 9320648,
+      "usage": 3170,
+      "date": "2026-03-12T15:53:50.619014+01:00",
+      "source": "manual",
+      "water_type": "towns"
+    },
+    {
+      "id": "bdfaf3a1-d527-47fa-9f2f-996410d7b35b",
+      "meter_id": "r-cew",
+      "site_id": "rotherham",
+      "value": 9323057,
+      "usage": 2409,
+      "date": "2026-03-19T15:53:50.619014+01:00",
+      "source": "manual",
+      "water_type": "towns"
+    },
+    {
+      "id": "1ffa3206-1cdf-4e1b-9dd8-d16273616315",
+      "meter_id": "r-cew",
+      "site_id": "rotherham",
+      "value": 9325874,
+      "usage": 2817,
+      "date": "2026-03-26T15:53:50.619014+01:00",
+      "source": "manual",
+      "water_type": "towns"
+    },
+    {
+      "id": "f1072ae5-69e8-4f65-abd3-ca830adc7a71",
+      "meter_id": "r-cew",
+      "site_id": "rotherham",
+      "value": 9328657,
+      "usage": 2783,
+      "date": "2026-04-02T15:53:50.619014+01:00",
+      "source": "manual",
+      "water_type": "towns"
+    },
+    {
+      "id": "acc08c29-e6ca-485f-b39c-a7fda272e797",
+      "meter_id": "r-cew",
+      "site_id": "rotherham",
+      "value": 9331469,
+      "usage": 2812,
+      "date": "2026-04-09T15:53:50.619014+01:00",
+      "source": "manual",
+      "water_type": "towns"
+    },
+    {
+      "id": "0f0ca861-0f91-4b50-8b71-41ae152aba36",
+      "meter_id": "r-cew",
+      "site_id": "rotherham",
+      "value": 9334187,
+      "usage": 2718,
+      "date": "2026-04-16T15:53:50.619014+01:00",
+      "source": "manual",
+      "water_type": "towns"
+    },
+    {
+      "id": "a31b12bb-ea03-4915-99df-d232ddeb121f",
+      "meter_id": "r-cew",
+      "site_id": "rotherham",
+      "value": 9337073,
+      "usage": 2886,
+      "date": "2026-04-23T15:53:50.619014+01:00",
+      "source": "manual",
+      "water_type": "towns"
+    },
+    {
+      "id": "ecb30c7c-d9e3-4ef4-846e-e5f7fe3281f1",
+      "meter_id": "r-cew",
+      "site_id": "rotherham",
+      "value": 9339928,
+      "usage": 2855,
+      "date": "2026-04-30T15:53:50.619014+01:00",
+      "source": "manual",
+      "water_type": "towns"
+    },
+    {
+      "id": "a16df46c-df5a-4f66-8371-9d13227882d6",
+      "meter_id": "s-wq2",
+      "site_id": "stocksbridge",
+      "value": 394740,
+      "usage": 0,
+      "date": "2026-01-27T15:53:50.619803+01:00",
+      "source": "eemon",
+      "water_type": "river"
+    },
+    {
+      "id": "5decec79-fa29-4967-841f-fdbb042ba947",
+      "meter_id": "s-wq2",
+      "site_id": "stocksbridge",
+      "value": 410000,
+      "usage": 15260,
+      "date": "2026-04-27T15:53:50.619803+01:00",
+      "source": "eemon",
+      "water_type": "river"
+    },
+    {
+      "id": "38570930-9c60-4368-9192-e38e01df5dc4",
+      "meter_id": "s-croft",
+      "site_id": "stocksbridge",
+      "value": 87830808,
+      "usage": 0,
+      "date": "2026-01-27T15:53:50.619803+01:00",
+      "source": "eemon",
+      "water_type": "towns"
+    },
+    {
+      "id": "7449960f-0961-4c33-bf33-fb9e2998bc1c",
+      "meter_id": "s-croft",
+      "site_id": "stocksbridge",
+      "value": 88500000,
+      "usage": 669192,
+      "date": "2026-04-27T15:53:50.619803+01:00",
+      "source": "eemon",
+      "water_type": "towns"
+    },
+    {
+      "id": "4e30ea1a-0cec-44c5-a6fb-efc8d8b5e1c6",
+      "meter_id": "w-pro",
+      "site_id": "wednesbury",
+      "value": 8500,
+      "usage": 0,
+      "date": "2026-02-27T15:53:50.619937+01:00",
+      "source": "manual",
+      "water_type": "towns"
+    },
+    {
+      "id": "cb30aa5d-b77c-4330-ac5a-f2f0786c871e",
+      "meter_id": "w-pro",
+      "site_id": "wednesbury",
+      "value": 9200,
+      "usage": 700,
+      "date": "2026-03-29T15:53:50.619937+01:00",
+      "source": "manual",
+      "water_type": "towns"
+    },
+    {
+      "id": "49687961-cde3-4566-80a7-235312722283",
+      "meter_id": "w-pro",
+      "site_id": "wednesbury",
+      "value": 9900,
+      "usage": 700,
+      "date": "2026-04-28T15:53:50.619937+01:00",
+      "source": "manual",
+      "water_type": "towns"
+    },
+    {
+      "id": "90c81b75-e2ef-436e-8c0f-9f951b71b753",
+      "meter_id": "w-pro",
+      "site_id": "wednesbury",
+      "value": 10600,
+      "usage": 700,
+      "date": "2026-05-28T15:53:50.619937+01:00",
+      "source": "manual",
+      "water_type": "towns"
+    },
+    {
+      "id": "35f9c278-b69b-421e-9268-08198db39b38",
       "meter_id": "r-acp",
       "site_id": "rotherham",
-      "value": 125000,
+      "value": 122732,
       "usage": 0,
-      "date": "2026-05-19T00:00:00Z",
+      "date": "2025-11-27T15:53:50.619014+01:00",
       "source": "manual",
-      "notes": "test",
       "water_type": "towns"
+    },
+    {
+      "id": "a3231a49-7e78-4a66-825d-ddfecc0f8feb",
+      "meter_id": "r-acp",
+      "site_id": "rotherham",
+      "value": 122748,
+      "usage": 16,
+      "date": "2025-12-04T15:53:50.619014+01:00",
+      "source": "manual",
+      "water_type": "towns"
+    },
+    {
+      "id": "ca2d9a73-e6c6-4eb7-ae27-8f4a81970a48",
+      "meter_id": "r-acp",
+      "site_id": "rotherham",
+      "value": 122765,
+      "usage": 17,
+      "date": "2025-12-11T15:53:50.619014+01:00",
+      "source": "manual",
+      "water_type": "towns"
+    },
+    {
+      "id": "ce556744-479c-46bd-bb7d-a8d90b6ca871",
+      "meter_id": "r-acp",
+      "site_id": "rotherham",
+      "value": 122778,
+      "usage": 13,
+      "date": "2025-12-18T15:53:50.619014+01:00",
+      "source": "manual",
+      "water_type": "towns"
+    },
+    {
+      "id": "59e77117-b8ef-4010-93b5-06333e495cef",
+      "meter_id": "r-acp",
+      "site_id": "rotherham",
+      "value": 122789,
+      "usage": 11,
+      "date": "2025-12-25T15:53:50.619014+01:00",
+      "source": "manual",
+      "water_type": "towns"
+    },
+    {
+      "id": "5fb68648-acff-4e89-86b6-012dbea20636",
+      "meter_id": "r-acp",
+      "site_id": "rotherham",
+      "value": 122800,
+      "usage": 11,
+      "date": "2026-01-01T15:53:50.619014+01:00",
+      "source": "manual",
+      "water_type": "towns"
+    },
+    {
+      "id": "53348458-7cc5-47ff-bec5-8e709ec8855d",
+      "meter_id": "r-acp",
+      "site_id": "rotherham",
+      "value": 122814,
+      "usage": 14,
+      "date": "2026-01-08T15:53:50.619014+01:00",
+      "source": "manual",
+      "water_type": "towns"
+    },
+    {
+      "id": "355f70a2-2e9e-4fdb-9ad5-e7d87a6e1111",
+      "meter_id": "r-acp",
+      "site_id": "rotherham",
+      "value": 122829,
+      "usage": 15,
+      "date": "2026-01-15T15:53:50.619014+01:00",
+      "source": "manual",
+      "water_type": "towns"
+    },
+    {
+      "id": "9a4af279-86b2-4666-b203-5f811a66ae13",
+      "meter_id": "r-acp",
+      "site_id": "rotherham",
+      "value": 122839,
+      "usage": 10,
+      "date": "2026-01-22T15:53:50.619014+01:00",
+      "source": "manual",
+      "water_type": "towns"
+    },
+    {
+      "id": "c17cda86-ed29-4bc8-9982-5fa2d3e13e0f",
+      "meter_id": "r-acp",
+      "site_id": "rotherham",
+      "value": 122847,
+      "usage": 8,
+      "date": "2026-01-29T15:53:50.619014+01:00",
+      "source": "manual",
+      "water_type": "towns"
+    },
+    {
+      "id": "26a577ec-5e70-4561-9262-f1fe19e05397",
+      "meter_id": "r-acp",
+      "site_id": "rotherham",
+      "value": 123314,
+      "usage": 467,
+      "date": "2026-02-05T15:53:50.619014+01:00",
+      "source": "manual",
+      "water_type": "towns"
+    },
+    {
+      "id": "753a0166-db34-4d59-a29d-daab38f7b3c2",
+      "meter_id": "r-acp",
+      "site_id": "rotherham",
+      "value": 123337,
+      "usage": 23,
+      "date": "2026-02-12T15:53:50.619014+01:00",
+      "source": "manual",
+      "water_type": "towns"
+    },
+    {
+      "id": "1d14c38e-ce3d-483a-bdfd-30e7bfabd976",
+      "meter_id": "r-acp",
+      "site_id": "rotherham",
+      "value": 123351,
+      "usage": 14,
+      "date": "2026-02-19T15:53:50.619014+01:00",
+      "source": "manual",
+      "water_type": "towns"
+    },
+    {
+      "id": "57d9c2f9-2194-4cda-b688-1aed71c76a84",
+      "meter_id": "r-acp",
+      "site_id": "rotherham",
+      "value": 123372,
+      "usage": 21,
+      "date": "2026-02-26T15:53:50.619014+01:00",
+      "source": "manual",
+      "water_type": "towns"
+    },
+    {
+      "id": "5c90ea07-43f7-46fd-832c-5bf2c6a6b40c",
+      "meter_id": "r-acp",
+      "site_id": "rotherham",
+      "value": 123397,
+      "usage": 25,
+      "date": "2026-03-05T15:53:50.619014+01:00",
+      "source": "manual",
+      "water_type": "towns"
+    },
+    {
+      "id": "b7e33c99-54b0-4a83-adba-82c1bbc0b958",
+      "meter_id": "r-acp",
+      "site_id": "rotherham",
+      "value": 123421,
+      "usage": 24,
+      "date": "2026-03-12T15:53:50.619014+01:00",
+      "source": "manual",
+      "water_type": "towns"
+    },
+    {
+      "id": "3540eab9-6aa5-453e-80a1-2e7245da0336",
+      "meter_id": "r-acp",
+      "site_id": "rotherham",
+      "value": 123440,
+      "usage": 19,
+      "date": "2026-03-19T15:53:50.619014+01:00",
+      "source": "manual",
+      "water_type": "towns"
+    },
+    {
+      "id": "07c1eb28-a681-46d2-bee7-ae6b8cee6d8c",
+      "meter_id": "r-acp",
+      "site_id": "rotherham",
+      "value": 123460,
+      "usage": 20,
+      "date": "2026-03-26T15:53:50.619014+01:00",
+      "source": "manual",
+      "water_type": "towns"
+    },
+    {
+      "id": "c6218a99-dafd-4f77-8d6d-6f19dc6001b6",
+      "meter_id": "r-acp",
+      "site_id": "rotherham",
+      "value": 123490,
+      "usage": 30,
+      "date": "2026-04-02T15:53:50.619014+01:00",
+      "source": "manual",
+      "water_type": "towns"
+    },
+    {
+      "id": "5d3a0128-e515-493f-8c34-2806bf283710",
+      "meter_id": "r-acp",
+      "site_id": "rotherham",
+      "value": 123523,
+      "usage": 33,
+      "date": "2026-04-09T15:53:50.619014+01:00",
+      "source": "manual",
+      "water_type": "towns"
+    },
+    {
+      "id": "ebe70fff-3828-45e0-ade8-8be35c25dd28",
+      "meter_id": "r-acp",
+      "site_id": "rotherham",
+      "value": 123547,
+      "usage": 24,
+      "date": "2026-04-16T15:53:50.619014+01:00",
+      "source": "manual",
+      "water_type": "towns"
+    },
+    {
+      "id": "4994aeae-b560-4eb9-88bc-8a2916b5e4ae",
+      "meter_id": "r-acp",
+      "site_id": "rotherham",
+      "value": 123574,
+      "usage": 27,
+      "date": "2026-04-23T15:53:50.619014+01:00",
+      "source": "manual",
+      "water_type": "towns"
+    },
+    {
+      "id": "47e2fdfc-39e3-489b-b52e-65d7f6155c5c",
+      "meter_id": "r-acp",
+      "site_id": "rotherham",
+      "value": 123600,
+      "usage": 26,
+      "date": "2026-04-30T15:53:50.619014+01:00",
+      "source": "manual",
+      "water_type": "towns"
+    },
+    {
+      "id": "3cf91844-7e96-4d71-aa33-a260d2cc9b76",
+      "meter_id": "r-boc",
+      "site_id": "rotherham",
+      "value": 430129,
+      "usage": 0,
+      "date": "2025-11-27T15:53:50.619014+01:00",
+      "source": "manual",
+      "water_type": "towns"
+    },
+    {
+      "id": "cb48bbe6-ba46-4eb5-8a85-c387d7415820",
+      "meter_id": "r-boc",
+      "site_id": "rotherham",
+      "value": 432449,
+      "usage": 2320,
+      "date": "2025-12-04T15:53:50.619014+01:00",
+      "source": "manual",
+      "water_type": "towns"
+    },
+    {
+      "id": "38c576c8-39e9-49d4-a9e2-1114251ff716",
+      "meter_id": "r-boc",
+      "site_id": "rotherham",
+      "value": 434384,
+      "usage": 1935,
+      "date": "2025-12-11T15:53:50.619014+01:00",
+      "source": "manual",
+      "water_type": "towns"
+    },
+    {
+      "id": "54c50d6c-daf5-4b15-aa84-aabe3f9686fd",
+      "meter_id": "r-boc",
+      "site_id": "rotherham",
+      "value": 435659,
+      "usage": 1275,
+      "date": "2025-12-18T15:53:50.619014+01:00",
+      "source": "manual",
+      "water_type": "towns"
+    },
+    {
+      "id": "7b423ec8-1afd-4bcd-9dfd-de62d645ac4c",
+      "meter_id": "r-boc",
+      "site_id": "rotherham",
+      "value": 435891,
+      "usage": 232,
+      "date": "2025-12-25T15:53:50.619014+01:00",
+      "source": "manual",
+      "water_type": "towns"
+    },
+    {
+      "id": "0fc5bfc1-6dd2-4979-971c-b4a4292e1792",
+      "meter_id": "r-boc",
+      "site_id": "rotherham",
+      "value": 436051,
+      "usage": 160,
+      "date": "2026-01-01T15:53:50.619014+01:00",
+      "source": "manual",
+      "water_type": "towns"
+    },
+    {
+      "id": "843b3ec6-93c6-4a0e-a7d8-efdc6bd168f8",
+      "meter_id": "r-boc",
+      "site_id": "rotherham",
+      "value": 436204,
+      "usage": 153,
+      "date": "2026-01-08T15:53:50.619014+01:00",
+      "source": "manual",
+      "water_type": "towns"
+    },
+    {
+      "id": "3416a0fd-392f-4663-af6d-3b567258b9d7",
+      "meter_id": "r-boc",
+      "site_id": "rotherham",
+      "value": 436501,
+      "usage": 297,
+      "date": "2026-01-15T15:53:50.619014+01:00",
+      "source": "manual",
+      "water_type": "towns"
+    },
+    {
+      "id": "e69e7d1b-0ef6-42aa-9c1f-79268982666d",
+      "meter_id": "r-boc",
+      "site_id": "rotherham",
+      "value": 437121,
+      "usage": 620,
+      "date": "2026-01-22T15:53:50.619014+01:00",
+      "source": "manual",
+      "water_type": "towns"
+    },
+    {
+      "id": "9ad63e79-7284-447e-a01d-914ed0820aa3",
+      "meter_id": "r-boc",
+      "site_id": "rotherham",
+      "value": 437245,
+      "usage": 124,
+      "date": "2026-01-29T15:53:50.619014+01:00",
+      "source": "manual",
+      "water_type": "towns"
+    },
+    {
+      "id": "f45ee9da-10bc-4502-9e74-9cd97a231958",
+      "meter_id": "r-boc",
+      "site_id": "rotherham",
+      "value": 437991,
+      "usage": 746,
+      "date": "2026-02-05T15:53:50.619014+01:00",
+      "source": "manual",
+      "water_type": "towns"
+    },
+    {
+      "id": "779570ac-62fe-4784-bd0a-26fd28afca76",
+      "meter_id": "r-boc",
+      "site_id": "rotherham",
+      "value": 438272,
+      "usage": 281,
+      "date": "2026-02-12T15:53:50.619014+01:00",
+      "source": "manual",
+      "water_type": "towns"
+    },
+    {
+      "id": "90452ddd-95f2-4d5d-81ae-2fbb2fa2c37e",
+      "meter_id": "r-boc",
+      "site_id": "rotherham",
+      "value": 438562,
+      "usage": 290,
+      "date": "2026-02-19T15:53:50.619014+01:00",
+      "source": "manual",
+      "water_type": "towns"
+    },
+    {
+      "id": "d7915452-699c-4db7-886d-c8493df13aef",
+      "meter_id": "r-boc",
+      "site_id": "rotherham",
+      "value": 438644,
+      "usage": 82,
+      "date": "2026-02-26T15:53:50.619014+01:00",
+      "source": "manual",
+      "water_type": "towns"
+    },
+    {
+      "id": "e95e91e8-e2de-42e2-9e8c-513375feb0d2",
+      "meter_id": "r-boc",
+      "site_id": "rotherham",
+      "value": 439399,
+      "usage": 755,
+      "date": "2026-03-05T15:53:50.619014+01:00",
+      "source": "manual",
+      "water_type": "towns"
+    },
+    {
+      "id": "2f634a15-6c99-462c-a582-1f03ef1b5c7e",
+      "meter_id": "r-boc",
+      "site_id": "rotherham",
+      "value": 439692,
+      "usage": 293,
+      "date": "2026-03-12T15:53:50.619014+01:00",
+      "source": "manual",
+      "water_type": "towns"
+    },
+    {
+      "id": "fda719ed-4e4f-42a8-b846-34f580990542",
+      "meter_id": "r-boc",
+      "site_id": "rotherham",
+      "value": 440037,
+      "usage": 345,
+      "date": "2026-03-19T15:53:50.619014+01:00",
+      "source": "manual",
+      "water_type": "towns"
+    },
+    {
+      "id": "7316f287-cef5-4bdd-8fc0-21e70e57e849",
+      "meter_id": "r-boc",
+      "site_id": "rotherham",
+      "value": 440922,
+      "usage": 885,
+      "date": "2026-03-26T15:53:50.619014+01:00",
+      "source": "manual",
+      "water_type": "towns"
+    },
+    {
+      "id": "b8e52d49-68bd-4be2-bf5d-910a81869c24",
+      "meter_id": "r-boc",
+      "site_id": "rotherham",
+      "value": 441622,
+      "usage": 700,
+      "date": "2026-04-02T15:53:50.619014+01:00",
+      "source": "manual",
+      "water_type": "towns"
+    },
+    {
+      "id": "c8563687-9374-45ac-bb65-29f24f493ceb",
+      "meter_id": "r-boc",
+      "site_id": "rotherham",
+      "value": 442237,
+      "usage": 615,
+      "date": "2026-04-09T15:53:50.619014+01:00",
+      "source": "manual",
+      "water_type": "towns"
+    },
+    {
+      "id": "1b85857c-a752-49f0-a5ae-bb0205d16be6",
+      "meter_id": "r-boc",
+      "site_id": "rotherham",
+      "value": 442589,
+      "usage": 352,
+      "date": "2026-04-16T15:53:50.619014+01:00",
+      "source": "manual",
+      "water_type": "towns"
+    },
+    {
+      "id": "cc998f18-d417-4f5c-a1e5-bed3039bc0af",
+      "meter_id": "r-boc",
+      "site_id": "rotherham",
+      "value": 442887,
+      "usage": 298,
+      "date": "2026-04-23T15:53:50.619014+01:00",
+      "source": "manual",
+      "water_type": "towns"
+    },
+    {
+      "id": "7f95485b-c14e-4931-bd0c-5ae7c61d8e8d",
+      "meter_id": "r-boc",
+      "site_id": "rotherham",
+      "value": 443200,
+      "usage": 313,
+      "date": "2026-04-30T15:53:50.619014+01:00",
+      "source": "manual",
+      "water_type": "towns"
+    },
+    {
+      "id": "bcbd94c5-105c-4711-a5b4-c15312f5d1a2",
+      "meter_id": "s-wq1",
+      "site_id": "stocksbridge",
+      "value": 15444850,
+      "usage": 0,
+      "date": "2026-01-27T15:53:50.619803+01:00",
+      "source": "eemon",
+      "water_type": "river"
+    },
+    {
+      "id": "d853fb54-35dd-4745-ba6d-acb4a28501af",
+      "meter_id": "s-wq1",
+      "site_id": "stocksbridge",
+      "value": 15980000,
+      "usage": 535150,
+      "date": "2026-04-27T15:53:50.619803+01:00",
+      "source": "eemon",
+      "water_type": "river"
+    },
+    {
+      "id": "cdcf7931-0c82-4aeb-82d2-b476d155462d",
+      "meter_id": "w-m1",
+      "site_id": "wednesbury",
+      "value": 15000,
+      "usage": 0,
+      "date": "2026-02-27T15:53:50.619937+01:00",
+      "source": "manual",
+      "water_type": "towns"
+    },
+    {
+      "id": "e28765b5-7d8a-455a-8687-59c53c152b4a",
+      "meter_id": "w-m1",
+      "site_id": "wednesbury",
+      "value": 16200,
+      "usage": 1200,
+      "date": "2026-03-29T15:53:50.619937+01:00",
+      "source": "manual",
+      "water_type": "towns"
+    },
+    {
+      "id": "583a3c1e-973a-4b55-ab31-e229729d98e0",
+      "meter_id": "w-m1",
+      "site_id": "wednesbury",
+      "value": 17400,
+      "usage": 1200,
+      "date": "2026-04-28T15:53:50.619937+01:00",
+      "source": "manual",
+      "water_type": "towns"
+    },
+    {
+      "id": "76ab13f4-3bd1-4e9a-9d7d-46d0cf828d82",
+      "meter_id": "w-m1",
+      "site_id": "wednesbury",
+      "value": 18600,
+      "usage": 1200,
+      "date": "2026-05-28T15:53:50.619937+01:00",
+      "source": "manual",
+      "water_type": "towns"
+    },
+    {
+      "id": "fcd8c666-6415-428b-adad-402eaf559ec9",
+      "meter_id": "w-m2",
+      "site_id": "wednesbury",
+      "value": 12000,
+      "usage": 0,
+      "date": "2026-02-27T15:53:50.619937+01:00",
+      "source": "manual",
+      "water_type": "towns"
+    },
+    {
+      "id": "00e444df-3ab3-4a78-a942-ab1324483b3d",
+      "meter_id": "w-m2",
+      "site_id": "wednesbury",
+      "value": 13100,
+      "usage": 1100,
+      "date": "2026-03-29T15:53:50.619937+01:00",
+      "source": "manual",
+      "water_type": "towns"
+    },
+    {
+      "id": "040671fc-f2ce-4c46-96f1-c9e1eea3417a",
+      "meter_id": "w-m2",
+      "site_id": "wednesbury",
+      "value": 14200,
+      "usage": 1100,
+      "date": "2026-04-28T15:53:50.619937+01:00",
+      "source": "manual",
+      "water_type": "towns"
+    },
+    {
+      "id": "e697a9e1-f374-45b5-af6a-13f438580f4e",
+      "meter_id": "w-m2",
+      "site_id": "wednesbury",
+      "value": 15300,
+      "usage": 1100,
+      "date": "2026-05-28T15:53:50.619937+01:00",
+      "source": "manual",
+      "water_type": "towns"
+    },
+    {
+      "id": "77282703-5401-434b-8401-23d944fc870a",
+      "meter_id": "r-abctw",
+      "site_id": "rotherham",
+      "value": 4154,
+      "usage": 0,
+      "date": "2025-11-27T15:53:50.619014+01:00",
+      "source": "manual",
+      "water_type": "towns"
+    },
+    {
+      "id": "349da6f7-0170-4acf-9e1c-a001d3655b63",
+      "meter_id": "r-abctw",
+      "site_id": "rotherham",
+      "value": 4155,
+      "usage": 1,
+      "date": "2025-12-04T15:53:50.619014+01:00",
+      "source": "manual",
+      "water_type": "towns"
+    },
+    {
+      "id": "b6ca5ed1-dee3-4665-8b6b-02cf53b428eb",
+      "meter_id": "r-abctw",
+      "site_id": "rotherham",
+      "value": 4155,
+      "usage": 0,
+      "date": "2025-12-11T15:53:50.619014+01:00",
+      "source": "manual",
+      "water_type": "towns"
+    },
+    {
+      "id": "3f006177-b8b9-49ca-8be9-9a890c99e268",
+      "meter_id": "r-abctw",
+      "site_id": "rotherham",
+      "value": 4157,
+      "usage": 2,
+      "date": "2025-12-18T15:53:50.619014+01:00",
+      "source": "manual",
+      "water_type": "towns"
+    },
+    {
+      "id": "e88e2f28-8a55-4f2d-ab05-37e86289c444",
+      "meter_id": "r-abctw",
+      "site_id": "rotherham",
+      "value": 4159,
+      "usage": 2,
+      "date": "2025-12-25T15:53:50.619014+01:00",
+      "source": "manual",
+      "water_type": "towns"
+    },
+    {
+      "id": "290170aa-f625-40f5-82dd-c85ef4a5c008",
+      "meter_id": "r-abctw",
+      "site_id": "rotherham",
+      "value": 4160,
+      "usage": 1,
+      "date": "2026-01-01T15:53:50.619014+01:00",
+      "source": "manual",
+      "water_type": "towns"
+    },
+    {
+      "id": "13de9cc5-207d-4321-a0e2-4b5e2475a980",
+      "meter_id": "r-abctw",
+      "site_id": "rotherham",
+      "value": 4160,
+      "usage": 0,
+      "date": "2026-01-08T15:53:50.619014+01:00",
+      "source": "manual",
+      "water_type": "towns"
+    },
+    {
+      "id": "c7bf8849-d53a-4c17-8b97-5817678d7315",
+      "meter_id": "r-abctw",
+      "site_id": "rotherham",
+      "value": 4161,
+      "usage": 1,
+      "date": "2026-01-15T15:53:50.619014+01:00",
+      "source": "manual",
+      "water_type": "towns"
+    },
+    {
+      "id": "73d43506-a9d8-4d1a-b9c3-9cc8e7ac9442",
+      "meter_id": "r-abctw",
+      "site_id": "rotherham",
+      "value": 4161,
+      "usage": 0,
+      "date": "2026-01-22T15:53:50.619014+01:00",
+      "source": "manual",
+      "water_type": "towns"
+    },
+    {
+      "id": "3dbf67db-5350-4b70-910a-21f970362609",
+      "meter_id": "r-abctw",
+      "site_id": "rotherham",
+      "value": 4162,
+      "usage": 1,
+      "date": "2026-01-29T15:53:50.619014+01:00",
+      "source": "manual",
+      "water_type": "towns"
+    },
+    {
+      "id": "380be03a-d4c1-41e3-b2e7-bee5281d9cc2",
+      "meter_id": "r-abctw",
+      "site_id": "rotherham",
+      "value": 4166,
+      "usage": 4,
+      "date": "2026-02-05T15:53:50.619014+01:00",
+      "source": "manual",
+      "water_type": "towns"
+    },
+    {
+      "id": "38be609c-f345-4b3c-afbc-6416aadd82e8",
+      "meter_id": "r-abctw",
+      "site_id": "rotherham",
+      "value": 4168,
+      "usage": 2,
+      "date": "2026-02-12T15:53:50.619014+01:00",
+      "source": "manual",
+      "water_type": "towns"
+    },
+    {
+      "id": "c925da7d-5c59-41d5-aa07-403669030c28",
+      "meter_id": "r-abctw",
+      "site_id": "rotherham",
+      "value": 4170,
+      "usage": 2,
+      "date": "2026-02-19T15:53:50.619014+01:00",
+      "source": "manual",
+      "water_type": "towns"
+    },
+    {
+      "id": "0ea4d3d5-2e1a-42dc-99f7-ed998d614f60",
+      "meter_id": "r-abctw",
+      "site_id": "rotherham",
+      "value": 4171,
+      "usage": 1,
+      "date": "2026-02-26T15:53:50.619014+01:00",
+      "source": "manual",
+      "water_type": "towns"
+    },
+    {
+      "id": "ee66e800-85c3-42d3-bbb4-5dabf3214de8",
+      "meter_id": "r-abctw",
+      "site_id": "rotherham",
+      "value": 4171,
+      "usage": 0,
+      "date": "2026-03-05T15:53:50.619014+01:00",
+      "source": "manual",
+      "water_type": "towns"
+    },
+    {
+      "id": "55a6b32b-117d-468c-ad32-39f2ec56d00f",
+      "meter_id": "r-abctw",
+      "site_id": "rotherham",
+      "value": 4172,
+      "usage": 1,
+      "date": "2026-03-12T15:53:50.619014+01:00",
+      "source": "manual",
+      "water_type": "towns"
+    },
+    {
+      "id": "79942ecf-1602-439d-8847-48ff1503b355",
+      "meter_id": "r-abctw",
+      "site_id": "rotherham",
+      "value": 4172,
+      "usage": 0,
+      "date": "2026-03-19T15:53:50.619014+01:00",
+      "source": "manual",
+      "water_type": "towns"
+    },
+    {
+      "id": "665bc653-50a3-40c9-818a-25d4b42a3863",
+      "meter_id": "r-abctw",
+      "site_id": "rotherham",
+      "value": 4172,
+      "usage": 0,
+      "date": "2026-03-26T15:53:50.619014+01:00",
+      "source": "manual",
+      "water_type": "towns"
+    },
+    {
+      "id": "f87046dc-7dc6-419a-9156-2a8647b654ed",
+      "meter_id": "r-abctw",
+      "site_id": "rotherham",
+      "value": 4174,
+      "usage": 2,
+      "date": "2026-04-02T15:53:50.619014+01:00",
+      "source": "manual",
+      "water_type": "towns"
+    },
+    {
+      "id": "d2c2b962-c59d-4a14-914c-7f2b31d021eb",
+      "meter_id": "r-abctw",
+      "site_id": "rotherham",
+      "value": 4176,
+      "usage": 2,
+      "date": "2026-04-09T15:53:50.619014+01:00",
+      "source": "manual",
+      "water_type": "towns"
+    },
+    {
+      "id": "e9e03cf2-b494-4f17-b630-98749700b780",
+      "meter_id": "r-abctw",
+      "site_id": "rotherham",
+      "value": 4176,
+      "usage": 0,
+      "date": "2026-04-16T15:53:50.619014+01:00",
+      "source": "manual",
+      "water_type": "towns"
+    },
+    {
+      "id": "04e91ef4-2b1f-42ac-97c1-a56123006a23",
+      "meter_id": "r-abctw",
+      "site_id": "rotherham",
+      "value": 4176,
+      "usage": 0,
+      "date": "2026-04-23T15:53:50.619014+01:00",
+      "source": "manual",
+      "water_type": "towns"
+    },
+    {
+      "id": "9c2a9f63-45c1-45f8-945c-2f8c62c296c6",
+      "meter_id": "r-abctw",
+      "site_id": "rotherham",
+      "value": 4176,
+      "usage": 0,
+      "date": "2026-04-30T15:53:50.619014+01:00",
+      "source": "manual",
+      "water_type": "towns"
+    },
+    {
+      "id": "a5ee4834-a7ea-4057-aa02-24a256097c40",
+      "meter_id": "r-aocc",
+      "site_id": "rotherham",
+      "value": 56339,
+      "usage": 0,
+      "date": "2025-11-27T15:53:50.619014+01:00",
+      "source": "manual",
+      "water_type": "towns"
+    },
+    {
+      "id": "78461730-8530-4c95-a1dc-750adc1ef1a7",
+      "meter_id": "r-aocc",
+      "site_id": "rotherham",
+      "value": 56339,
+      "usage": 0,
+      "date": "2025-12-04T15:53:50.619014+01:00",
+      "source": "manual",
+      "water_type": "towns"
+    },
+    {
+      "id": "0898810a-0616-454f-95f2-fd59902d94fa",
+      "meter_id": "r-aocc",
+      "site_id": "rotherham",
+      "value": 56339,
+      "usage": 0,
+      "date": "2025-12-11T15:53:50.619014+01:00",
+      "source": "manual",
+      "water_type": "towns"
+    },
+    {
+      "id": "59098f99-92e0-4a1f-9e29-346648726768",
+      "meter_id": "r-aocc",
+      "site_id": "rotherham",
+      "value": 56339,
+      "usage": 0,
+      "date": "2025-12-18T15:53:50.619014+01:00",
+      "source": "manual",
+      "water_type": "towns"
+    },
+    {
+      "id": "8ca6e804-07bc-4d08-9d15-538e55ee3db5",
+      "meter_id": "r-aocc",
+      "site_id": "rotherham",
+      "value": 56339,
+      "usage": 0,
+      "date": "2025-12-25T15:53:50.619014+01:00",
+      "source": "manual",
+      "water_type": "towns"
+    },
+    {
+      "id": "f6355a9f-ef49-410f-8c13-3ec4ba0bb909",
+      "meter_id": "r-aocc",
+      "site_id": "rotherham",
+      "value": 56339,
+      "usage": 0,
+      "date": "2026-01-01T15:53:50.619014+01:00",
+      "source": "manual",
+      "water_type": "towns"
+    },
+    {
+      "id": "77bf80a2-d411-46d2-a649-7b52eb70bdb5",
+      "meter_id": "r-aocc",
+      "site_id": "rotherham",
+      "value": 56340,
+      "usage": 1,
+      "date": "2026-01-08T15:53:50.619014+01:00",
+      "source": "manual",
+      "water_type": "towns"
+    },
+    {
+      "id": "067db06a-dba4-43b0-95a3-216147e8d8d9",
+      "meter_id": "r-aocc",
+      "site_id": "rotherham",
+      "value": 56340,
+      "usage": 0,
+      "date": "2026-01-15T15:53:50.619014+01:00",
+      "source": "manual",
+      "water_type": "towns"
+    },
+    {
+      "id": "08d55aeb-0507-4563-a60e-39e2e4a77010",
+      "meter_id": "r-aocc",
+      "site_id": "rotherham",
+      "value": 56340,
+      "usage": 0,
+      "date": "2026-01-22T15:53:50.619014+01:00",
+      "source": "manual",
+      "water_type": "towns"
+    },
+    {
+      "id": "0e881219-8d9e-4580-a1b1-edc776528693",
+      "meter_id": "r-aocc",
+      "site_id": "rotherham",
+      "value": 56340,
+      "usage": 0,
+      "date": "2026-01-29T15:53:50.619014+01:00",
+      "source": "manual",
+      "water_type": "towns"
+    },
+    {
+      "id": "f5d99e82-00a5-4876-aee0-4cbe031275d3",
+      "meter_id": "r-aocc",
+      "site_id": "rotherham",
+      "value": 56340,
+      "usage": 0,
+      "date": "2026-02-05T15:53:50.619014+01:00",
+      "source": "manual",
+      "water_type": "towns"
+    },
+    {
+      "id": "d7211507-2ef0-4bec-8a3c-54a1b8475a6a",
+      "meter_id": "r-aocc",
+      "site_id": "rotherham",
+      "value": 56340,
+      "usage": 0,
+      "date": "2026-02-12T15:53:50.619014+01:00",
+      "source": "manual",
+      "water_type": "towns"
+    },
+    {
+      "id": "13045c8a-5b07-478e-adef-91c328ef2c54",
+      "meter_id": "r-aocc",
+      "site_id": "rotherham",
+      "value": 56340,
+      "usage": 0,
+      "date": "2026-02-19T15:53:50.619014+01:00",
+      "source": "manual",
+      "water_type": "towns"
+    },
+    {
+      "id": "0d402a11-a89c-44e1-913b-3ccd579e1cbb",
+      "meter_id": "r-aocc",
+      "site_id": "rotherham",
+      "value": 56340,
+      "usage": 0,
+      "date": "2026-02-26T15:53:50.619014+01:00",
+      "source": "manual",
+      "water_type": "towns"
+    },
+    {
+      "id": "263600b7-33e6-4098-8e80-11cefe67f46d",
+      "meter_id": "r-aocc",
+      "site_id": "rotherham",
+      "value": 56340,
+      "usage": 0,
+      "date": "2026-03-05T15:53:50.619014+01:00",
+      "source": "manual",
+      "water_type": "towns"
+    },
+    {
+      "id": "a546edee-591b-43e6-ad31-30b7f5e8b87e",
+      "meter_id": "r-aocc",
+      "site_id": "rotherham",
+      "value": 56341,
+      "usage": 1,
+      "date": "2026-03-12T15:53:50.619014+01:00",
+      "source": "manual",
+      "water_type": "towns"
+    },
+    {
+      "id": "a1fa5bc6-aade-401a-b74c-fb6bc11d3ac2",
+      "meter_id": "r-aocc",
+      "site_id": "rotherham",
+      "value": 56341,
+      "usage": 0,
+      "date": "2026-03-19T15:53:50.619014+01:00",
+      "source": "manual",
+      "water_type": "towns"
+    },
+    {
+      "id": "5aedebda-5b11-471c-a2c0-5b98a9f5f60f",
+      "meter_id": "r-aocc",
+      "site_id": "rotherham",
+      "value": 56341,
+      "usage": 0,
+      "date": "2026-03-26T15:53:50.619014+01:00",
+      "source": "manual",
+      "water_type": "towns"
+    },
+    {
+      "id": "8589174c-02df-4aa2-a106-f9ce757c5804",
+      "meter_id": "r-aocc",
+      "site_id": "rotherham",
+      "value": 56341,
+      "usage": 0,
+      "date": "2026-04-02T15:53:50.619014+01:00",
+      "source": "manual",
+      "water_type": "towns"
+    },
+    {
+      "id": "62418a06-28ba-4492-a6a0-1c6cb62a3205",
+      "meter_id": "r-aocc",
+      "site_id": "rotherham",
+      "value": 56340,
+      "usage": 0,
+      "date": "2026-04-09T15:53:50.619014+01:00",
+      "source": "manual",
+      "water_type": "towns"
+    },
+    {
+      "id": "24ee8215-b589-4316-9521-a261970d2fdd",
+      "meter_id": "r-aocc",
+      "site_id": "rotherham",
+      "value": 56340,
+      "usage": 0,
+      "date": "2026-04-16T15:53:50.619014+01:00",
+      "source": "manual",
+      "water_type": "towns"
+    },
+    {
+      "id": "a47afb82-78e2-412b-8ac5-824ceb5f5320",
+      "meter_id": "r-aocc",
+      "site_id": "rotherham",
+      "value": 56341,
+      "usage": 1,
+      "date": "2026-04-23T15:53:50.619014+01:00",
+      "source": "manual",
+      "water_type": "towns"
+    },
+    {
+      "id": "47a5a737-d8eb-4a3b-8f68-832a8742cc50",
+      "meter_id": "r-aocc",
+      "site_id": "rotherham",
+      "value": 56341,
+      "usage": 0,
+      "date": "2026-04-30T15:53:50.619014+01:00",
+      "source": "manual",
+      "water_type": "towns"
+    },
+    {
+      "id": "dce8cb6b-b38c-4204-8c3e-5004366b2e1d",
+      "meter_id": "r-ks",
+      "site_id": "rotherham",
+      "value": 612372,
+      "usage": 0,
+      "date": "2025-11-27T15:53:50.619014+01:00",
+      "source": "manual",
+      "water_type": "towns"
+    },
+    {
+      "id": "2eaec51a-935a-4eaa-9376-0253748ba086",
+      "meter_id": "r-ks",
+      "site_id": "rotherham",
+      "value": 612372,
+      "usage": 0,
+      "date": "2025-12-04T15:53:50.619014+01:00",
+      "source": "manual",
+      "water_type": "towns"
+    },
+    {
+      "id": "51d08992-b32f-4641-a323-67dcd2c5f6b8",
+      "meter_id": "r-ks",
+      "site_id": "rotherham",
+      "value": 612372,
+      "usage": 0,
+      "date": "2025-12-11T15:53:50.619014+01:00",
+      "source": "manual",
+      "water_type": "towns"
+    },
+    {
+      "id": "51fbc639-cd93-44a7-bd72-6d097afefa4a",
+      "meter_id": "r-ks",
+      "site_id": "rotherham",
+      "value": 612372,
+      "usage": 0,
+      "date": "2025-12-18T15:53:50.619014+01:00",
+      "source": "manual",
+      "water_type": "towns"
+    },
+    {
+      "id": "3e493743-6a5a-4a6a-9a29-4e00220cd810",
+      "meter_id": "r-ks",
+      "site_id": "rotherham",
+      "value": 612372,
+      "usage": 0,
+      "date": "2025-12-25T15:53:50.619014+01:00",
+      "source": "manual",
+      "water_type": "towns"
+    },
+    {
+      "id": "8712d52c-bfb0-4509-bf11-60e9e51448a9",
+      "meter_id": "r-ks",
+      "site_id": "rotherham",
+      "value": 612372,
+      "usage": 0,
+      "date": "2026-01-01T15:53:50.619014+01:00",
+      "source": "manual",
+      "water_type": "towns"
+    },
+    {
+      "id": "1c6f7488-b6de-4cb2-9356-04daf5ceb3cb",
+      "meter_id": "r-ks",
+      "site_id": "rotherham",
+      "value": 612372,
+      "usage": 0,
+      "date": "2026-01-08T15:53:50.619014+01:00",
+      "source": "manual",
+      "water_type": "towns"
+    },
+    {
+      "id": "ebe95b83-43f9-4ad7-9f69-de8854d95bb6",
+      "meter_id": "r-ks",
+      "site_id": "rotherham",
+      "value": 612372,
+      "usage": 0,
+      "date": "2026-01-15T15:53:50.619014+01:00",
+      "source": "manual",
+      "water_type": "towns"
+    },
+    {
+      "id": "f29bb53f-2373-42f8-9ece-41dfc9efd892",
+      "meter_id": "r-ks",
+      "site_id": "rotherham",
+      "value": 612372,
+      "usage": 0,
+      "date": "2026-01-22T15:53:50.619014+01:00",
+      "source": "manual",
+      "water_type": "towns"
+    },
+    {
+      "id": "1a9b11a0-5eca-41d8-9b9d-c1c30c14e508",
+      "meter_id": "r-ks",
+      "site_id": "rotherham",
+      "value": 612372,
+      "usage": 0,
+      "date": "2026-01-29T15:53:50.619014+01:00",
+      "source": "manual",
+      "water_type": "towns"
+    },
+    {
+      "id": "cb428233-263b-4f58-aa96-6b0f2930c4a6",
+      "meter_id": "r-ks",
+      "site_id": "rotherham",
+      "value": 612372,
+      "usage": 0,
+      "date": "2026-02-05T15:53:50.619014+01:00",
+      "source": "manual",
+      "water_type": "towns"
+    },
+    {
+      "id": "f4e2e952-df15-48f6-9c8d-427fccf3e097",
+      "meter_id": "r-ks",
+      "site_id": "rotherham",
+      "value": 612372,
+      "usage": 0,
+      "date": "2026-02-12T15:53:50.619014+01:00",
+      "source": "manual",
+      "water_type": "towns"
+    },
+    {
+      "id": "319d862f-3a87-4070-bcec-ac0297760407",
+      "meter_id": "r-ks",
+      "site_id": "rotherham",
+      "value": 612372,
+      "usage": 0,
+      "date": "2026-02-19T15:53:50.619014+01:00",
+      "source": "manual",
+      "water_type": "towns"
+    },
+    {
+      "id": "c4e4e341-26cd-413d-998e-57139854780b",
+      "meter_id": "r-ks",
+      "site_id": "rotherham",
+      "value": 612372,
+      "usage": 0,
+      "date": "2026-02-26T15:53:50.619014+01:00",
+      "source": "manual",
+      "water_type": "towns"
+    },
+    {
+      "id": "455231db-e04b-4f8a-aa38-b58312de47ce",
+      "meter_id": "r-ks",
+      "site_id": "rotherham",
+      "value": 612372,
+      "usage": 0,
+      "date": "2026-03-05T15:53:50.619014+01:00",
+      "source": "manual",
+      "water_type": "towns"
+    },
+    {
+      "id": "e46d5677-9b12-45d0-a8e1-18c0d441c99f",
+      "meter_id": "r-ks",
+      "site_id": "rotherham",
+      "value": 612373,
+      "usage": 1,
+      "date": "2026-03-12T15:53:50.619014+01:00",
+      "source": "manual",
+      "water_type": "towns"
+    },
+    {
+      "id": "5848d3e4-8659-42a6-a3c5-ce8918cae6ac",
+      "meter_id": "r-ks",
+      "site_id": "rotherham",
+      "value": 612373,
+      "usage": 0,
+      "date": "2026-03-19T15:53:50.619014+01:00",
+      "source": "manual",
+      "water_type": "towns"
+    },
+    {
+      "id": "f19f3693-e15f-4eec-8e96-7f0f710a4138",
+      "meter_id": "r-ks",
+      "site_id": "rotherham",
+      "value": 612373,
+      "usage": 0,
+      "date": "2026-03-26T15:53:50.619014+01:00",
+      "source": "manual",
+      "water_type": "towns"
+    },
+    {
+      "id": "cf20d72d-0f67-4cd8-9af8-643c67acd572",
+      "meter_id": "r-ks",
+      "site_id": "rotherham",
+      "value": 612373,
+      "usage": 0,
+      "date": "2026-04-02T15:53:50.619014+01:00",
+      "source": "manual",
+      "water_type": "towns"
+    },
+    {
+      "id": "5bfc4730-cfd2-46ec-bd70-8d553985b3b3",
+      "meter_id": "r-ks",
+      "site_id": "rotherham",
+      "value": 612373,
+      "usage": 0,
+      "date": "2026-04-09T15:53:50.619014+01:00",
+      "source": "manual",
+      "water_type": "towns"
+    },
+    {
+      "id": "9b61231a-1997-416f-b9df-0689337c4d07",
+      "meter_id": "r-ks",
+      "site_id": "rotherham",
+      "value": 612373,
+      "usage": 0,
+      "date": "2026-04-16T15:53:50.619014+01:00",
+      "source": "manual",
+      "water_type": "towns"
+    },
+    {
+      "id": "20ba2ea5-8605-4df1-9ada-b0fcd6fd250b",
+      "meter_id": "r-ks",
+      "site_id": "rotherham",
+      "value": 612373,
+      "usage": 0,
+      "date": "2026-04-23T15:53:50.619014+01:00",
+      "source": "manual",
+      "water_type": "towns"
+    },
+    {
+      "id": "a50d48e4-4f5c-4b8a-b738-ad61ec83bec7",
+      "meter_id": "r-ks",
+      "site_id": "rotherham",
+      "value": 612373,
+      "usage": 0,
+      "date": "2026-04-30T15:53:50.619014+01:00",
+      "source": "manual",
+      "water_type": "towns"
+    },
+    {
+      "id": "2a418a2c-8060-4bbd-aa81-c1369b1c53b4",
+      "meter_id": "r-tbm",
+      "site_id": "rotherham",
+      "value": 103675,
+      "usage": 0,
+      "date": "2025-11-27T15:53:50.619014+01:00",
+      "source": "manual",
+      "water_type": "towns"
+    },
+    {
+      "id": "6b76067e-e030-44a9-9197-0369d9edd772",
+      "meter_id": "r-tbm",
+      "site_id": "rotherham",
+      "value": 103694,
+      "usage": 19,
+      "date": "2025-12-04T15:53:50.619014+01:00",
+      "source": "manual",
+      "water_type": "towns"
+    },
+    {
+      "id": "de739cf8-2dcc-4645-9299-361a61dd8706",
+      "meter_id": "r-tbm",
+      "site_id": "rotherham",
+      "value": 103715,
+      "usage": 21,
+      "date": "2025-12-11T15:53:50.619014+01:00",
+      "source": "manual",
+      "water_type": "towns"
+    },
+    {
+      "id": "5aece1d2-c054-4ad4-b24e-2f41d3f9b6f9",
+      "meter_id": "r-tbm",
+      "site_id": "rotherham",
+      "value": 103733,
+      "usage": 18,
+      "date": "2025-12-18T15:53:50.619014+01:00",
+      "source": "manual",
+      "water_type": "towns"
+    },
+    {
+      "id": "9fee4bb4-3bc4-48da-8651-1d9988821650",
+      "meter_id": "r-tbm",
+      "site_id": "rotherham",
+      "value": 103749,
+      "usage": 16,
+      "date": "2025-12-25T15:53:50.619014+01:00",
+      "source": "manual",
+      "water_type": "towns"
+    },
+    {
+      "id": "fd42be8c-994f-4377-b2f8-4809a7d9397a",
+      "meter_id": "r-tbm",
+      "site_id": "rotherham",
+      "value": 103765,
+      "usage": 16,
+      "date": "2026-01-01T15:53:50.619014+01:00",
+      "source": "manual",
+      "water_type": "towns"
+    },
+    {
+      "id": "7171ccd0-9dc7-4307-a1fa-602a9c23892c",
+      "meter_id": "r-tbm",
+      "site_id": "rotherham",
+      "value": 103784,
+      "usage": 19,
+      "date": "2026-01-08T15:53:50.619014+01:00",
+      "source": "manual",
+      "water_type": "towns"
+    },
+    {
+      "id": "f561fe6e-2969-486d-9ab0-8a5a6f52c490",
+      "meter_id": "r-tbm",
+      "site_id": "rotherham",
+      "value": 103796,
+      "usage": 12,
+      "date": "2026-01-15T15:53:50.619014+01:00",
+      "source": "manual",
+      "water_type": "towns"
+    },
+    {
+      "id": "d5c69bf3-f9e5-4887-a8dc-ed5e43b448b1",
+      "meter_id": "r-tbm",
+      "site_id": "rotherham",
+      "value": 103801,
+      "usage": 5,
+      "date": "2026-01-22T15:53:50.619014+01:00",
+      "source": "manual",
+      "water_type": "towns"
+    },
+    {
+      "id": "faa8a08c-6efb-4ad5-92db-87ffd675cb6d",
+      "meter_id": "r-tbm",
+      "site_id": "rotherham",
+      "value": 103813,
+      "usage": 12,
+      "date": "2026-01-29T15:53:50.619014+01:00",
+      "source": "manual",
+      "water_type": "towns"
+    },
+    {
+      "id": "1761bca5-9104-48db-96e9-950475e01b01",
+      "meter_id": "r-tbm",
+      "site_id": "rotherham",
+      "value": 103834,
+      "usage": 21,
+      "date": "2026-02-05T15:53:50.619014+01:00",
+      "source": "manual",
+      "water_type": "towns"
+    },
+    {
+      "id": "5055602c-4ef1-4aa3-aa99-2d851e7ce92d",
+      "meter_id": "r-tbm",
+      "site_id": "rotherham",
+      "value": 103861,
+      "usage": 27,
+      "date": "2026-02-12T15:53:50.619014+01:00",
+      "source": "manual",
+      "water_type": "towns"
+    },
+    {
+      "id": "be194b4b-7466-4394-a438-083d5c6dd45f",
+      "meter_id": "r-tbm",
+      "site_id": "rotherham",
+      "value": 103877,
+      "usage": 16,
+      "date": "2026-02-19T15:53:50.619014+01:00",
+      "source": "manual",
+      "water_type": "towns"
+    },
+    {
+      "id": "07c0ff30-af7a-4100-9294-95653f276002",
+      "meter_id": "r-tbm",
+      "site_id": "rotherham",
+      "value": 103899,
+      "usage": 22,
+      "date": "2026-02-26T15:53:50.619014+01:00",
+      "source": "manual",
+      "water_type": "towns"
+    },
+    {
+      "id": "9f90eb6c-8563-4113-80b5-38db5edfd10c",
+      "meter_id": "r-tbm",
+      "site_id": "rotherham",
+      "value": 103921,
+      "usage": 22,
+      "date": "2026-03-05T15:53:50.619014+01:00",
+      "source": "manual",
+      "water_type": "towns"
+    },
+    {
+      "id": "81475018-e08f-40ab-a545-d2dcb863f5ae",
+      "meter_id": "r-tbm",
+      "site_id": "rotherham",
+      "value": 103948,
+      "usage": 27,
+      "date": "2026-03-12T15:53:50.619014+01:00",
+      "source": "manual",
+      "water_type": "towns"
+    },
+    {
+      "id": "7b23923f-dc1b-418c-a318-482b347daac2",
+      "meter_id": "r-tbm",
+      "site_id": "rotherham",
+      "value": 103967,
+      "usage": 19,
+      "date": "2026-03-19T15:53:50.619014+01:00",
+      "source": "manual",
+      "water_type": "towns"
+    },
+    {
+      "id": "bef95f8a-3f3a-417c-bcda-0cb459377217",
+      "meter_id": "r-tbm",
+      "site_id": "rotherham",
+      "value": 103989,
+      "usage": 22,
+      "date": "2026-03-26T15:53:50.619014+01:00",
+      "source": "manual",
+      "water_type": "towns"
+    },
+    {
+      "id": "4287ae2f-f02c-4b00-bbb7-0ccb05e26800",
+      "meter_id": "r-tbm",
+      "site_id": "rotherham",
+      "value": 104007,
+      "usage": 18,
+      "date": "2026-04-02T15:53:50.619014+01:00",
+      "source": "manual",
+      "water_type": "towns"
+    },
+    {
+      "id": "c40925e9-d1c8-40ce-b7b5-4b928515066c",
+      "meter_id": "r-tbm",
+      "site_id": "rotherham",
+      "value": 104028,
+      "usage": 21,
+      "date": "2026-04-09T15:53:50.619014+01:00",
+      "source": "manual",
+      "water_type": "towns"
+    },
+    {
+      "id": "2341df18-31a4-4918-bda5-dd2c590f554d",
+      "meter_id": "r-tbm",
+      "site_id": "rotherham",
+      "value": 104047,
+      "usage": 19,
+      "date": "2026-04-16T15:53:50.619014+01:00",
+      "source": "manual",
+      "water_type": "towns"
+    },
+    {
+      "id": "2db76c2d-bab5-4c9e-bda1-48ca373a8ed6",
+      "meter_id": "r-tbm",
+      "site_id": "rotherham",
+      "value": 104064,
+      "usage": 17,
+      "date": "2026-04-23T15:53:50.619014+01:00",
+      "source": "manual",
+      "water_type": "towns"
+    },
+    {
+      "id": "fca5f9c3-a347-4401-816b-812ba5423a4e",
+      "meter_id": "r-tbm",
+      "site_id": "rotherham",
+      "value": 104080,
+      "usage": 16,
+      "date": "2026-04-30T15:53:50.619014+01:00",
+      "source": "manual",
+      "water_type": "towns"
+    },
+    {
+      "id": "69fdd204-5ffc-48e6-8a52-e3904b6147a5",
+      "meter_id": "s-rms1",
+      "site_id": "stocksbridge",
+      "value": 2353132,
+      "usage": 0,
+      "date": "2026-01-27T15:53:50.619803+01:00",
+      "source": "eemon",
+      "water_type": "towns"
+    },
+    {
+      "id": "52b8e039-15f3-4581-8cac-a91e9aa0edf0",
+      "meter_id": "s-rms1",
+      "site_id": "stocksbridge",
+      "value": 2410000,
+      "usage": 56868,
+      "date": "2026-04-27T15:53:50.619803+01:00",
+      "source": "eemon",
+      "water_type": "towns"
+    },
+    {
+      "id": "71b8969a-1859-44fc-91bf-76e756ab5edf",
+      "meter_id": "b-hmr",
+      "site_id": "brinsworth",
+      "value": 85000,
+      "usage": 0,
+      "date": "2026-02-27T15:53:50.619862+01:00",
+      "source": "trend",
+      "water_type": "river"
+    },
+    {
+      "id": "9af76dbc-b2e5-4c2e-8f2e-e92b599fc481",
+      "meter_id": "b-hmr",
+      "site_id": "brinsworth",
+      "value": 92000,
+      "usage": 7000,
+      "date": "2026-03-29T15:53:50.619862+01:00",
+      "source": "trend",
+      "water_type": "river"
+    },
+    {
+      "id": "e2357af8-8692-4651-b66c-be062b8c6393",
+      "meter_id": "b-hmr",
+      "site_id": "brinsworth",
+      "value": 98000,
+      "usage": 6000,
+      "date": "2026-04-28T15:53:50.619862+01:00",
+      "source": "trend",
+      "water_type": "river"
+    },
+    {
+      "id": "51c8a072-fac0-495b-acd0-01a6153e2416",
+      "meter_id": "b-hmr",
+      "site_id": "brinsworth",
+      "value": 105000,
+      "usage": 7000,
+      "date": "2026-05-28T15:53:50.619862+01:00",
+      "source": "trend",
+      "water_type": "river"
+    },
+    {
+      "id": "27463efd-b093-4676-90fc-a841dcb70756",
+      "meter_id": "b-cmr",
+      "site_id": "brinsworth",
+      "value": 28000,
+      "usage": 0,
+      "date": "2026-02-27T15:53:50.619862+01:00",
+      "source": "trend",
+      "water_type": "river"
+    },
+    {
+      "id": "d7fdd729-abd9-4874-974b-2e1d55852130",
+      "meter_id": "b-cmr",
+      "site_id": "brinsworth",
+      "value": 31000,
+      "usage": 3000,
+      "date": "2026-03-29T15:53:50.619862+01:00",
+      "source": "trend",
+      "water_type": "river"
+    },
+    {
+      "id": "b9d0dda4-742f-4773-8e6b-89788300dc22",
+      "meter_id": "b-cmr",
+      "site_id": "brinsworth",
+      "value": 34000,
+      "usage": 3000,
+      "date": "2026-04-28T15:53:50.619862+01:00",
+      "source": "trend",
+      "water_type": "river"
+    },
+    {
+      "id": "4aad4b03-01ef-4134-8425-d8d0af06092d",
+      "meter_id": "b-cmr",
+      "site_id": "brinsworth",
+      "value": 37000,
+      "usage": 3000,
+      "date": "2026-05-28T15:53:50.619862+01:00",
+      "source": "trend",
+      "water_type": "river"
     }
   ],
-  "tonnes": [],
+  "tonnes": [
+    {
+      "id": "ddbbf943-3189-466e-aeb4-7290344c4dab",
+      "site_id": "rotherham",
+      "department": "ACP",
+      "tonnes": 8500,
+      "date": "2026-02-27T15:53:50.621037+01:00"
+    },
+    {
+      "id": "5b5d72bf-92ef-4ddf-8ff2-80fb2ea04c38",
+      "site_id": "rotherham",
+      "department": "BBR",
+      "tonnes": 3200,
+      "date": "2026-02-27T15:53:50.621037+01:00"
+    },
+    {
+      "id": "aa8f9215-bd25-45ca-a574-74d1ff047924",
+      "site_id": "rotherham",
+      "department": "TCM",
+      "tonnes": 12000,
+      "date": "2026-02-27T15:53:50.621037+01:00"
+    },
+    {
+      "id": "ffd844e4-3855-4613-a370-dfaa494060f9",
+      "site_id": "rotherham",
+      "department": "Engineering Services",
+      "tonnes": 2000,
+      "date": "2026-02-27T15:53:50.621037+01:00"
+    },
+    {
+      "id": "4b12be07-50a4-4a14-a780-13ca2913d0ed",
+      "site_id": "rotherham",
+      "department": "ACP",
+      "tonnes": 9100,
+      "date": "2026-03-27T15:53:50.621037+01:00"
+    },
+    {
+      "id": "f3f4d7d4-0ad1-428c-9059-858e7f9d889b",
+      "site_id": "rotherham",
+      "department": "BBR",
+      "tonnes": 3400,
+      "date": "2026-03-27T15:53:50.621037+01:00"
+    },
+    {
+      "id": "c09d103c-8cb3-4f01-b9e3-a43325f230dd",
+      "site_id": "rotherham",
+      "department": "TCM",
+      "tonnes": 11800,
+      "date": "2026-03-27T15:53:50.621037+01:00"
+    },
+    {
+      "id": "cd47f999-8ebc-494d-9294-0633114036b1",
+      "site_id": "rotherham",
+      "department": "Engineering Services",
+      "tonnes": 2100,
+      "date": "2026-03-27T15:53:50.621037+01:00"
+    },
+    {
+      "id": "5672edd2-2114-4d4a-88ad-3c20ef80e15d",
+      "site_id": "rotherham",
+      "department": "ACP",
+      "tonnes": 9300,
+      "date": "2026-04-27T15:53:50.621035+01:00"
+    },
+    {
+      "id": "df683441-18e8-446a-84fb-4cbe05df4e0a",
+      "site_id": "rotherham",
+      "department": "BBR",
+      "tonnes": 3500,
+      "date": "2026-04-27T15:53:50.621035+01:00"
+    },
+    {
+      "id": "1acac2e9-f285-4a9d-94cf-726f094c6454",
+      "site_id": "rotherham",
+      "department": "TCM",
+      "tonnes": 12300,
+      "date": "2026-04-27T15:53:50.621035+01:00"
+    },
+    {
+      "id": "d8c7dd35-d240-4d81-a746-e240dcefc650",
+      "site_id": "rotherham",
+      "department": "Engineering Services",
+      "tonnes": 2200,
+      "date": "2026-04-27T15:53:50.621035+01:00"
+    },
+    {
+      "id": "2593118e-078d-4b4b-954e-ede67c1d4e2e",
+      "site_id": "stocksbridge",
+      "department": "Remelt",
+      "tonnes": 15000,
+      "date": "2026-02-27T15:53:50.621037+01:00"
+    },
+    {
+      "id": "ec4faa22-2041-40bb-8bde-9fe0c255609a",
+      "site_id": "stocksbridge",
+      "department": "Billet Mill",
+      "tonnes": 22000,
+      "date": "2026-02-27T15:53:50.621037+01:00"
+    },
+    {
+      "id": "a19075f3-782f-4f38-bfa6-104a0a91d61c",
+      "site_id": "stocksbridge",
+      "department": "Remelt",
+      "tonnes": 14500,
+      "date": "2026-03-27T15:53:50.621037+01:00"
+    },
+    {
+      "id": "e27241c5-773f-4d56-a2b4-8311f5af91b6",
+      "site_id": "stocksbridge",
+      "department": "Billet Mill",
+      "tonnes": 21000,
+      "date": "2026-03-27T15:53:50.621037+01:00"
+    },
+    {
+      "id": "a22e4692-45a0-4a13-a267-afe7b8dc017f",
+      "site_id": "brinsworth",
+      "department": "Hot Mill",
+      "tonnes": 18000,
+      "date": "2026-02-27T15:53:50.621037+01:00"
+    },
+    {
+      "id": "0079a38b-5d64-46c3-bb4c-d628ea6dc853",
+      "site_id": "brinsworth",
+      "department": "Cold Mill",
+      "tonnes": 12000,
+      "date": "2026-02-27T15:53:50.621037+01:00"
+    },
+    {
+      "id": "4c5f10c1-656a-4b09-b135-0192935208b4",
+      "site_id": "brinsworth",
+      "department": "Hot Mill",
+      "tonnes": 19000,
+      "date": "2026-03-27T15:53:50.621037+01:00"
+    },
+    {
+      "id": "7e0e0228-04c5-4b1c-9c08-4cef2ba4d437",
+      "site_id": "brinsworth",
+      "department": "Cold Mill",
+      "tonnes": 12500,
+      "date": "2026-03-27T15:53:50.621037+01:00"
+    },
+    {
+      "id": "e40878be-0495-4664-abed-c7d42b22e63d",
+      "site_id": "brinsworth",
+      "department": "HRP",
+      "tonnes": 8000,
+      "date": "2026-03-27T15:53:50.621037+01:00"
+    },
+    {
+      "id": "7a64ecb1-c283-4a8a-8412-fdc0b7438d23",
+      "site_id": "brinsworth",
+      "department": "Hot Mill",
+      "tonnes": 20000,
+      "date": "2026-04-27T15:53:50.621035+01:00"
+    },
+    {
+      "id": "9a5d7571-1f28-4882-a549-e19a99f1c9ff",
+      "site_id": "brinsworth",
+      "department": "Cold Mill",
+      "tonnes": 13000,
+      "date": "2026-04-27T15:53:50.621035+01:00"
+    },
+    {
+      "id": "30bd5a28-7310-4fd9-b8f1-eba496d8c4db",
+      "site_id": "brinsworth",
+      "department": "HRP",
+      "tonnes": 8500,
+      "date": "2026-04-27T15:53:50.621035+01:00"
+    },
+    {
+      "id": "168d87ac-9291-4e36-b00f-aa625a5816d2",
+      "site_id": "wednesbury",
+      "department": "Production",
+      "tonnes": 5000,
+      "date": "2026-02-27T15:53:50.621037+01:00"
+    },
+    {
+      "id": "dd4ede9e-f38f-4db4-b767-d4ab0b78cc4e",
+      "site_id": "wednesbury",
+      "department": "Amenities",
+      "tonnes": 500,
+      "date": "2026-02-27T15:53:50.621037+01:00"
+    },
+    {
+      "id": "43ad036b-6ee7-4d69-af05-4d7241a4f4b3",
+      "site_id": "wednesbury",
+      "department": "Production",
+      "tonnes": 5200,
+      "date": "2026-03-27T15:53:50.621037+01:00"
+    },
+    {
+      "id": "b379dace-bdd6-4eed-bacb-937d3c39709b",
+      "site_id": "wednesbury",
+      "department": "Amenities",
+      "tonnes": 520,
+      "date": "2026-03-27T15:53:50.621037+01:00"
+    },
+    {
+      "id": "61f6dedb-72b4-47f3-87c3-bb6e68613d72",
+      "site_id": "wednesbury",
+      "department": "Production",
+      "tonnes": 5400,
+      "date": "2026-04-27T15:53:50.621035+01:00"
+    },
+    {
+      "id": "94fc23ce-901c-42b4-87bc-efd4fe6155f1",
+      "site_id": "wednesbury",
+      "department": "Amenities",
+      "tonnes": 540,
+      "date": "2026-04-27T15:53:50.621035+01:00"
+    }
+  ],
   "preferences": {
-    "theme": "light",
-    "auto_fill_enabled": true,
-    "default_date_range": 30
+    "theme": "dark",
+    "auto_fill_enabled": false,
+    "default_date_range": 90
   },
   "connection_status": {
     "eemon": false,

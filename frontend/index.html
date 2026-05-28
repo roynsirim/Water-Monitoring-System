@@ -89,6 +89,69 @@
 </head>
 <body>
 
+<!-- ── Auth gate + global fetch wrapper (added by production upgrade) ── -->
+<script>
+(function() {
+  const TOKEN_KEY = 'wms_token';
+  const USER_KEY = 'wms_user';
+  const token = localStorage.getItem(TOKEN_KEY);
+  if (!token) { location.replace('/login'); return; }
+
+  // Patch fetch to attach Authorization + handle 401 globally.
+  const _fetch = window.fetch.bind(window);
+  window.fetch = function(input, init = {}) {
+    init.headers = Object.assign({}, init.headers || {}, { 'Authorization': 'Bearer ' + token });
+    return _fetch(input, init).then(res => {
+      if (res.status === 401) {
+        localStorage.removeItem(TOKEN_KEY);
+        localStorage.removeItem(USER_KEY);
+        location.replace('/login');
+      }
+      return res;
+    });
+  };
+
+  // Expose current user globally and add a top-right user menu.
+  window.WMS_USER = JSON.parse(localStorage.getItem(USER_KEY) || '{}');
+  window.WMS_LOGOUT = async function() {
+    try { await window.fetch('/api/auth/logout', { method: 'POST' }); } catch {}
+    localStorage.removeItem(TOKEN_KEY);
+    localStorage.removeItem(USER_KEY);
+    location.replace('/login');
+  };
+
+  document.addEventListener('DOMContentLoaded', () => {
+    const u = window.WMS_USER || {};
+    const topbar = document.querySelector('.topbar');
+    if (topbar) {
+      const box = document.createElement('div');
+      box.className = 'd-flex align-items-center gap-2 ms-2';
+      box.innerHTML = `
+        <span class="text-muted small d-none d-md-inline">${(u.email || '')} · <span class="text-info">${u.role || ''}</span></span>
+        ${u.role === 'admin' ? '<a href="/admin" class="btn btn-outline-info btn-sm"><i class="bi bi-shield-lock"></i> Admin</a>' : ''}
+        <button class="btn btn-outline-danger btn-sm" onclick="WMS_LOGOUT()"><i class="bi bi-box-arrow-right"></i> Sign out</button>
+      `;
+      topbar.appendChild(box);
+    }
+    // Show admin nav section only for admins
+    if (u.role === 'admin') {
+      const adminNav = document.getElementById('adminNavSection');
+      const adminLink = document.getElementById('adminNavLink');
+      if (adminNav) adminNav.style.display = '';
+      if (adminLink) adminLink.style.display = '';
+    }
+    // Handle password change requirement
+    if (u.must_change_password) {
+      if (u.role === 'admin') {
+        setTimeout(() => { if (confirm('You must change your password. Go to Admin panel?')) location.href = '/admin'; }, 200);
+      } else {
+        alert('Please contact an administrator to change your password.');
+      }
+    }
+  });
+})();
+</script>
+
 <!-- Sidebar -->
 <nav class="sidebar">
   <div class="sidebar-logo">
@@ -126,8 +189,8 @@
     <a href="#" class="nav-link" data-page="integrations">
       <i class="bi bi-hdd-network"></i> Integrations</a>
 
-    <div class="nav-section">Admin</div>
-    <a href="#" class="nav-link" data-page="admin">
+    <div id="adminNavSection" class="nav-section" style="display:none;">Admin</div>
+    <a href="#" id="adminNavLink" class="nav-link" data-page="admin" style="display:none;">
       <i class="bi bi-gear"></i> Settings</a>
   </div>
   <div class="sidebar-footer">
@@ -807,6 +870,11 @@ function setupNavigation() {
 }
 
 function showPage(id) {
+  // Block non-admin users from accessing admin page
+  if (id === 'admin' && (!window.WMS_USER || window.WMS_USER.role !== 'admin')) {
+    id = 'dashboard';
+  }
+  
   document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
   document.getElementById('page-' + id).classList.add('active');
   

@@ -286,11 +286,11 @@ func (h *AdminHandler) HandleMedianFill(w http.ResponseWriter, r *http.Request) 
 		return
 	}
 	var body struct {
-		MeterID        string `json:"meter_id"`
-		SiteID         string `json:"site_id"`
-		TargetDate     string `json:"target_date"`
-		LookbackDays   int    `json:"lookback_days"`
-		FreshnessDays  int    `json:"freshness_days"`
+		MeterID       string `json:"meter_id"`
+		SiteID        string `json:"site_id"`
+		TargetDate    string `json:"target_date"`
+		LookbackDays  int    `json:"lookback_days"`
+		FreshnessDays int    `json:"freshness_days"`
 	}
 	_ = json.NewDecoder(r.Body).Decode(&body)
 	target := time.Now()

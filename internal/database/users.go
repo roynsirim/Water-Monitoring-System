@@ -22,10 +22,10 @@ import (
 type UserStore struct {
 	mu       sync.RWMutex
 	path     string
-	Users    []models.User           `json:"users"`
-	Sessions []models.Session        `json:"sessions"`
-	Activity []models.ActivityLog    `json:"activity"`
-	Resets   []models.PasswordReset  `json:"resets"`
+	Users    []models.User          `json:"users"`
+	Sessions []models.Session       `json:"sessions"`
+	Activity []models.ActivityLog   `json:"activity"`
+	Resets   []models.PasswordReset `json:"resets"`
 }
 
 // OpenUserStore loads (or creates) the user-store JSON file.

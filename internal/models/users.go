@@ -50,13 +50,13 @@ func (u User) SafeUser() User {
 // ─── Session ──────────────────────────────────────────────────────────────────
 
 type Session struct {
-	ID        string    `json:"id"`
-	UserID    string    `json:"user_id"`
-	TokenHash string    `json:"token_hash,omitempty"` // SHA-256 of issued token
-	IP        string    `json:"ip"`
-	UserAgent string    `json:"user_agent"`
-	IssuedAt  time.Time `json:"issued_at"`
-	ExpiresAt time.Time `json:"expires_at"`
+	ID        string     `json:"id"`
+	UserID    string     `json:"user_id"`
+	TokenHash string     `json:"token_hash,omitempty"` // SHA-256 of issued token
+	IP        string     `json:"ip"`
+	UserAgent string     `json:"user_agent"`
+	IssuedAt  time.Time  `json:"issued_at"`
+	ExpiresAt time.Time  `json:"expires_at"`
 	RevokedAt *time.Time `json:"revoked_at,omitempty"`
 }
 

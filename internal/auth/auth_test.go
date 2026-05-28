@@ -69,7 +69,7 @@ func TestVerifyPassword(t *testing.T) {
 func TestVerifyPasswordTiming(t *testing.T) {
 	// Ensure verification uses constant-time comparison
 	hash, _ := HashPassword("password123", 10)
-	
+
 	// Both should take similar time (constant-time)
 	start := time.Now()
 	_ = VerifyPassword(hash, "password123") // correct

@@ -15,7 +15,7 @@ func setupTestStore(t *testing.T) (*UserStore, func()) {
 	t.Helper()
 	dir := t.TempDir()
 	path := filepath.Join(dir, "water.json")
-	
+
 	// Create empty water.json
 	if err := os.WriteFile(path, []byte("{}"), 0644); err != nil {
 		t.Fatalf("failed to create test db: %v", err)
@@ -407,7 +407,7 @@ func TestPurgeExpiredSessions(t *testing.T) {
 	store.mu.RLock()
 	count := len(store.Sessions)
 	store.mu.RUnlock()
-	
+
 	if count != 1 {
 		t.Errorf("PurgeExpiredSessions() kept %d sessions, want 1", count)
 	}

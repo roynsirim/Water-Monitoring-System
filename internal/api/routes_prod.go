@@ -3,6 +3,8 @@ package api
 import (
 	"net/http"
 	"time"
+
+	"water-monitoring-system/internal/auth"
 )
 
 // SetupDeps groups everything needed to register full production routes.
@@ -90,6 +92,17 @@ func RegisterProductionRoutes(mux *http.ServeMux, d SetupDeps) {
 		http.ServeFile(w, r, dirOf(d.FrontendPath)+"/admin.html")
 	})
 	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+		// Check for valid session; redirect to login if not authenticated
+		token := extractToken(r)
+		if token == "" {
+			http.Redirect(w, r, "/login", http.StatusFound)
+			return
+		}
+		// Verify token is valid
+		if _, err := auth.Verify(token, d.AuthDeps.JWTSecret); err != nil {
+			http.Redirect(w, r, "/login", http.StatusFound)
+			return
+		}
 		http.ServeFile(w, r, d.FrontendPath)
 	})
 }

@@ -111,6 +111,16 @@ func (a *AuthHandler) HandleLogin(w http.ResponseWriter, r *http.Request) {
 
 	a.audit(models.ActivityLog{UserID: u.ID, UserEmail: u.Email, Action: "login", Status: "success", IP: clientIP(r), UserAgent: r.UserAgent(), Resource: sess.ID})
 
+	// Set HTTP-only session cookie for browser redirects
+	http.SetCookie(w, &http.Cookie{
+		Name:     "wms_session",
+		Value:    tok,
+		Path:     "/",
+		Expires:  exp,
+		HttpOnly: true,
+		SameSite: http.SameSiteLaxMode,
+	})
+
 	respondJSON(w, 200, map[string]any{
 		"token":      tok,
 		"expires_at": exp,
@@ -119,6 +129,15 @@ func (a *AuthHandler) HandleLogin(w http.ResponseWriter, r *http.Request) {
 }
 
 func (a *AuthHandler) HandleLogout(w http.ResponseWriter, r *http.Request) {
+	// Clear session cookie
+	http.SetCookie(w, &http.Cookie{
+		Name:     "wms_session",
+		Value:    "",
+		Path:     "/",
+		MaxAge:   -1,
+		HttpOnly: true,
+	})
+
 	tok := extractToken(r)
 	if tok == "" {
 		respondJSON(w, 200, map[string]string{"status": "ok"})

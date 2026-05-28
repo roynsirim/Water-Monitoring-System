@@ -9,9 +9,9 @@
       "password_hash": "$pbkdf2-sha256$i=120000$Xgi9hr2Cjkro58fP3fKAuA$WrqBzuBrD/qGXeJoUARd2oFTXlvOR7fzYTHYXhSpajg",
       "must_change_password": true,
       "last_login_at": "2026-05-28T13:54:41.777799+01:00",
-      "failed_attempts": 0,
+      "failed_attempts": 2,
       "created_at": "2026-05-27T15:54:45.572654+01:00",
-      "updated_at": "2026-05-28T13:54:41.777799+01:00"
+      "updated_at": "2026-05-28T14:17:42.9898642+01:00"
     },
     {
       "id": "506565d1-43cf-41ed-92c8-d78dbc90c5b8",
@@ -265,6 +265,18 @@
       "user_agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 Safari/537.36",
       "status": "success",
       "created_at": "2026-05-28T14:00:28.077047+01:00"
+    },
+    {
+      "id": "08d6ceb8-aefd-4f8e-8f6e-152e8e38b8c9",
+      "user_id": "198f6498-057e-4a08-996a-ec91073cdbe0",
+      "user_email": "admin@example.com",
+      "action": "login",
+      "resource": "",
+      "ip": "127.0.0.1",
+      "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 Safari/537.36 Edg/148.0.0.0",
+      "status": "failure",
+      "detail": "bad password",
+      "created_at": "2026-05-28T14:17:43.6262669+01:00"
     }
   ],
   "resets": []

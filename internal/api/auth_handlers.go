@@ -13,7 +13,7 @@ import (
 
 // AuthHandler bundles auth-related endpoints.
 type AuthHandler struct {
-	Users      *database.UserStore
+	Users      database.UserStoreInterface
 	JWTSecret  string
 	SessionTTL time.Duration
 	BcryptCost int

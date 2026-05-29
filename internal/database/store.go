@@ -1,6 +1,7 @@
 package database
 
 import (
+	"database/sql"
 	"time"
 
 	"water-monitoring-system/internal/models"
@@ -51,9 +52,24 @@ type Store interface {
 var _ Store = (*DB)(nil)
 var _ Store = (*PostgresDB)(nil)
 
+// StoreResult contains the opened store and optional SQL connection for PostgreSQL
+type StoreResult struct {
+	Store Store
+	DB    *sql.DB // non-nil only for postgres driver
+}
+
 // OpenStore opens a database connection based on driver type
 // Returns a Store interface that works with either JSON or PostgreSQL
 func OpenStore(driver, path, dsn string) (Store, error) {
+	result, err := OpenStoreWithConnection(driver, path, dsn)
+	if err != nil {
+		return nil, err
+	}
+	return result.Store, nil
+}
+
+// OpenStoreWithConnection opens a database and returns both the Store and underlying connection
+func OpenStoreWithConnection(driver, path, dsn string) (*StoreResult, error) {
 	switch driver {
 	case "postgres":
 		pdb, err := OpenPostgres(dsn)
@@ -64,9 +80,13 @@ func OpenStore(driver, path, dsn string) (Store, error) {
 		if err := pdb.SeedMetersIfEmpty(); err != nil {
 			return nil, err
 		}
-		return pdb, nil
+		return &StoreResult{Store: pdb, DB: pdb.conn}, nil
 	default:
 		// Default to JSON store
-		return Open(path)
+		db, err := Open(path)
+		if err != nil {
+			return nil, err
+		}
+		return &StoreResult{Store: db, DB: nil}, nil
 	}
 }

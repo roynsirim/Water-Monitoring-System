@@ -33,7 +33,7 @@ func CurrentUser(r *http.Request) (models.User, bool) {
 
 // AuthDeps groups the dependencies needed by the auth middleware.
 type AuthDeps struct {
-	Users     *database.UserStore
+	Users     database.UserStoreInterface
 	JWTSecret string
 	// LegacyAPIKey, if non-empty, allows machine-to-machine calls bypassing
 	// the per-user auth (kept for backward compatibility / health probes).

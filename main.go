@@ -64,10 +64,11 @@ func main() {
 	}
 
 	// ── Database ──────────────────────────────────────────────────────────
-	db, err := database.OpenStore(cfg.Database.Driver, cfg.Database.Path, cfg.Database.DSN)
+	storeResult, err := database.OpenStoreWithConnection(cfg.Database.Driver, cfg.Database.Path, cfg.Database.DSN)
 	if err != nil {
 		log.Fatalf("Failed to open database: %v", err)
 	}
+	db := storeResult.Store
 	if err := db.Save(); err != nil {
 		log.Printf("Warning: failed to save database: %v", err)
 	}
@@ -78,10 +79,12 @@ func main() {
 		log.Printf("JSON store: %s", cfg.Database.Path)
 	}
 
-	users, err := database.OpenUserStore(cfg.Database.Path)
+	// User store: use PostgreSQL when available, otherwise JSON
+	users, err := database.OpenUserStoreForDriver(cfg.Database.Driver, cfg.Database.Path, storeResult.DB)
 	if err != nil {
 		log.Fatalf("Failed to open user store: %v", err)
 	}
+	log.Printf("User store ready (driver=%s)", cfg.Database.Driver)
 
 	if err := bootstrapAdmin(users, cfg); err != nil {
 		log.Printf("Warning: bootstrap admin: %v", err)
@@ -161,7 +164,7 @@ func main() {
 }
 
 // bootstrapAdmin creates the default admin account on first launch.
-func bootstrapAdmin(users *database.UserStore, cfg *config.Config) error {
+func bootstrapAdmin(users database.UserStoreInterface, cfg *config.Config) error {
 	if len(users.ListUsers()) > 0 {
 		return nil
 	}

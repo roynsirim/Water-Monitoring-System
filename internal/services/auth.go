@@ -16,7 +16,7 @@ import (
 
 // AuthService handles authentication business logic.
 type AuthService struct {
-	Users      *database.UserStore
+	Users      database.UserStoreInterface
 	JWTSecret  string
 	SessionTTL time.Duration
 	BcryptCost int
@@ -24,7 +24,7 @@ type AuthService struct {
 
 // AuthServiceConfig configures AuthService.
 type AuthServiceConfig struct {
-	Users      *database.UserStore
+	Users      database.UserStoreInterface
 	JWTSecret  string
 	SessionTTL time.Duration
 	BcryptCost int

@@ -13,12 +13,12 @@ import (
 
 // UserService handles user management business logic.
 type UserService struct {
-	Users      *database.UserStore
+	Users      database.UserStoreInterface
 	BcryptCost int
 }
 
 // NewUserService creates a new UserService.
-func NewUserService(users *database.UserStore, bcryptCost int) *UserService {
+func NewUserService(users database.UserStoreInterface, bcryptCost int) *UserService {
 	if bcryptCost == 0 {
 		bcryptCost = 12
 	}

@@ -15,11 +15,11 @@ import (
 
 // Handler bundles all HTTP handler methods
 type Handler struct {
-	db *database.DB
+	db database.Store
 }
 
-// NewHandler creates a new Handler with the given database
-func NewHandler(db *database.DB) *Handler {
+// NewHandler creates a new Handler with the given database store
+func NewHandler(db database.Store) *Handler {
 	return &Handler{db: db}
 }
 

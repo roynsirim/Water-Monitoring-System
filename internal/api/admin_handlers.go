@@ -14,7 +14,7 @@ import (
 
 // AdminHandler exposes user/account administration endpoints.
 type AdminHandler struct {
-	DB         *database.DB
+	DB         database.Store
 	Users      *database.UserStore
 	BcryptCost int
 }

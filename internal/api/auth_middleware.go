@@ -47,7 +47,16 @@ func WithSessionAuth(deps AuthDeps, h http.HandlerFunc) http.HandlerFunc {
 		if deps.LegacyAPIKey != "" {
 			if k := r.Header.Get("X-API-Key"); k != "" {
 				if subtle.ConstantTimeCompare([]byte(k), []byte(deps.LegacyAPIKey)) == 1 {
-					h(w, r)
+					// Inject a synthetic system user with admin privileges for API key auth
+					systemUser := models.User{
+						ID:       "system-api-key",
+						Email:    "system@api.internal",
+						Name:     "System API Key",
+						Role:     models.RoleAdmin,
+						IsActive: true,
+					}
+					ctx := context.WithValue(r.Context(), ctxKeyUser, systemUser)
+					h(w, r.WithContext(ctx))
 					return
 				}
 			}

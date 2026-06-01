@@ -112,6 +112,78 @@
 
   <!-- Data tab -->
   <div class="tab-pane d-none" id="tab-data">
+    <div class="row g-3 mb-3">
+      <!-- Readings Management -->
+      <div class="col-12">
+        <div class="card">
+          <div class="card-header d-flex justify-content-between align-items-center">
+            <span><i class="bi bi-droplet me-1"></i>Manage Readings</span>
+            <div class="d-flex align-items-center gap-2">
+              <select class="form-select form-select-sm" id="readingsPageSize" style="width: auto;">
+                <option value="25">25/page</option>
+                <option value="50" selected>50/page</option>
+                <option value="100">100/page</option>
+              </select>
+              <button class="btn btn-outline-light btn-sm" id="refreshReadings"><i class="bi bi-arrow-clockwise"></i></button>
+            </div>
+          </div>
+          <div class="card-body p-0 scroll-table" style="max-height: 350px;">
+            <table class="table table-hover mb-0">
+              <thead class="sticky-top" style="background:#1a2332;">
+                <tr><th>Date</th><th>Site</th><th>Meter</th><th class="text-end">Value</th><th class="text-end">Usage</th><th>Type</th><th>Actions</th></tr>
+              </thead>
+              <tbody id="readingsTbody"></tbody>
+            </table>
+          </div>
+          <div class="card-footer d-flex justify-content-between align-items-center py-2" style="background: rgba(0,180,216,.03); border-top: 1px solid var(--border);">
+            <small class="text-muted" id="readingsInfo">Showing 0 of 0</small>
+            <nav>
+              <ul class="pagination pagination-sm mb-0">
+                <li class="page-item" id="readingsPrevItem"><a class="page-link" href="#" id="readingsPrev"><i class="bi bi-chevron-left"></i></a></li>
+                <li class="page-item disabled"><span class="page-link" id="readingsPageNum">1</span></li>
+                <li class="page-item" id="readingsNextItem"><a class="page-link" href="#" id="readingsNext"><i class="bi bi-chevron-right"></i></a></li>
+              </ul>
+            </nav>
+          </div>
+        </div>
+      </div>
+
+      <!-- Tonnes Management -->
+      <div class="col-12">
+        <div class="card">
+          <div class="card-header d-flex justify-content-between align-items-center">
+            <span><i class="bi bi-box-seam me-1"></i>Manage Tonnes</span>
+            <div class="d-flex align-items-center gap-2">
+              <select class="form-select form-select-sm" id="tonnesPageSize" style="width: auto;">
+                <option value="25">25/page</option>
+                <option value="50" selected>50/page</option>
+                <option value="100">100/page</option>
+              </select>
+              <button class="btn btn-outline-light btn-sm" id="refreshTonnes"><i class="bi bi-arrow-clockwise"></i></button>
+            </div>
+          </div>
+          <div class="card-body p-0 scroll-table" style="max-height: 350px;">
+            <table class="table table-hover mb-0">
+              <thead class="sticky-top" style="background:#1a2332;">
+                <tr><th>Date</th><th>Site</th><th>Department</th><th class="text-end">Tonnes</th><th>Notes</th><th>Actions</th></tr>
+              </thead>
+              <tbody id="tonnesTobody"></tbody>
+            </table>
+          </div>
+          <div class="card-footer d-flex justify-content-between align-items-center py-2" style="background: rgba(0,180,216,.03); border-top: 1px solid var(--border);">
+            <small class="text-muted" id="tonnesInfo">Showing 0 of 0</small>
+            <nav>
+              <ul class="pagination pagination-sm mb-0">
+                <li class="page-item" id="tonnesPrevItem"><a class="page-link" href="#" id="tonnesPrev"><i class="bi bi-chevron-left"></i></a></li>
+                <li class="page-item disabled"><span class="page-link" id="tonnesPageNum">1</span></li>
+                <li class="page-item" id="tonnesNextItem"><a class="page-link" href="#" id="tonnesNext"><i class="bi bi-chevron-right"></i></a></li>
+              </ul>
+            </nav>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <div class="row g-3">
       <div class="col-md-6">
         <div class="card">
@@ -144,6 +216,53 @@
             <p class="small text-muted">Irreversible operations — make a backup of <code>data/water.json</code> first.</p>
             <button class="btn btn-outline-danger btn-sm" id="clearDataBtn"><i class="bi bi-trash me-1"></i>Clear all readings &amp; tonnes</button>
           </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Edit Reading Modal -->
+  <div class="modal fade" id="editReadingModal" tabindex="-1">
+    <div class="modal-dialog">
+      <div class="modal-content" style="background: #1a2332;">
+        <div class="modal-header"><h6 class="modal-title">Edit Reading</h6>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button></div>
+        <div class="modal-body">
+          <form id="editReadingForm">
+            <input type="hidden" id="erId">
+            <div class="mb-2"><label class="small text-muted">Value</label><input class="form-control" type="number" step="0.01" id="erValue" required></div>
+            <div class="mb-2"><label class="small text-muted">Usage (m³)</label><input class="form-control" type="number" step="0.01" id="erUsage"></div>
+            <div class="mb-2"><label class="small text-muted">Date</label><input class="form-control" type="date" id="erDate" required></div>
+            <div class="mb-2"><label class="small text-muted">Notes</label><textarea class="form-control" id="erNotes" rows="2"></textarea></div>
+            <div id="erMsg" class="small"></div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Cancel</button>
+          <button type="button" class="btn btn-brand btn-sm" id="saveReadingBtn">Save</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Edit Tonnes Modal -->
+  <div class="modal fade" id="editTonnesModal" tabindex="-1">
+    <div class="modal-dialog">
+      <div class="modal-content" style="background: #1a2332;">
+        <div class="modal-header"><h6 class="modal-title">Edit Tonnes</h6>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button></div>
+        <div class="modal-body">
+          <form id="editTonnesForm">
+            <input type="hidden" id="etId">
+            <div class="mb-2"><label class="small text-muted">Tonnes</label><input class="form-control" type="number" step="0.1" id="etTonnes" required></div>
+            <div class="mb-2"><label class="small text-muted">Date</label><input class="form-control" type="date" id="etDate" required></div>
+            <div class="mb-2"><label class="small text-muted">Notes</label><textarea class="form-control" id="etNotes" rows="2"></textarea></div>
+            <div id="etMsg" class="small"></div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Cancel</button>
+          <button type="button" class="btn btn-brand btn-sm" id="saveTonnesBtn">Save</button>
         </div>
       </div>
     </div>
@@ -395,10 +514,233 @@ document.getElementById('changePwForm').addEventListener('submit', async (e) => 
 
 // ─── Util ────────────────────────────────────────────────────────────────────
 function escapeHTML(s) { return (s || '').replace(/[&<>"']/g, c => ({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;' }[c])); }
+function fmtDate(d) { return d ? new Date(d).toLocaleDateString() : '—'; }
+const siteNames = { rotherham: 'Rotherham', stocksbridge: 'Stocksbridge', brinsworth: 'Brinsworth', wednesbury: 'Wednesbury' };
+
+// ─── Readings Management ──────────────────────────────────────────────────────
+let readingsCache = [];
+let readingsPage = 1;
+let readingsPageSize = 50;
+
+function renderReadingsPage() {
+  const tb = document.getElementById('readingsTbody');
+  tb.innerHTML = '';
+  
+  // Sort by date descending (most recent first)
+  const sorted = [...readingsCache].sort((a, b) => new Date(b.date) - new Date(a.date));
+  const total = sorted.length;
+  const totalPages = Math.max(1, Math.ceil(total / readingsPageSize));
+  
+  // Clamp page
+  if (readingsPage > totalPages) readingsPage = totalPages;
+  if (readingsPage < 1) readingsPage = 1;
+  
+  const start = (readingsPage - 1) * readingsPageSize;
+  const end = Math.min(start + readingsPageSize, total);
+  const pageData = sorted.slice(start, end);
+  
+  pageData.forEach(r => {
+    const tr = document.createElement('tr');
+    tr.innerHTML = `
+      <td class="small">${fmtDate(r.date)}</td>
+      <td>${siteNames[r.site_id] || r.site_id}</td>
+      <td class="small">${escapeHTML(r.meter_id.slice(0, 12))}...</td>
+      <td class="text-end">${r.value?.toLocaleString()}</td>
+      <td class="text-end">${r.usage?.toFixed(2) || '—'}</td>
+      <td><span class="badge bg-info-subtle text-info">${r.water_type}</span>${r.is_estimated ? ' <span class="badge bg-warning-subtle text-warning">est</span>' : ''}</td>
+      <td>
+        <button class="btn btn-outline-info btn-sm py-0 px-1" onclick="editReading('${r.id}')" title="Edit"><i class="bi bi-pencil"></i></button>
+        <button class="btn btn-outline-danger btn-sm py-0 px-1" onclick="deleteReading('${r.id}')" title="Delete"><i class="bi bi-trash"></i></button>
+      </td>
+    `;
+    tb.appendChild(tr);
+  });
+  
+  // Update pagination UI
+  document.getElementById('readingsInfo').textContent = total > 0 
+    ? `Showing ${start + 1}–${end} of ${total}` 
+    : 'No readings';
+  document.getElementById('readingsPageNum').textContent = `${readingsPage} / ${totalPages}`;
+  document.getElementById('readingsPrevItem').classList.toggle('disabled', readingsPage <= 1);
+  document.getElementById('readingsNextItem').classList.toggle('disabled', readingsPage >= totalPages);
+}
+
+async function loadReadings() {
+  try {
+    readingsCache = await api('/api/admin/readings/');
+    renderReadingsPage();
+  } catch (e) { console.error('Failed to load readings:', e); }
+}
+
+document.getElementById('readingsPrev').addEventListener('click', (e) => {
+  e.preventDefault();
+  if (readingsPage > 1) { readingsPage--; renderReadingsPage(); }
+});
+document.getElementById('readingsNext').addEventListener('click', (e) => {
+  e.preventDefault();
+  const totalPages = Math.ceil(readingsCache.length / readingsPageSize);
+  if (readingsPage < totalPages) { readingsPage++; renderReadingsPage(); }
+});
+document.getElementById('readingsPageSize').addEventListener('change', (e) => {
+  readingsPageSize = parseInt(e.target.value, 10);
+  readingsPage = 1;
+  renderReadingsPage();
+});
+
+function editReading(id) {
+  const r = readingsCache.find(x => x.id === id);
+  if (!r) return;
+  document.getElementById('erId').value = r.id;
+  document.getElementById('erValue').value = r.value;
+  document.getElementById('erUsage').value = r.usage || '';
+  document.getElementById('erDate').value = r.date ? r.date.split('T')[0] : '';
+  document.getElementById('erNotes').value = r.notes || '';
+  document.getElementById('erMsg').textContent = '';
+  new bootstrap.Modal(document.getElementById('editReadingModal')).show();
+}
+
+document.getElementById('saveReadingBtn').addEventListener('click', async () => {
+  const id = document.getElementById('erId').value;
+  try {
+    await api('/api/admin/readings/' + id, {
+      method: 'PUT',
+      body: JSON.stringify({
+        value: parseFloat(document.getElementById('erValue').value),
+        usage: parseFloat(document.getElementById('erUsage').value) || 0,
+        date: document.getElementById('erDate').value,
+        notes: document.getElementById('erNotes').value
+      })
+    });
+    bootstrap.Modal.getInstance(document.getElementById('editReadingModal')).hide();
+    await loadReadings();
+  } catch (err) {
+    document.getElementById('erMsg').innerHTML = '<span class="text-danger">' + escapeHTML(err.message) + '</span>';
+  }
+});
+
+async function deleteReading(id) {
+  if (!confirm('Delete this reading? This cannot be undone.')) return;
+  try {
+    await api('/api/admin/readings/' + id, { method: 'DELETE' });
+    await loadReadings();
+  } catch (err) { alert(err.message); }
+}
+
+document.getElementById('refreshReadings').addEventListener('click', loadReadings);
+
+// ─── Tonnes Management ────────────────────────────────────────────────────────
+let tonnesCache = [];
+let tonnesPage = 1;
+let tonnesPageSize = 50;
+
+function renderTonnesPage() {
+  const tb = document.getElementById('tonnesTobody');
+  tb.innerHTML = '';
+  
+  // Sort by date descending (most recent first)
+  const sorted = [...tonnesCache].sort((a, b) => new Date(b.date) - new Date(a.date));
+  const total = sorted.length;
+  const totalPages = Math.max(1, Math.ceil(total / tonnesPageSize));
+  
+  // Clamp page
+  if (tonnesPage > totalPages) tonnesPage = totalPages;
+  if (tonnesPage < 1) tonnesPage = 1;
+  
+  const start = (tonnesPage - 1) * tonnesPageSize;
+  const end = Math.min(start + tonnesPageSize, total);
+  const pageData = sorted.slice(start, end);
+  
+  pageData.forEach(t => {
+    const tr = document.createElement('tr');
+    tr.innerHTML = `
+      <td class="small">${fmtDate(t.date)}</td>
+      <td>${siteNames[t.site_id] || t.site_id}</td>
+      <td>${escapeHTML(t.department)}</td>
+      <td class="text-end">${t.tonnes?.toLocaleString()}</td>
+      <td class="small text-muted">${escapeHTML(t.notes || '')}</td>
+      <td>
+        <button class="btn btn-outline-info btn-sm py-0 px-1" onclick="editTonnes('${t.id}')" title="Edit"><i class="bi bi-pencil"></i></button>
+        <button class="btn btn-outline-danger btn-sm py-0 px-1" onclick="deleteTonnes('${t.id}')" title="Delete"><i class="bi bi-trash"></i></button>
+      </td>
+    `;
+    tb.appendChild(tr);
+  });
+  
+  // Update pagination UI
+  document.getElementById('tonnesInfo').textContent = total > 0 
+    ? `Showing ${start + 1}–${end} of ${total}` 
+    : 'No tonnes entries';
+  document.getElementById('tonnesPageNum').textContent = `${tonnesPage} / ${totalPages}`;
+  document.getElementById('tonnesPrevItem').classList.toggle('disabled', tonnesPage <= 1);
+  document.getElementById('tonnesNextItem').classList.toggle('disabled', tonnesPage >= totalPages);
+}
+
+async function loadTonnes() {
+  try {
+    tonnesCache = await api('/api/admin/tonnes/');
+    renderTonnesPage();
+  } catch (e) { console.error('Failed to load tonnes:', e); }
+}
+
+document.getElementById('tonnesPrev').addEventListener('click', (e) => {
+  e.preventDefault();
+  if (tonnesPage > 1) { tonnesPage--; renderTonnesPage(); }
+});
+document.getElementById('tonnesNext').addEventListener('click', (e) => {
+  e.preventDefault();
+  const totalPages = Math.ceil(tonnesCache.length / tonnesPageSize);
+  if (tonnesPage < totalPages) { tonnesPage++; renderTonnesPage(); }
+});
+document.getElementById('tonnesPageSize').addEventListener('change', (e) => {
+  tonnesPageSize = parseInt(e.target.value, 10);
+  tonnesPage = 1;
+  renderTonnesPage();
+});
+
+function editTonnes(id) {
+  const t = tonnesCache.find(x => x.id === id);
+  if (!t) return;
+  document.getElementById('etId').value = t.id;
+  document.getElementById('etTonnes').value = t.tonnes;
+  document.getElementById('etDate').value = t.date ? t.date.split('T')[0] : '';
+  document.getElementById('etNotes').value = t.notes || '';
+  document.getElementById('etMsg').textContent = '';
+  new bootstrap.Modal(document.getElementById('editTonnesModal')).show();
+}
+
+document.getElementById('saveTonnesBtn').addEventListener('click', async () => {
+  const id = document.getElementById('etId').value;
+  try {
+    await api('/api/admin/tonnes/' + id, {
+      method: 'PUT',
+      body: JSON.stringify({
+        tonnes: parseFloat(document.getElementById('etTonnes').value),
+        date: document.getElementById('etDate').value,
+        notes: document.getElementById('etNotes').value
+      })
+    });
+    bootstrap.Modal.getInstance(document.getElementById('editTonnesModal')).hide();
+    await loadTonnes();
+  } catch (err) {
+    document.getElementById('etMsg').innerHTML = '<span class="text-danger">' + escapeHTML(err.message) + '</span>';
+  }
+});
+
+async function deleteTonnes(id) {
+  if (!confirm('Delete this tonnes entry? This cannot be undone.')) return;
+  try {
+    await api('/api/admin/tonnes/' + id, { method: 'DELETE' });
+    await loadTonnes();
+  } catch (err) { alert(err.message); }
+}
+
+document.getElementById('refreshTonnes').addEventListener('click', loadTonnes);
 
 // initial load
 loadUsers().catch(e => console.error(e));
 loadActivity().catch(()=>{});
+loadReadings().catch(()=>{});
+loadTonnes().catch(()=>{});
 </script>
 </body>
 </html>

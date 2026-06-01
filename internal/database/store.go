@@ -25,11 +25,17 @@ type Store interface {
 	// Readings
 	AddReading(r models.Reading) error
 	GetReadings(siteID, meterID string, from, to time.Time) []models.Reading
+	GetReading(id string) *models.Reading
+	UpdateReading(id string, updates models.Reading) error
+	DeleteReading(id string) error
 	GetLastReadingTimes() map[string]time.Time
 
 	// Tonnes
 	AddTonnes(t models.TonnesEntry) error
 	GetTonnes(siteID string, from, to time.Time) []models.TonnesEntry
+	GetTonnesEntry(id string) *models.TonnesEntry
+	UpdateTonnes(id string, updates models.TonnesEntry) error
+	DeleteTonnes(id string) error
 
 	// Auto-fill
 	AutoFillMissingData(meterID string, targetDate time.Time) *models.Reading

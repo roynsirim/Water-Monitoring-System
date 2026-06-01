@@ -443,6 +443,62 @@ func (db *PostgresDB) GetLastReadingTimes() map[string]time.Time {
 	return result
 }
 
+// GetReading returns a single reading by ID
+func (db *PostgresDB) GetReading(id string) *models.Reading {
+	var r models.Reading
+	err := db.conn.QueryRow(`
+		SELECT id, meter_id, site_id, value, usage, reading_date, source, COALESCE(notes, ''), water_type, is_estimated
+		FROM readings WHERE id = $1
+	`, id).Scan(&r.ID, &r.MeterID, &r.SiteID, &r.Value, &r.Usage, &r.Date, &r.Source, &r.Notes, &r.WaterType, &r.IsEstimated)
+
+	if err != nil {
+		return nil
+	}
+	return &r
+}
+
+// UpdateReading updates an existing reading
+func (db *PostgresDB) UpdateReading(id string, updates models.Reading) error {
+	result, err := db.conn.Exec(`
+		UPDATE readings SET
+			value = COALESCE(NULLIF($2, 0), value),
+			usage = COALESCE(NULLIF($3, 0), usage),
+			reading_date = COALESCE(NULLIF($4, '0001-01-01'::timestamp), reading_date),
+			notes = COALESCE(NULLIF($5, ''), notes)
+		WHERE id = $1
+	`, id, updates.Value, updates.Usage, updates.Date, updates.Notes)
+
+	if err != nil {
+		return err
+	}
+
+	rows, err := result.RowsAffected()
+	if err != nil {
+		return err
+	}
+	if rows == 0 {
+		return fmt.Errorf("reading not found")
+	}
+	return nil
+}
+
+// DeleteReading deletes a reading by ID
+func (db *PostgresDB) DeleteReading(id string) error {
+	result, err := db.conn.Exec("DELETE FROM readings WHERE id = $1", id)
+	if err != nil {
+		return err
+	}
+
+	rows, err := result.RowsAffected()
+	if err != nil {
+		return err
+	}
+	if rows == 0 {
+		return fmt.Errorf("reading not found")
+	}
+	return nil
+}
+
 // ─── Tonnes ───────────────────────────────────────────────────────────────────
 
 // AddTonnes adds a new tonnes entry
@@ -538,6 +594,63 @@ func (db *PostgresDB) GetTonnes(siteID string, from, to time.Time) []models.Tonn
 	}
 
 	return entries
+}
+
+// GetTonnesEntry returns a single tonnes entry by ID
+func (db *PostgresDB) GetTonnesEntry(id string) *models.TonnesEntry {
+	var t models.TonnesEntry
+	err := db.conn.QueryRow(`
+		SELECT id, site_id, department, tonnes, entry_date, COALESCE(notes, '')
+		FROM tonnes WHERE id = $1
+	`, id).Scan(&t.ID, &t.SiteID, &t.Department, &t.Tonnes, &t.Date, &t.Notes)
+
+	if err != nil {
+		return nil
+	}
+	return &t
+}
+
+// UpdateTonnes updates an existing tonnes entry
+func (db *PostgresDB) UpdateTonnes(id string, updates models.TonnesEntry) error {
+	result, err := db.conn.Exec(`
+		UPDATE tonnes SET
+			site_id = COALESCE(NULLIF($2, ''), site_id),
+			department = COALESCE(NULLIF($3, ''), department),
+			tonnes = COALESCE(NULLIF($4, 0), tonnes),
+			entry_date = COALESCE(NULLIF($5, '0001-01-01'::timestamp), entry_date),
+			notes = COALESCE(NULLIF($6, ''), notes)
+		WHERE id = $1
+	`, id, updates.SiteID, updates.Department, updates.Tonnes, updates.Date, updates.Notes)
+
+	if err != nil {
+		return err
+	}
+
+	rows, err := result.RowsAffected()
+	if err != nil {
+		return err
+	}
+	if rows == 0 {
+		return fmt.Errorf("tonnes entry not found")
+	}
+	return nil
+}
+
+// DeleteTonnes deletes a tonnes entry by ID
+func (db *PostgresDB) DeleteTonnes(id string) error {
+	result, err := db.conn.Exec("DELETE FROM tonnes WHERE id = $1", id)
+	if err != nil {
+		return err
+	}
+
+	rows, err := result.RowsAffected()
+	if err != nil {
+		return err
+	}
+	if rows == 0 {
+		return fmt.Errorf("tonnes entry not found")
+	}
+	return nil
 }
 
 // ─── Auto-Fill ────────────────────────────────────────────────────────────────

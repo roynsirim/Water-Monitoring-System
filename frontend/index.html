@@ -209,11 +209,17 @@
   <div class="topbar">
     <h1 class="page-title" id="pageTitle">Dashboard</h1>
     <div class="d-flex align-items-center gap-2 flex-wrap">
+      <div class="btn-group btn-group-sm me-2" role="group" aria-label="Date range">
+        <button type="button" class="btn btn-outline-info active" onclick="showCurrentData()" id="btnCurrent" title="Show current data">Current</button>
+        <button type="button" class="btn btn-outline-secondary" onclick="setDateRange(30)" title="Last 30 days">30d</button>
+        <button type="button" class="btn btn-outline-secondary" onclick="setDateRange(90)" title="Last 90 days">90d</button>
+        <button type="button" class="btn btn-outline-secondary" onclick="setDateRange(365)" title="Last year">1y</button>
+      </div>
       <div class="d-flex align-items-center gap-2">
         <label class="text-muted small">From</label>
-        <input type="date" id="globalFrom" class="form-control form-control-sm" style="width:auto">
+        <input type="date" id="globalFrom" class="form-control form-control-sm" style="width:auto" placeholder="Optional">
         <label class="text-muted small">To</label>
-        <input type="date" id="globalTo" class="form-control form-control-sm" style="width:auto">
+        <input type="date" id="globalTo" class="form-control form-control-sm" style="width:auto" placeholder="Optional">
       </div>
       <button class="btn btn-brand btn-sm" onclick="refresh()">
         <i class="bi bi-arrow-clockwise me-1"></i>Refresh</button>
@@ -779,7 +785,7 @@ async function loadPreferences() {
     preferences = await r.json();
     applyTheme(preferences.theme || 'dark');
     document.getElementById('autoFillEnabled').checked = preferences.auto_fill_enabled;
-    document.getElementById('adminDateRange').value = preferences.default_date_range || 90;
+    document.getElementById('adminDateRange').value = preferences.default_date_range || 30;
     document.getElementById('autoFillSection').style.display = preferences.auto_fill_enabled ? 'block' : 'none';
   } catch (e) {
     console.error('Failed to load preferences:', e);
@@ -830,17 +836,34 @@ document.getElementById('themeToggle').addEventListener('click', () => {
 });
 
 function setDefaultDates() {
-  const to = new Date();
-  const days = preferences.default_date_range || 90;
-  const from = new Date(); from.setDate(from.getDate() - days);
   const fmt = d => d.toISOString().split('T')[0];
-  document.getElementById('globalFrom').value = fmt(from);
-  document.getElementById('globalTo').value = fmt(to);
+  const to = new Date();
+  // Leave global date filters empty by default for "current" data view
+  document.getElementById('globalFrom').value = '';
+  document.getElementById('globalTo').value = '';
+  // Set today's date for data entry
   document.getElementById('inDate').value = fmt(to);
   document.getElementById('tDate').value = fmt(to);
+  // Set report range to last month
   const y = new Date(); y.setMonth(y.getMonth() - 1);
   document.getElementById('repFrom').value = fmt(y);
   document.getElementById('repTo').value = fmt(to);
+}
+
+// Quick date range selector
+function setDateRange(days) {
+  const fmt = d => d.toISOString().split('T')[0];
+  const to = new Date();
+  const from = new Date(); from.setDate(from.getDate() - days);
+  document.getElementById('globalFrom').value = fmt(from);
+  document.getElementById('globalTo').value = fmt(to);
+  refresh();
+}
+
+function showCurrentData() {
+  document.getElementById('globalFrom').value = '';
+  document.getElementById('globalTo').value = '';
+  refresh();
 }
 
 async function fetchMeters() {
@@ -906,13 +929,32 @@ function refresh() {
   if (id === 'dashboard') loadDashboard();
   else if (id === 'site') loadSiteDashboard(currentSite);
   else if (id === 'kpis') loadKPIs();
+  updateDateRangeButtons();
+}
+
+function updateDateRangeButtons() {
+  const from = document.getElementById('globalFrom').value;
+  const to = document.getElementById('globalTo').value;
+  document.querySelectorAll('.topbar .btn-group .btn').forEach(btn => btn.classList.remove('active', 'btn-outline-info'));
+  document.querySelectorAll('.topbar .btn-group .btn').forEach(btn => btn.classList.add('btn-outline-secondary'));
+  
+  if (!from && !to) {
+    const btnCurrent = document.getElementById('btnCurrent');
+    btnCurrent.classList.remove('btn-outline-secondary');
+    btnCurrent.classList.add('active', 'btn-outline-info');
+  }
 }
 
 // ─── Dashboard ────────────────────────────────────────────────────────────────
 async function loadDashboard() {
   const from = document.getElementById('globalFrom').value;
   const to = document.getElementById('globalTo').value;
-  const r = await fetch(`${API}/api/dashboard?from=${from}&to=${to}`);
+  // Build URL with only non-empty parameters
+  const params = new URLSearchParams();
+  if (from) params.append('from', from);
+  if (to) params.append('to', to);
+  const url = `${API}/api/dashboard${params.toString() ? '?' + params.toString() : ''}`;
+  const r = await fetch(url);
   const data = await r.json();
   renderDashKpiCards(data);
   renderSiteBarChart(data);
@@ -1002,7 +1044,12 @@ function renderTimelineChart(data) {
 async function loadSiteDashboard(siteId) {
   const from = document.getElementById('globalFrom').value;
   const to = document.getElementById('globalTo').value;
-  const r = await fetch(`${API}/api/dashboard?site_id=${siteId}&from=${from}&to=${to}`);
+  // Build URL with only non-empty parameters
+  const params = new URLSearchParams();
+  params.append('site_id', siteId);
+  if (from) params.append('from', from);
+  if (to) params.append('to', to);
+  const r = await fetch(`${API}/api/dashboard?${params.toString()}`);
   const d = await r.json();
 
   document.getElementById('siteKpiCards').innerHTML = `
@@ -1068,7 +1115,12 @@ async function loadSiteDashboard(siteId) {
 async function loadKPIs() {
   const from = document.getElementById('globalFrom').value;
   const to = document.getElementById('globalTo').value;
-  const r = await fetch(`${API}/api/kpis?from=${from}&to=${to}`);
+  // Build URL with only non-empty parameters
+  const params = new URLSearchParams();
+  if (from) params.append('from', from);
+  if (to) params.append('to', to);
+  const url = `${API}/api/kpis${params.toString() ? '?' + params.toString() : ''}`;
+  const r = await fetch(url);
   const data = await r.json();
 
   document.getElementById('kpiCards').innerHTML = data.map(d => `

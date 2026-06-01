@@ -192,6 +192,76 @@ func (db *DB) GetLastReadingTimes() map[string]time.Time {
 	return last
 }
 
+// GetReading returns a single reading by ID (returns a copy for safety)
+func (db *DB) GetReading(id string) *models.Reading {
+	db.mu.RLock()
+	defer db.mu.RUnlock()
+
+	for i := range db.Readings {
+		if db.Readings[i].ID == id {
+			// Return a copy to prevent data races
+			copy := db.Readings[i]
+			return &copy
+		}
+	}
+	return nil
+}
+
+// UpdateReading updates an existing reading
+func (db *DB) UpdateReading(id string, updates models.Reading) error {
+	db.mu.Lock()
+	defer db.mu.Unlock()
+
+	for i := range db.Readings {
+		if db.Readings[i].ID == id {
+			// Preserve ID
+			updates.ID = id
+			// Update the reading
+			if updates.MeterID != "" {
+				db.Readings[i].MeterID = updates.MeterID
+			}
+			if updates.SiteID != "" {
+				db.Readings[i].SiteID = updates.SiteID
+			}
+			if updates.Value != 0 {
+				db.Readings[i].Value = updates.Value
+			}
+			if updates.Usage != 0 {
+				db.Readings[i].Usage = updates.Usage
+			}
+			if !updates.Date.IsZero() {
+				db.Readings[i].Date = updates.Date
+			}
+			if updates.Source != "" {
+				db.Readings[i].Source = updates.Source
+			}
+			if updates.Notes != "" {
+				db.Readings[i].Notes = updates.Notes
+			}
+			if updates.WaterType != "" {
+				db.Readings[i].WaterType = updates.WaterType
+			}
+			db.Readings[i].IsEstimated = updates.IsEstimated
+			return db.Save()
+		}
+	}
+	return fmt.Errorf("reading not found")
+}
+
+// DeleteReading deletes a reading by ID
+func (db *DB) DeleteReading(id string) error {
+	db.mu.Lock()
+	defer db.mu.Unlock()
+
+	for i := range db.Readings {
+		if db.Readings[i].ID == id {
+			db.Readings = append(db.Readings[:i], db.Readings[i+1:]...)
+			return db.Save()
+		}
+	}
+	return fmt.Errorf("reading not found")
+}
+
 // ─── Tonnes ───────────────────────────────────────────────────────────────────
 
 // AddTonnes adds a new tonnes entry
@@ -223,6 +293,63 @@ func (db *DB) GetTonnes(siteID string, from, to time.Time) []models.TonnesEntry 
 		result = append(result, t)
 	}
 	return result
+}
+
+// GetTonnesEntry returns a single tonnes entry by ID (returns a copy for safety)
+func (db *DB) GetTonnesEntry(id string) *models.TonnesEntry {
+	db.mu.RLock()
+	defer db.mu.RUnlock()
+
+	for i := range db.Tonnes {
+		if db.Tonnes[i].ID == id {
+			// Return a copy to prevent data races
+			copy := db.Tonnes[i]
+			return &copy
+		}
+	}
+	return nil
+}
+
+// UpdateTonnes updates an existing tonnes entry
+func (db *DB) UpdateTonnes(id string, updates models.TonnesEntry) error {
+	db.mu.Lock()
+	defer db.mu.Unlock()
+
+	for i := range db.Tonnes {
+		if db.Tonnes[i].ID == id {
+			if updates.SiteID != "" {
+				db.Tonnes[i].SiteID = updates.SiteID
+			}
+			if updates.Department != "" {
+				db.Tonnes[i].Department = updates.Department
+			}
+			if updates.Tonnes != 0 {
+				db.Tonnes[i].Tonnes = updates.Tonnes
+			}
+			if !updates.Date.IsZero() {
+				db.Tonnes[i].Date = updates.Date
+			}
+			if updates.Notes != "" {
+				db.Tonnes[i].Notes = updates.Notes
+			}
+			return db.Save()
+		}
+	}
+	return fmt.Errorf("tonnes entry not found")
+}
+
+// DeleteTonnes deletes a tonnes entry by ID
+func (db *DB) DeleteTonnes(id string) error {
+	db.mu.Lock()
+	defer db.mu.Unlock()
+
+	for i := range db.Tonnes {
+		if db.Tonnes[i].ID == id {
+			db.Tonnes = append(db.Tonnes[:i], db.Tonnes[i+1:]...)
+			return db.Save()
+		}
+	}
+	return fmt.Errorf("tonnes entry not found")
 }
 
 // ─── Auto-Fill ────────────────────────────────────────────────────────────────

@@ -333,3 +333,219 @@ func (h *AdminHandler) HandleMedianFill(w http.ResponseWriter, r *http.Request) 
 	})
 	respondJSON(w, 200, map[string]any{"status": "completed", "filled": n})
 }
+
+// ─── Data Management ─────────────────────────────────────────────────────────
+
+// HandleReadingsCRUD handles /api/admin/readings/{id} for GET / PUT / DELETE
+func (h *AdminHandler) HandleReadingsCRUD(w http.ResponseWriter, r *http.Request) {
+	id := strings.TrimPrefix(r.URL.Path, "/api/admin/readings/")
+	id = strings.Trim(id, "/")
+
+	switch r.Method {
+	case http.MethodGet:
+		if id == "" {
+			// List recent readings with pagination
+			readings := h.DB.GetReadings("", "", time.Time{}, time.Time{})
+			respondJSON(w, 200, readings)
+			return
+		}
+		rd := h.DB.GetReading(id)
+		if rd == nil {
+			writeError(w, 404, "reading not found")
+			return
+		}
+		respondJSON(w, 200, rd)
+	case http.MethodPut, http.MethodPatch:
+		if id == "" {
+			writeError(w, 400, "reading id required")
+			return
+		}
+		h.updateReading(w, r, id)
+	case http.MethodDelete:
+		if id == "" {
+			writeError(w, 400, "reading id required")
+			return
+		}
+		h.deleteReading(w, r, id)
+	default:
+		writeError(w, 405, "method not allowed")
+	}
+}
+
+func (h *AdminHandler) updateReading(w http.ResponseWriter, r *http.Request, id string) {
+	var body struct {
+		Value float64 `json:"value"`
+		Usage float64 `json:"usage"`
+		Date  string  `json:"date"`
+		Notes string  `json:"notes"`
+	}
+	if err := json.NewDecoder(r.Body).Decode(&body); err != nil {
+		writeError(w, 400, "invalid JSON")
+		return
+	}
+
+	// Validate: value should not be negative
+	if body.Value < 0 {
+		writeError(w, 400, "value must not be negative")
+		return
+	}
+
+	// Check if reading exists first
+	existing := h.DB.GetReading(id)
+	if existing == nil {
+		writeError(w, 404, "reading not found")
+		return
+	}
+
+	updates := models.Reading{
+		Value: body.Value,
+		Usage: body.Usage,
+		Notes: body.Notes,
+	}
+	if body.Date != "" {
+		updates.Date = parseDate(body.Date)
+	}
+
+	if err := h.DB.UpdateReading(id, updates); err != nil {
+		writeError(w, 500, err.Error())
+		return
+	}
+
+	actor, _ := CurrentUser(r)
+	h.Users.LogActivity(models.ActivityLog{
+		UserID: actor.ID, UserEmail: actor.Email,
+		Action: "update_reading", Resource: id, Status: "success",
+		IP: clientIP(r), UserAgent: r.UserAgent(),
+	})
+	respondJSON(w, 200, map[string]string{"status": "updated"})
+}
+
+func (h *AdminHandler) deleteReading(w http.ResponseWriter, r *http.Request, id string) {
+	// Check if reading exists first
+	existing := h.DB.GetReading(id)
+	if existing == nil {
+		writeError(w, 404, "reading not found")
+		return
+	}
+
+	if err := h.DB.DeleteReading(id); err != nil {
+		writeError(w, 500, err.Error())
+		return
+	}
+
+	actor, _ := CurrentUser(r)
+	h.Users.LogActivity(models.ActivityLog{
+		UserID: actor.ID, UserEmail: actor.Email,
+		Action: "delete_reading", Resource: id, Status: "success",
+		IP: clientIP(r), UserAgent: r.UserAgent(),
+	})
+	respondJSON(w, 200, map[string]string{"status": "deleted"})
+}
+
+// HandleTonnesCRUD handles /api/admin/tonnes/{id} for GET / PUT / DELETE
+func (h *AdminHandler) HandleTonnesCRUD(w http.ResponseWriter, r *http.Request) {
+	id := strings.TrimPrefix(r.URL.Path, "/api/admin/tonnes/")
+	id = strings.Trim(id, "/")
+
+	switch r.Method {
+	case http.MethodGet:
+		if id == "" {
+			// List recent tonnes entries
+			tonnes := h.DB.GetTonnes("", time.Time{}, time.Time{})
+			respondJSON(w, 200, tonnes)
+			return
+		}
+		t := h.DB.GetTonnesEntry(id)
+		if t == nil {
+			writeError(w, 404, "tonnes entry not found")
+			return
+		}
+		respondJSON(w, 200, t)
+	case http.MethodPut, http.MethodPatch:
+		if id == "" {
+			writeError(w, 400, "tonnes entry id required")
+			return
+		}
+		h.updateTonnes(w, r, id)
+	case http.MethodDelete:
+		if id == "" {
+			writeError(w, 400, "tonnes entry id required")
+			return
+		}
+		h.deleteTonnes(w, r, id)
+	default:
+		writeError(w, 405, "method not allowed")
+	}
+}
+
+func (h *AdminHandler) updateTonnes(w http.ResponseWriter, r *http.Request, id string) {
+	var body struct {
+		SiteID     string  `json:"site_id"`
+		Department string  `json:"department"`
+		Tonnes     float64 `json:"tonnes"`
+		Date       string  `json:"date"`
+		Notes      string  `json:"notes"`
+	}
+	if err := json.NewDecoder(r.Body).Decode(&body); err != nil {
+		writeError(w, 400, "invalid JSON")
+		return
+	}
+
+	// Validate: tonnes should not be negative
+	if body.Tonnes < 0 {
+		writeError(w, 400, "tonnes must not be negative")
+		return
+	}
+
+	// Check if entry exists first
+	existing := h.DB.GetTonnesEntry(id)
+	if existing == nil {
+		writeError(w, 404, "tonnes entry not found")
+		return
+	}
+
+	updates := models.TonnesEntry{
+		SiteID:     body.SiteID,
+		Department: body.Department,
+		Tonnes:     body.Tonnes,
+		Notes:      body.Notes,
+	}
+	if body.Date != "" {
+		updates.Date = parseDate(body.Date)
+	}
+
+	if err := h.DB.UpdateTonnes(id, updates); err != nil {
+		writeError(w, 500, err.Error())
+		return
+	}
+
+	actor, _ := CurrentUser(r)
+	h.Users.LogActivity(models.ActivityLog{
+		UserID: actor.ID, UserEmail: actor.Email,
+		Action: "update_tonnes", Resource: id, Status: "success",
+		IP: clientIP(r), UserAgent: r.UserAgent(),
+	})
+	respondJSON(w, 200, map[string]string{"status": "updated"})
+}
+
+func (h *AdminHandler) deleteTonnes(w http.ResponseWriter, r *http.Request, id string) {
+	// Check if entry exists first
+	existing := h.DB.GetTonnesEntry(id)
+	if existing == nil {
+		writeError(w, 404, "tonnes entry not found")
+		return
+	}
+
+	if err := h.DB.DeleteTonnes(id); err != nil {
+		writeError(w, 500, err.Error())
+		return
+	}
+
+	actor, _ := CurrentUser(r)
+	h.Users.LogActivity(models.ActivityLog{
+		UserID: actor.ID, UserEmail: actor.Email,
+		Action: "delete_tonnes", Resource: id, Status: "success",
+		IP: clientIP(r), UserAgent: r.UserAgent(),
+	})
+	respondJSON(w, 200, map[string]string{"status": "deleted"})
+}

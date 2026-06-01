@@ -65,6 +65,10 @@ func RegisterProductionRoutes(mux *http.ServeMux, d SetupDeps) {
 	mux.HandleFunc("/api/admin/connection-status", requireAuth(d.Handler.HandleConnectionStatus))
 	mux.HandleFunc("/api/admin/clear-data", adminOnly(d.Handler.HandleClearData))
 
+	// Data management — admin only
+	mux.HandleFunc("/api/admin/readings/", adminOnly(d.Admin.HandleReadingsCRUD))
+	mux.HandleFunc("/api/admin/tonnes/", adminOnly(d.Admin.HandleTonnesCRUD))
+
 	// User management — admin only
 	mux.HandleFunc("/api/admin/users", adminOnly(d.Admin.HandleUsers))
 	mux.HandleFunc("/api/admin/users/", adminOnly(func(w http.ResponseWriter, r *http.Request) {

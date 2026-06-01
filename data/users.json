@@ -8,10 +8,10 @@
       "is_active": true,
       "password_hash": "$pbkdf2-sha256$i=120000$H2GSMk+VPzU2/DUSSKSOjg$oV5rlB6OcOyfi4rhasQcgu/VidWv7zjw/EcfW06uh4g",
       "must_change_password": false,
-      "last_login_at": "2026-05-29T13:34:17.1082641+01:00",
+      "last_login_at": "2026-06-01T11:35:01.252972+01:00",
       "failed_attempts": 0,
       "created_at": "2026-05-27T15:54:45.572654+01:00",
-      "updated_at": "2026-05-29T13:34:17.1082641+01:00"
+      "updated_at": "2026-06-01T11:35:01.252972+01:00"
     },
     {
       "id": "506565d1-43cf-41ed-92c8-d78dbc90c5b8",
@@ -34,10 +34,10 @@
       "is_active": true,
       "password_hash": "$pbkdf2-sha256$i=120000$gmV4hijZUjge/TQ6gUV7wg$gF4R170pl1ft7KeMPYWtCf2Pq8ywSeTFOIxYDdgN3Cw",
       "must_change_password": false,
-      "last_login_at": "2026-05-29T13:37:28.4508524+01:00",
+      "last_login_at": "2026-06-01T13:39:47.2443589+01:00",
       "failed_attempts": 0,
       "created_at": "2026-05-29T13:35:31.6567848+01:00",
-      "updated_at": "2026-05-29T13:37:28.4508524+01:00"
+      "updated_at": "2026-06-01T13:39:47.2443589+01:00"
     }
   ],
   "sessions": [
@@ -157,6 +157,35 @@
       "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 Safari/537.36 Edg/148.0.0.0",
       "issued_at": "2026-05-29T13:37:27.9167177+01:00",
       "expires_at": "2026-05-30T01:37:27.9167177+01:00"
+    },
+    {
+      "id": "3b73d635-6a86-405e-a5f2-fc8a100fae98",
+      "user_id": "198f6498-057e-4a08-996a-ec91073cdbe0",
+      "token_hash": "a95f3aa9c968a8eb705ad0c4eea316e731a63f34bddbfca7a2f893b1e15214d6",
+      "ip": "127.0.0.1",
+      "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 Safari/537.36 Edg/148.0.0.0",
+      "issued_at": "2026-06-01T11:34:58.3802239+01:00",
+      "expires_at": "2026-06-01T23:34:58.3802239+01:00",
+      "revoked_at": "2026-06-01T11:35:12.7524621+01:00"
+    },
+    {
+      "id": "1577a50f-34af-4fbd-87a9-d2e86b2056e4",
+      "user_id": "8c2a5bc8-74a9-4f0c-80cb-8e9c2772fbe5",
+      "token_hash": "2609aa20389244b9a6c18a3eae4488c648e4afa2d6117393ec202bf6441a79da",
+      "ip": "127.0.0.1",
+      "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 Safari/537.36 Edg/148.0.0.0",
+      "issued_at": "2026-06-01T11:35:24.9119587+01:00",
+      "expires_at": "2026-06-01T23:35:24.9119587+01:00",
+      "revoked_at": "2026-06-01T13:33:57.0111157+01:00"
+    },
+    {
+      "id": "158ebdbd-3d2a-4fd8-bdf9-3cc65f56f31e",
+      "user_id": "8c2a5bc8-74a9-4f0c-80cb-8e9c2772fbe5",
+      "token_hash": "09193c7f2e7676f9dfabed811b627032186ff863660f1bcac4c78185aa7746d1",
+      "ip": "127.0.0.1",
+      "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 Safari/537.36 Edg/148.0.0.0",
+      "issued_at": "2026-06-01T13:39:47.1861728+01:00",
+      "expires_at": "2026-06-02T01:39:47.1861728+01:00"
     }
   ],
   "activity": [
@@ -478,6 +507,61 @@
       "status": "success",
       "detail": "single meter fill",
       "created_at": "2026-05-29T08:12:44.35012+01:00"
+    },
+    {
+      "id": "c7e16017-8e62-429d-a173-0c3c2e040e47",
+      "user_id": "198f6498-057e-4a08-996a-ec91073cdbe0",
+      "user_email": "admin@example.com",
+      "action": "login",
+      "resource": "3b73d635-6a86-405e-a5f2-fc8a100fae98",
+      "ip": "127.0.0.1",
+      "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 Safari/537.36 Edg/148.0.0.0",
+      "status": "success",
+      "created_at": "2026-06-01T11:35:03.3675804+01:00"
+    },
+    {
+      "id": "ba97b976-af0c-4b6c-a407-0993a50662c1",
+      "user_id": "198f6498-057e-4a08-996a-ec91073cdbe0",
+      "user_email": "admin@example.com",
+      "action": "logout",
+      "resource": "3b73d635-6a86-405e-a5f2-fc8a100fae98",
+      "ip": "127.0.0.1",
+      "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 Safari/537.36 Edg/148.0.0.0",
+      "status": "success",
+      "created_at": "2026-06-01T11:35:14.987249+01:00"
+    },
+    {
+      "id": "35d7f7ef-20b2-433f-82eb-aa7a0b5aa77f",
+      "user_id": "8c2a5bc8-74a9-4f0c-80cb-8e9c2772fbe5",
+      "user_email": "royal.nsirim@specialityuk.com",
+      "action": "login",
+      "resource": "1577a50f-34af-4fbd-87a9-d2e86b2056e4",
+      "ip": "127.0.0.1",
+      "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 Safari/537.36 Edg/148.0.0.0",
+      "status": "success",
+      "created_at": "2026-06-01T11:35:29.2430225+01:00"
+    },
+    {
+      "id": "d770accd-07ee-4eb8-81fa-209fa8f2de2f",
+      "user_id": "8c2a5bc8-74a9-4f0c-80cb-8e9c2772fbe5",
+      "user_email": "royal.nsirim@specialityuk.com",
+      "action": "logout",
+      "resource": "1577a50f-34af-4fbd-87a9-d2e86b2056e4",
+      "ip": "127.0.0.1",
+      "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 Safari/537.36 Edg/148.0.0.0",
+      "status": "success",
+      "created_at": "2026-06-01T13:34:01.7658652+01:00"
+    },
+    {
+      "id": "9e5321e3-309e-499b-9b9f-4d56f58bcea3",
+      "user_id": "8c2a5bc8-74a9-4f0c-80cb-8e9c2772fbe5",
+      "user_email": "royal.nsirim@specialityuk.com",
+      "action": "login",
+      "resource": "158ebdbd-3d2a-4fd8-bdf9-3cc65f56f31e",
+      "ip": "127.0.0.1",
+      "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/148.0.0.0 Safari/537.36 Edg/148.0.0.0",
+      "status": "success",
+      "created_at": "2026-06-01T13:39:47.2733245+01:00"
     }
   ],
   "resets": []

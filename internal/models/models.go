@@ -1,6 +1,10 @@
 package models
 
-import "time"
+import (
+	"encoding/json"
+	"fmt"
+	"time"
+)
 
 // ─── Water Types ──────────────────────────────────────────────────────────────
 
@@ -108,6 +112,35 @@ type TonnesEntry struct {
 	Tonnes     float64   `json:"tonnes"`
 	Date       time.Time `json:"date"`
 	Notes      string    `json:"notes,omitempty"`
+}
+
+// UnmarshalJSON provides custom JSON unmarshaling to handle date formats from HTML date inputs (YYYY-MM-DD)
+func (t *TonnesEntry) UnmarshalJSON(data []byte) error {
+	type Alias TonnesEntry
+	aux := &struct {
+		Date string `json:"date"`
+		*Alias
+	}{
+		Alias: (*Alias)(t),
+	}
+	if err := json.Unmarshal(data, &aux); err != nil {
+		return err
+	}
+	// Parse date from YYYY-MM-DD format or RFC3339
+	if aux.Date != "" {
+		// Try parsing as YYYY-MM-DD format first (from HTML date input)
+		if parsedTime, err := time.Parse("2006-01-02", aux.Date); err == nil {
+			t.Date = parsedTime
+		} else {
+			// Fall back to RFC3339 format
+			if parsedTime, err := time.Parse(time.RFC3339, aux.Date); err == nil {
+				t.Date = parsedTime
+			} else {
+				return fmt.Errorf("invalid date format: %s", aux.Date)
+			}
+		}
+	}
+	return nil
 }
 
 // ─── User Preferences ─────────────────────────────────────────────────────────

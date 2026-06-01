@@ -277,6 +277,18 @@
       "status": "failure",
       "detail": "bad password",
       "created_at": "2026-05-28T14:17:43.6262669+01:00"
+    },
+    {
+      "id": "2fafbf13-efac-4b43-ad9c-5d0852d39620",
+      "user_id": "system-api-key",
+      "user_email": "system@api.internal",
+      "action": "median_fill",
+      "resource": "r-acp",
+      "ip": "[::1]",
+      "user_agent": "curl/8.9.1",
+      "status": "success",
+      "detail": "single meter fill",
+      "created_at": "2026-05-29T08:12:44.35012+01:00"
     }
   ],
   "resets": []

@@ -55,29 +55,36 @@ func main() {
 		log.Println("WARNING: WMS_JWT_SECRET not set — generated an ephemeral secret. Set one in app.env for stable sessions.")
 	}
 
-	// ── Ensure data directory exists ──────────────────────────────────────
-	dataDir := filepath.Dir(cfg.Database.Path)
-	if err := os.MkdirAll(dataDir, 0750); err != nil {
-		log.Fatalf("Failed to create data directory: %v", err)
+	// ── Ensure data directory exists (for JSON driver) ───────────────────
+	if cfg.Database.Driver == "" || cfg.Database.Driver == "json" {
+		dataDir := filepath.Dir(cfg.Database.Path)
+		if err := os.MkdirAll(dataDir, 0750); err != nil {
+			log.Fatalf("Failed to create data directory: %v", err)
+		}
 	}
 
 	// ── Database ──────────────────────────────────────────────────────────
-	db, err := database.Open(cfg.Database.Path)
+	storeResult, err := database.OpenStoreWithConnection(cfg.Database.Driver, cfg.Database.Path, cfg.Database.DSN)
 	if err != nil {
 		log.Fatalf("Failed to open database: %v", err)
 	}
+	db := storeResult.Store
 	if err := db.Save(); err != nil {
 		log.Printf("Warning: failed to save database: %v", err)
 	}
-	log.Printf("Database ready: %s (driver=%s)", cfg.Database.Path, cfg.Database.Driver)
-	if cfg.Database.Driver != "" && cfg.Database.Driver != "json" {
-		log.Printf("NOTE: requested driver %q is not yet compiled in; using JSON store. Add a SQL driver in a future iteration.", cfg.Database.Driver)
+	log.Printf("Database ready (driver=%s)", cfg.Database.Driver)
+	if cfg.Database.Driver == "postgres" {
+		log.Printf("PostgreSQL DSN: %s", maskDSN(cfg.Database.DSN))
+	} else {
+		log.Printf("JSON store: %s", cfg.Database.Path)
 	}
 
-	users, err := database.OpenUserStore(cfg.Database.Path)
+	// User store: use PostgreSQL when available, otherwise JSON
+	users, err := database.OpenUserStoreForDriver(cfg.Database.Driver, cfg.Database.Path, storeResult.DB)
 	if err != nil {
 		log.Fatalf("Failed to open user store: %v", err)
 	}
+	log.Printf("User store ready (driver=%s)", cfg.Database.Driver)
 
 	if err := bootstrapAdmin(users, cfg); err != nil {
 		log.Printf("Warning: bootstrap admin: %v", err)
@@ -157,7 +164,7 @@ func main() {
 }
 
 // bootstrapAdmin creates the default admin account on first launch.
-func bootstrapAdmin(users *database.UserStore, cfg *config.Config) error {
+func bootstrapAdmin(users database.UserStoreInterface, cfg *config.Config) error {
 	if len(users.ListUsers()) > 0 {
 		return nil
 	}
@@ -183,4 +190,33 @@ func bootstrapAdmin(users *database.UserStore, cfg *config.Config) error {
 		log.Printf("Bootstrapped admin user: %s (CHANGE THE PASSWORD on first login)", email)
 	}
 	return err
+}
+
+// maskDSN masks the password in a PostgreSQL DSN for safe logging
+func maskDSN(dsn string) string {
+	// Simple masking: replace password portion if present
+	// Format: postgres://user:password@host:port/db
+	if dsn == "" {
+		return "(empty)"
+	}
+	// Find the password section between : and @ after ://
+	start := 0
+	if idx := len("postgres://"); len(dsn) > idx {
+		start = idx
+	}
+	atIdx := -1
+	colonIdx := -1
+	for i := start; i < len(dsn); i++ {
+		if dsn[i] == ':' && colonIdx == -1 {
+			colonIdx = i
+		}
+		if dsn[i] == '@' {
+			atIdx = i
+			break
+		}
+	}
+	if colonIdx > 0 && atIdx > colonIdx {
+		return dsn[:colonIdx+1] + "****" + dsn[atIdx:]
+	}
+	return dsn
 }

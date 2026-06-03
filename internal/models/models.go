@@ -116,13 +116,13 @@ type TonnesEntry struct {
 type Invoice struct {
 	ID            string    `json:"id"`
 	InvoiceNumber string    `json:"invoice_number"`
-	Month         time.Time `json:"month"`                     // First day of the month
+	Month         time.Time `json:"month"` // First day of the month
 	MeterID       string    `json:"meter_id"`
 	SiteID        string    `json:"site_id"`
-	Amount        float64   `json:"amount"`                    // Total amount for the month
+	Amount        float64   `json:"amount"` // Total amount for the month
 	Notes         string    `json:"notes,omitempty"`
-	CreatedBy     string    `json:"created_by,omitempty"`      // User ID who created
-	UpdatedBy     string    `json:"updated_by,omitempty"`      // User ID who last updated
+	CreatedBy     string    `json:"created_by,omitempty"` // User ID who created
+	UpdatedBy     string    `json:"updated_by,omitempty"` // User ID who last updated
 	CreatedAt     time.Time `json:"created_at"`
 	UpdatedAt     time.Time `json:"updated_at"`
 }

@@ -730,7 +730,7 @@ func (db *PostgresDB) GetInvoices(siteID, meterID string, from, to time.Time) []
 	invoices := []models.Invoice{}
 	for rows.Next() {
 		var inv models.Invoice
-		if err := rows.Scan(&inv.ID, &inv.InvoiceNumber, &inv.Month, &inv.MeterID, &inv.SiteID, 
+		if err := rows.Scan(&inv.ID, &inv.InvoiceNumber, &inv.Month, &inv.MeterID, &inv.SiteID,
 			&inv.Amount, &inv.Notes, &inv.CreatedBy, &inv.UpdatedBy, &inv.CreatedAt, &inv.UpdatedAt); err != nil {
 			continue
 		}
@@ -751,7 +751,7 @@ func (db *PostgresDB) GetInvoice(id string) *models.Invoice {
 		SELECT id, invoice_number, month, meter_id, site_id, amount, COALESCE(notes, ''), 
 		       COALESCE(created_by, ''), COALESCE(updated_by, ''), created_at, updated_at
 		FROM invoices WHERE id = $1
-	`, id).Scan(&inv.ID, &inv.InvoiceNumber, &inv.Month, &inv.MeterID, &inv.SiteID, 
+	`, id).Scan(&inv.ID, &inv.InvoiceNumber, &inv.Month, &inv.MeterID, &inv.SiteID,
 		&inv.Amount, &inv.Notes, &inv.CreatedBy, &inv.UpdatedBy, &inv.CreatedAt, &inv.UpdatedAt)
 
 	if err != nil {
@@ -773,7 +773,7 @@ func (db *PostgresDB) UpdateInvoice(id string, updates models.Invoice) error {
 			updated_by = $8,
 			updated_at = CURRENT_TIMESTAMP
 		WHERE id = $1
-	`, id, updates.InvoiceNumber, updates.Month, updates.MeterID, updates.SiteID, 
+	`, id, updates.InvoiceNumber, updates.Month, updates.MeterID, updates.SiteID,
 		updates.Amount, updates.Notes, updates.UpdatedBy)
 
 	if err != nil {

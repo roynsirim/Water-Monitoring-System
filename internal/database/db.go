@@ -20,6 +20,7 @@ type DB struct {
 	Meters      []models.Meter          `json:"meters"`
 	Readings    []models.Reading        `json:"readings"`
 	Tonnes      []models.TonnesEntry    `json:"tonnes"`
+	Invoices    []models.Invoice        `json:"invoices"`
 	Preferences models.UserPreferences  `json:"preferences"`
 	ConnStatus  models.ConnectionStatus `json:"connection_status"`
 }
@@ -49,6 +50,9 @@ func Open(path string) (*DB, error) {
 	}
 	if db.Tonnes == nil {
 		db.Tonnes = []models.TonnesEntry{}
+	}
+	if db.Invoices == nil {
+		db.Invoices = []models.Invoice{}
 	}
 
 	return db, nil
@@ -350,6 +354,92 @@ func (db *DB) DeleteTonnes(id string) error {
 		}
 	}
 	return fmt.Errorf("tonnes entry not found")
+}
+
+// ─── Invoices ─────────────────────────────────────────────────────────────────
+
+// AddInvoice adds a new invoice
+func (db *DB) AddInvoice(i models.Invoice) error {
+	db.mu.Lock()
+	defer db.mu.Unlock()
+
+	i.ID = uuid.New().String()
+	now := time.Now()
+	i.CreatedAt = now
+	i.UpdatedAt = now
+	db.Invoices = append(db.Invoices, i)
+	return db.Save()
+}
+
+// GetInvoices returns invoices filtered by criteria
+func (db *DB) GetInvoices(siteID, meterID string, from, to time.Time) []models.Invoice {
+	db.mu.RLock()
+	defer db.mu.RUnlock()
+
+	result := []models.Invoice{}
+	for _, inv := range db.Invoices {
+		if siteID != "" && inv.SiteID != siteID {
+			continue
+		}
+		if meterID != "" && inv.MeterID != meterID {
+			continue
+		}
+		if !from.IsZero() && inv.Month.Before(from) {
+			continue
+		}
+		if !to.IsZero() && inv.Month.After(to) {
+			continue
+		}
+		result = append(result, inv)
+	}
+	return result
+}
+
+// GetInvoice returns a single invoice by ID
+func (db *DB) GetInvoice(id string) *models.Invoice {
+	db.mu.RLock()
+	defer db.mu.RUnlock()
+
+	for i := range db.Invoices {
+		if db.Invoices[i].ID == id {
+			copy := db.Invoices[i]
+			return &copy
+		}
+	}
+	return nil
+}
+
+// UpdateInvoice updates an existing invoice
+func (db *DB) UpdateInvoice(id string, updates models.Invoice) error {
+	db.mu.Lock()
+	defer db.mu.Unlock()
+
+	for i := range db.Invoices {
+		if db.Invoices[i].ID == id {
+			// Preserve ID and CreatedAt/CreatedBy
+			updates.ID = id
+			updates.CreatedAt = db.Invoices[i].CreatedAt
+			updates.CreatedBy = db.Invoices[i].CreatedBy
+			updates.UpdatedAt = time.Now()
+			db.Invoices[i] = updates
+			return db.Save()
+		}
+	}
+	return fmt.Errorf("invoice not found")
+}
+
+// DeleteInvoice deletes an invoice by ID
+func (db *DB) DeleteInvoice(id string) error {
+	db.mu.Lock()
+	defer db.mu.Unlock()
+
+	for i := range db.Invoices {
+		if db.Invoices[i].ID == id {
+			db.Invoices = append(db.Invoices[:i], db.Invoices[i+1:]...)
+			return db.Save()
+		}
+	}
+	return fmt.Errorf("invoice not found")
 }
 
 // ─── Auto-Fill ────────────────────────────────────────────────────────────────

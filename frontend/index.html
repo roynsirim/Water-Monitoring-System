@@ -478,12 +478,12 @@
                 </select>
               </div>
               <div class="col-md-6">
-                <label class="form-label small">Tonnes</label>
-                <input type="number" id="tValue" class="form-control" placeholder="Production tonnes" step="0.1">
+                <label class="form-label small">Tonnes <span class="text-danger">*</span></label>
+                <input type="number" id="tValue" class="form-control" placeholder="Production tonnes" step="0.1" min="0" required>
               </div>
               <div class="col-md-6">
-                <label class="form-label small">Date</label>
-                <input type="date" id="tDate" class="form-control">
+                <label class="form-label small">Date <span class="text-danger">*</span></label>
+                <input type="date" id="tDate" class="form-control" required>
               </div>
               <div class="col-12">
                 <label class="form-label small">Notes</label>
@@ -908,7 +908,14 @@ function showPage(id) {
   };
   document.getElementById('pageTitle').textContent = titles[id] || id;
   
-  if (id === 'kpis') loadKPIs();
+  // Initialize pages
+  if (id === 'kpis') {
+    loadKPIs();
+  } else if (id === 'tonnes') {
+    // Initialize tonnes form with today's date
+    const today = new Date().toISOString().split('T')[0];
+    document.getElementById('tDate').value = today;
+  }
 }
 
 function showSite(siteId) {
@@ -1235,21 +1242,65 @@ function loadDeptsForTonnes() {
 }
 
 async function submitTonnes() {
+  // Get form values
+  const siteId = document.getElementById('tSite').value.trim();
+  const department = (document.getElementById('tDept').value || '').trim() || 'Site Total';
+  const tonnesInput = document.getElementById('tValue').value.trim();
+  const dateInput = document.getElementById('tDate').value.trim();
+  const notes = (document.getElementById('tNotes').value || '').trim();
+
+  // Parse tonnes as float
+  const tonnes = parseFloat(tonnesInput);
+
+  // Validation
+  if (!siteId) {
+    showAlert('tonnesAlert', 'Please select a site.', 'danger');
+    return;
+  }
+  if (!tonnesInput || isNaN(tonnes) || tonnes < 0) {
+    showAlert('tonnesAlert', 'Please enter a valid tonnes value (must be a positive number).', 'danger');
+    return;
+  }
+  if (!dateInput) {
+    showAlert('tonnesAlert', 'Please select a date.', 'danger');
+    return;
+  }
+
+  // Build request body
   const body = {
-    site_id: document.getElementById('tSite').value,
-    department: document.getElementById('tDept').value || 'Site Total',
-    tonnes: parseFloat(document.getElementById('tValue').value),
-    date: document.getElementById('tDate').value,
-    notes: document.getElementById('tNotes').value,
+    site_id: siteId,
+    department: department,
+    tonnes: tonnes,
+    date: dateInput,
+    notes: notes,
   };
-  if (!body.site_id || isNaN(body.tonnes)) { showAlert('tonnesAlert', 'Please fill all required fields.', 'danger'); return; }
-  const r = await fetch(`${API}/api/tonnes`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) });
-  const d = await r.json();
-  if (d.status === 'ok') {
-    showAlert('tonnesAlert', 'Tonnes saved!', 'success');
-    document.getElementById('tValue').value = '';
-    document.getElementById('tNotes').value = '';
-    loadRecentTonnes();
+
+  try {
+    const r = await fetch(`${API}/api/tonnes`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(body),
+    });
+
+    if (!r.ok) {
+      const error = await r.json();
+      showAlert('tonnesAlert', 'Error: ' + (error.error || error.message || 'Unknown error'), 'danger');
+      return;
+    }
+
+    const d = await r.json();
+    if (d.status === 'ok') {
+      showAlert('tonnesAlert', 'Tonnes saved successfully!', 'success');
+      document.getElementById('tValue').value = '';
+      document.getElementById('tDate').value = '';
+      document.getElementById('tNotes').value = '';
+      await loadRecentTonnes();
+    } else {
+      showAlert('tonnesAlert', 'Error saving tonnes: ' + (d.error || 'Unknown error'), 'danger');
+    }
+  } catch (e) {
+    showAlert('tonnesAlert', 'Network error: ' + e.message, 'danger');
+    console.error('submitTonnes error:', e);
   }
 }
 

@@ -310,12 +310,12 @@ tr:hover td{background:var(--surface2)}
             <select id="t-dept"><option value="">Select department…</option></select>
           </div>
           <div class="field">
-            <label>Tonnes</label>
-            <input type="number" id="t-value" placeholder="Production tonnes" step="0.1">
+            <label>Tonnes <span style="color:red">*</span></label>
+            <input type="number" id="t-value" placeholder="Production tonnes" step="0.1" min="0" required>
           </div>
           <div class="field">
-            <label>Period (Date)</label>
-            <input type="date" id="t-date">
+            <label>Period (Date) <span style="color:red">*</span></label>
+            <input type="date" id="t-date" required>
           </div>
           <div class="field">
             <label>Notes</label>
@@ -823,21 +823,67 @@ async function loadDeptsForTonnes() {
 }
 
 async function submitTonnes() {
+  // Get form values
+  const siteId = document.getElementById('t-site').value.trim();
+  const department = (document.getElementById('t-dept').value || '').trim() || 'Site Total';
+  const tonnesInput = document.getElementById('t-value').value.trim();
+  const dateInput = document.getElementById('t-date').value.trim();
+  const notes = (document.getElementById('t-notes').value || '').trim();
+
+  // Parse tonnes as float
+  const tonnes = parseFloat(tonnesInput);
+
+  // Validation
+  if (!siteId) {
+    showAlert('tonnes-alert', 'Please select a site.', 'error');
+    return;
+  }
+  if (!tonnesInput || isNaN(tonnes) || tonnes < 0) {
+    showAlert('tonnes-alert', 'Please enter a valid tonnes value (must be a positive number).', 'error');
+    return;
+  }
+  if (!dateInput) {
+    showAlert('tonnes-alert', 'Please select a date.', 'error');
+    return;
+  }
+
+  // Build request body
   const body = {
-    site_id: document.getElementById('t-site').value,
-    department: document.getElementById('t-dept').value || 'Site Total',
-    tonnes: parseFloat(document.getElementById('t-value').value),
-    date: document.getElementById('t-date').value,
-    notes: document.getElementById('t-notes').value,
+    site_id: siteId,
+    department: department,
+    tonnes: tonnes,
+    date: dateInput,
+    notes: notes,
   };
-  if(!body.site_id || isNaN(body.tonnes)) { showAlert('tonnes-alert','Please fill all required fields.','error'); return; }
-  const r = await fetch(`${API}/api/tonnes`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});
-  const d = await r.json();
-  if(d.status==='ok'){
-    showAlert('tonnes-alert','Tonnes saved!','success');
-    document.getElementById('t-value').value='';
-    document.getElementById('t-notes').value='';
-    loadRecentTonnes();
+
+  try {
+    const r = await fetch(`${API}/api/tonnes`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(body),
+    });
+
+    if (!r.ok) {
+      const error = await r.json();
+      showAlert('tonnes-alert', 'Error: ' + (error.error || error.message || 'Unknown error'), 'error');
+      return;
+    }
+
+    const d = await r.json();
+    if (d.status === 'ok') {
+      showAlert('tonnes-alert', 'Tonnes saved successfully!', 'success');
+      document.getElementById('t-value').value = '';
+      document.getElementById('t-date').value = '';
+      document.getElementById('t-notes').value = '';
+      await loadRecentTonnes();
+    } else {
+      showAlert('tonnes-alert', 'Error saving tonnes: ' + (d.error || 'Unknown error'), 'error');
+    }
+  } catch (e) {
+    showAlert('tonnes-alert', 'Network error: ' + e.message, 'error');
+    console.error('submitTonnes error:', e);
+  }
+}
   }
 }
 

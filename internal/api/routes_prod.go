@@ -29,6 +29,9 @@ func RegisterProductionRoutes(mux *http.ServeMux, d SetupDeps) {
 	editorOnly := func(h http.HandlerFunc) http.HandlerFunc {
 		return requireAuth(editorGuard(h))
 	}
+	managerOnly := func(h http.HandlerFunc) http.HandlerFunc {
+		return requireAuth(managerOrAdminGuard(h))
+	}
 
 	loginLimiter := NewLoginRateLimiter(10, time.Minute)
 
@@ -81,6 +84,10 @@ func RegisterProductionRoutes(mux *http.ServeMux, d SetupDeps) {
 		d.Admin.HandleUser(w, r)
 	}))
 	mux.HandleFunc("/api/admin/activity", adminOnly(d.Admin.HandleActivity))
+
+	// Invoice management — manager or admin only
+	mux.HandleFunc("/api/admin/invoices", managerOnly(d.Admin.HandleInvoices))
+	mux.HandleFunc("/api/admin/invoices/", managerOnly(d.Admin.HandleInvoice))
 
 	// Health check (no auth)
 	mux.HandleFunc("/api/health", WithCORS(func(w http.ResponseWriter, r *http.Request) {
@@ -158,6 +165,23 @@ func editorGuard(h http.HandlerFunc) http.HandlerFunc {
 			h(w, r)
 		default:
 			writeError(w, 403, "write access denied")
+		}
+	}
+}
+
+// managerOrAdminGuard allows only manager or admin roles
+func managerOrAdminGuard(h http.HandlerFunc) http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		u, ok := CurrentUser(r)
+		if !ok {
+			writeError(w, 401, "authentication required")
+			return
+		}
+		switch u.Role {
+		case "admin", "manager":
+			h(w, r)
+		default:
+			writeError(w, 403, "manager or admin privileges required")
 		}
 	}
 }

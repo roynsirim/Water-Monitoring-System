@@ -93,6 +93,20 @@ func (db *PostgresDB) initSchema() error {
 		created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
 	);
 
+	CREATE TABLE IF NOT EXISTS invoices (
+		id VARCHAR(64) PRIMARY KEY,
+		invoice_number VARCHAR(128) NOT NULL,
+		month TIMESTAMP WITH TIME ZONE NOT NULL,
+		meter_id VARCHAR(64) NOT NULL REFERENCES meters(id) ON DELETE CASCADE,
+		site_id VARCHAR(64) NOT NULL,
+		amount DOUBLE PRECISION NOT NULL,
+		notes TEXT,
+		created_by VARCHAR(64),
+		updated_by VARCHAR(64),
+		created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+		updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+	);
+
 	CREATE TABLE IF NOT EXISTS preferences (
 		id INTEGER PRIMARY KEY DEFAULT 1,
 		theme VARCHAR(32) NOT NULL DEFAULT 'dark',
@@ -114,6 +128,9 @@ func (db *PostgresDB) initSchema() error {
 	CREATE INDEX IF NOT EXISTS idx_metres_site_id ON meters(site_id);
 	CREATE INDEX IF NOT EXISTS idx_tonnes_site_id ON tonnes(site_id);
 	CREATE INDEX IF NOT EXISTS idx_tonnes_date ON tonnes(entry_date);
+	CREATE INDEX IF NOT EXISTS idx_invoices_meter_id ON invoices(meter_id);
+	CREATE INDEX IF NOT EXISTS idx_invoices_site_id ON invoices(site_id);
+	CREATE INDEX IF NOT EXISTS idx_invoices_month ON invoices(month);
 	`
 
 	_, err := db.conn.Exec(schema)
@@ -649,6 +666,143 @@ func (db *PostgresDB) DeleteTonnes(id string) error {
 	}
 	if rows == 0 {
 		return fmt.Errorf("tonnes entry not found")
+	}
+	return nil
+}
+
+// ─── Invoices ─────────────────────────────────────────────────────────────────
+
+// AddInvoice adds a new invoice
+func (db *PostgresDB) AddInvoice(i models.Invoice) error {
+	if i.ID == "" {
+		i.ID = uuid.New().String()
+	}
+	now := time.Now()
+
+	_, err := db.conn.Exec(`
+		INSERT INTO invoices (id, invoice_number, month, meter_id, site_id, amount, notes, created_by, updated_by, created_at, updated_at)
+		VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11)
+	`, i.ID, i.InvoiceNumber, i.Month, i.MeterID, i.SiteID, i.Amount, i.Notes, i.CreatedBy, i.UpdatedBy, now, now)
+
+	return err
+}
+
+// GetInvoices returns invoices filtered by criteria
+func (db *PostgresDB) GetInvoices(siteID, meterID string, from, to time.Time) []models.Invoice {
+	query := `
+		SELECT id, invoice_number, month, meter_id, site_id, amount, COALESCE(notes, ''), 
+		       COALESCE(created_by, ''), COALESCE(updated_by, ''), created_at, updated_at
+		FROM invoices
+		WHERE 1=1
+	`
+	args := []interface{}{}
+	argNum := 1
+
+	if siteID != "" {
+		query += fmt.Sprintf(" AND site_id = $%d", argNum)
+		args = append(args, siteID)
+		argNum++
+	}
+	if meterID != "" {
+		query += fmt.Sprintf(" AND meter_id = $%d", argNum)
+		args = append(args, meterID)
+		argNum++
+	}
+	if !from.IsZero() {
+		query += fmt.Sprintf(" AND month >= $%d", argNum)
+		args = append(args, from)
+		argNum++
+	}
+	if !to.IsZero() {
+		query += fmt.Sprintf(" AND month <= $%d", argNum)
+		args = append(args, to)
+		argNum++
+	}
+
+	query += " ORDER BY month DESC"
+
+	rows, err := db.conn.Query(query, args...)
+	if err != nil {
+		return []models.Invoice{}
+	}
+	defer rows.Close()
+
+	invoices := []models.Invoice{}
+	for rows.Next() {
+		var inv models.Invoice
+		if err := rows.Scan(&inv.ID, &inv.InvoiceNumber, &inv.Month, &inv.MeterID, &inv.SiteID,
+			&inv.Amount, &inv.Notes, &inv.CreatedBy, &inv.UpdatedBy, &inv.CreatedAt, &inv.UpdatedAt); err != nil {
+			continue
+		}
+		invoices = append(invoices, inv)
+	}
+
+	if err := rows.Err(); err != nil {
+		return []models.Invoice{}
+	}
+
+	return invoices
+}
+
+// GetInvoice returns a single invoice by ID
+func (db *PostgresDB) GetInvoice(id string) *models.Invoice {
+	var inv models.Invoice
+	err := db.conn.QueryRow(`
+		SELECT id, invoice_number, month, meter_id, site_id, amount, COALESCE(notes, ''), 
+		       COALESCE(created_by, ''), COALESCE(updated_by, ''), created_at, updated_at
+		FROM invoices WHERE id = $1
+	`, id).Scan(&inv.ID, &inv.InvoiceNumber, &inv.Month, &inv.MeterID, &inv.SiteID,
+		&inv.Amount, &inv.Notes, &inv.CreatedBy, &inv.UpdatedBy, &inv.CreatedAt, &inv.UpdatedAt)
+
+	if err != nil {
+		return nil
+	}
+	return &inv
+}
+
+// UpdateInvoice updates an existing invoice
+func (db *PostgresDB) UpdateInvoice(id string, updates models.Invoice) error {
+	result, err := db.conn.Exec(`
+		UPDATE invoices SET
+			invoice_number = $2,
+			month = $3,
+			meter_id = $4,
+			site_id = $5,
+			amount = $6,
+			notes = $7,
+			updated_by = $8,
+			updated_at = CURRENT_TIMESTAMP
+		WHERE id = $1
+	`, id, updates.InvoiceNumber, updates.Month, updates.MeterID, updates.SiteID,
+		updates.Amount, updates.Notes, updates.UpdatedBy)
+
+	if err != nil {
+		return err
+	}
+
+	rows, err := result.RowsAffected()
+	if err != nil {
+		return err
+	}
+	if rows == 0 {
+		return fmt.Errorf("invoice not found")
+	}
+	return nil
+}
+
+// DeleteInvoice deletes an invoice by ID
+func (db *PostgresDB) DeleteInvoice(id string) error {
+	result, err := db.conn.Exec("DELETE FROM invoices WHERE id = $1", id)
+	if err != nil {
+		return err
+	}
+
+	rows, err := result.RowsAffected()
+	if err != nil {
+		return err
+	}
+	if rows == 0 {
+		return fmt.Errorf("invoice not found")
 	}
 	return nil
 }

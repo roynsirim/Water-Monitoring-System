@@ -549,3 +549,223 @@ func (h *AdminHandler) deleteTonnes(w http.ResponseWriter, r *http.Request, id s
 	})
 	respondJSON(w, 200, map[string]string{"status": "deleted"})
 }
+
+// ─── Invoices Management ─────────────────────────────────────────────────────
+
+// HandleInvoices serves /api/admin/invoices for GET (list) and POST (create)
+func (h *AdminHandler) HandleInvoices(w http.ResponseWriter, r *http.Request) {
+	switch r.Method {
+	case http.MethodGet:
+		q := r.URL.Query()
+		siteID := q.Get("site_id")
+		meterID := q.Get("meter_id")
+		invoices := h.DB.GetInvoices(siteID, meterID, time.Time{}, time.Time{})
+		respondJSON(w, 200, invoices)
+	case http.MethodPost:
+		h.createInvoice(w, r)
+	default:
+		writeError(w, 405, "method not allowed")
+	}
+}
+
+func (h *AdminHandler) createInvoice(w http.ResponseWriter, r *http.Request) {
+	var body struct {
+		InvoiceNumber string  `json:"invoice_number"`
+		Month         string  `json:"month"`
+		MeterID       string  `json:"meter_id"`
+		SiteID        string  `json:"site_id"`
+		Amount        float64 `json:"amount"`
+		Notes         string  `json:"notes"`
+	}
+	if err := json.NewDecoder(r.Body).Decode(&body); err != nil {
+		writeError(w, 400, "invalid JSON")
+		return
+	}
+
+	// Validation
+	if body.InvoiceNumber == "" {
+		writeError(w, 400, "invoice_number is required")
+		return
+	}
+	if body.Month == "" {
+		writeError(w, 400, "month is required")
+		return
+	}
+	if body.MeterID == "" {
+		writeError(w, 400, "meter_id is required")
+		return
+	}
+	if body.SiteID == "" {
+		writeError(w, 400, "site_id is required")
+		return
+	}
+	if body.Amount < 0 {
+		writeError(w, 400, "amount must not be negative")
+		return
+	}
+
+	// Verify meter exists and belongs to the specified site
+	meter := h.DB.GetMeter(body.MeterID)
+	if meter == nil {
+		writeError(w, 400, "meter not found")
+		return
+	}
+	if meter.SiteID != body.SiteID {
+		writeError(w, 400, "meter does not belong to the specified site")
+		return
+	}
+
+	actor, _ := CurrentUser(r)
+
+	invoice := models.Invoice{
+		InvoiceNumber: body.InvoiceNumber,
+		MeterID:       body.MeterID,
+		SiteID:        body.SiteID,
+		Amount:        body.Amount,
+		Notes:         body.Notes,
+		CreatedBy:     actor.ID,
+		UpdatedBy:     actor.ID,
+		Month:         parseDate(body.Month),
+	}
+
+	if err := h.DB.AddInvoice(invoice); err != nil {
+		writeError(w, 500, err.Error())
+		return
+	}
+
+	h.Users.LogActivity(models.ActivityLog{
+		UserID: actor.ID, UserEmail: actor.Email,
+		Action: "create_invoice", Resource: body.InvoiceNumber, Status: "success",
+		IP: clientIP(r), UserAgent: r.UserAgent(),
+		Detail: "created invoice for meter " + body.MeterID,
+	})
+	respondJSON(w, 201, map[string]string{"status": "created"})
+}
+
+// HandleInvoice serves /api/admin/invoices/{id} for GET / PUT / DELETE
+func (h *AdminHandler) HandleInvoice(w http.ResponseWriter, r *http.Request) {
+	id := strings.TrimPrefix(r.URL.Path, "/api/admin/invoices/")
+	id = strings.Trim(id, "/")
+
+	if id == "" {
+		writeError(w, 400, "invoice id required")
+		return
+	}
+
+	switch r.Method {
+	case http.MethodGet:
+		inv := h.DB.GetInvoice(id)
+		if inv == nil {
+			writeError(w, 404, "invoice not found")
+			return
+		}
+		respondJSON(w, 200, inv)
+	case http.MethodPut, http.MethodPatch:
+		h.updateInvoice(w, r, id)
+	case http.MethodDelete:
+		h.deleteInvoice(w, r, id)
+	default:
+		writeError(w, 405, "method not allowed")
+	}
+}
+
+func (h *AdminHandler) updateInvoice(w http.ResponseWriter, r *http.Request, id string) {
+	var body struct {
+		InvoiceNumber *string  `json:"invoice_number"`
+		Month         *string  `json:"month"`
+		MeterID       *string  `json:"meter_id"`
+		SiteID        *string  `json:"site_id"`
+		Amount        *float64 `json:"amount"`
+		Notes         *string  `json:"notes"`
+	}
+	if err := json.NewDecoder(r.Body).Decode(&body); err != nil {
+		writeError(w, 400, "invalid JSON")
+		return
+	}
+
+	// Validate amount if provided
+	if body.Amount != nil && *body.Amount < 0 {
+		writeError(w, 400, "amount must not be negative")
+		return
+	}
+
+	// Check if invoice exists and get current values
+	existing := h.DB.GetInvoice(id)
+	if existing == nil {
+		writeError(w, 404, "invoice not found")
+		return
+	}
+
+	// Start with existing values
+	updated := *existing
+
+	// Apply updates from request body
+	if body.InvoiceNumber != nil {
+		updated.InvoiceNumber = *body.InvoiceNumber
+	}
+	if body.MeterID != nil {
+		updated.MeterID = *body.MeterID
+	}
+	if body.SiteID != nil {
+		updated.SiteID = *body.SiteID
+	}
+	if body.Amount != nil {
+		updated.Amount = *body.Amount
+	}
+	if body.Notes != nil {
+		updated.Notes = *body.Notes
+	}
+	if body.Month != nil {
+		updated.Month = parseDate(*body.Month)
+	}
+
+	// Validate site/meter consistency
+	if body.MeterID != nil || body.SiteID != nil {
+		meter := h.DB.GetMeter(updated.MeterID)
+		if meter == nil {
+			writeError(w, 400, "meter not found")
+			return
+		}
+		if meter.SiteID != updated.SiteID {
+			writeError(w, 400, "meter does not belong to the specified site")
+			return
+		}
+	}
+
+	actor, _ := CurrentUser(r)
+	updated.UpdatedBy = actor.ID
+
+	if err := h.DB.UpdateInvoice(id, updated); err != nil {
+		writeError(w, 500, err.Error())
+		return
+	}
+
+	h.Users.LogActivity(models.ActivityLog{
+		UserID: actor.ID, UserEmail: actor.Email,
+		Action: "update_invoice", Resource: id, Status: "success",
+		IP: clientIP(r), UserAgent: r.UserAgent(),
+	})
+	respondJSON(w, 200, map[string]string{"status": "updated"})
+}
+
+func (h *AdminHandler) deleteInvoice(w http.ResponseWriter, r *http.Request, id string) {
+	// Check if invoice exists
+	existing := h.DB.GetInvoice(id)
+	if existing == nil {
+		writeError(w, 404, "invoice not found")
+		return
+	}
+
+	if err := h.DB.DeleteInvoice(id); err != nil {
+		writeError(w, 500, err.Error())
+		return
+	}
+
+	actor, _ := CurrentUser(r)
+	h.Users.LogActivity(models.ActivityLog{
+		UserID: actor.ID, UserEmail: actor.Email,
+		Action: "delete_invoice", Resource: id, Status: "success",
+		IP: clientIP(r), UserAgent: r.UserAgent(),
+	})
+	respondJSON(w, 200, map[string]string{"status": "deleted"})
+}

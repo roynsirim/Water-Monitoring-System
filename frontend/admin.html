@@ -36,6 +36,7 @@
   <ul class="nav nav-tabs mb-3" id="adminTabs">
     <li class="nav-item"><a href="#users" class="nav-link active" data-tab="users"><i class="bi bi-people"></i> Users</a></li>
     <li class="nav-item"><a href="#activity" class="nav-link" data-tab="activity"><i class="bi bi-journal-text"></i> Activity Log</a></li>
+    <li class="nav-item"><a href="#invoices" class="nav-link" data-tab="invoices"><i class="bi bi-receipt"></i> Invoices</a></li>
     <li class="nav-item"><a href="#data" class="nav-link" data-tab="data"><i class="bi bi-database-gear"></i> Data Tools</a></li>
     <li class="nav-item"><a href="#change-password" class="nav-link" data-tab="change-password"><i class="bi bi-key"></i> My Password</a></li>
   </ul>
@@ -106,6 +107,56 @@
           </thead>
           <tbody id="actTbody"></tbody>
         </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- Invoices tab -->
+  <div class="tab-pane d-none" id="tab-invoices">
+    <div class="row g-3">
+      <div class="col-lg-8">
+        <div class="card">
+          <div class="card-header d-flex justify-content-between align-items-center">
+            <span><i class="bi bi-receipt me-1"></i>Invoices</span>
+            <div class="d-flex align-items-center gap-2">
+              <select class="form-select form-select-sm" id="invoicesPageSize" style="width: auto;">
+                <option value="25">25/page</option>
+                <option value="50" selected>50/page</option>
+                <option value="100">100/page</option>
+              </select>
+              <button class="btn btn-outline-light btn-sm" id="refreshInvoices"><i class="bi bi-arrow-clockwise"></i></button>
+              <button class="btn btn-brand btn-sm" data-bs-toggle="modal" data-bs-target="#newInvoiceModal">
+                <i class="bi bi-plus-lg"></i> New Invoice</button>
+            </div>
+          </div>
+          <div class="card-body p-0 scroll-table" style="max-height: 500px;">
+            <table class="table table-hover mb-0">
+              <thead class="sticky-top" style="background:#1a2332;">
+                <tr><th>Invoice #</th><th>Month</th><th>Site</th><th>Meter</th><th class="text-end">Amount</th><th>Actions</th></tr>
+              </thead>
+              <tbody id="invoiceTbody"></tbody>
+            </table>
+          </div>
+          <div class="card-footer d-flex justify-content-between align-items-center py-2" style="background: rgba(0,180,216,.03); border-top: 1px solid var(--border);">
+            <small class="text-muted" id="invoicesInfo">Showing 0 of 0</small>
+            <nav>
+              <ul class="pagination pagination-sm mb-0">
+                <li class="page-item" id="invoicesPrevItem"><a class="page-link" href="#" id="invoicesPrev"><i class="bi bi-chevron-left"></i></a></li>
+                <li class="page-item disabled"><span class="page-link" id="invoicesPageNum">1</span></li>
+                <li class="page-item" id="invoicesNextItem"><a class="page-link" href="#" id="invoicesNext"><i class="bi bi-chevron-right"></i></a></li>
+              </ul>
+            </nav>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-4">
+        <div class="card">
+          <div class="card-header"><i class="bi bi-info-circle me-1"></i>Invoice Information</div>
+          <div class="card-body">
+            <p class="small text-muted mb-2">Invoices track monthly water usage costs tied to specific meters and sites.</p>
+            <p class="small text-muted mb-0"><strong>Access:</strong> Only managers and admins can create, edit, or delete invoices.</p>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -268,6 +319,81 @@
     </div>
   </div>
 
+  <!-- New Invoice Modal -->
+  <div class="modal fade" id="newInvoiceModal" tabindex="-1">
+    <div class="modal-dialog">
+      <div class="modal-content" style="background: #1a2332;">
+        <div class="modal-header"><h6 class="modal-title">Create Invoice</h6>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button></div>
+        <div class="modal-body">
+          <form id="newInvoiceForm">
+            <div class="mb-2"><label class="small text-muted">Invoice Number</label><input class="form-control" id="niNumber" required></div>
+            <div class="mb-2"><label class="small text-muted">Month</label><input class="form-control" type="month" id="niMonth" required></div>
+            <div class="mb-2"><label class="small text-muted">Site</label>
+              <select class="form-select" id="niSite" required>
+                <option value="">Select site...</option>
+                <option value="rotherham">Rotherham</option>
+                <option value="stocksbridge">Stocksbridge</option>
+                <option value="brinsworth">Brinsworth</option>
+                <option value="wednesbury">Wednesbury</option>
+              </select>
+            </div>
+            <div class="mb-2"><label class="small text-muted">Meter</label>
+              <select class="form-select" id="niMeter" required>
+                <option value="">Select meter...</option>
+              </select>
+            </div>
+            <div class="mb-2"><label class="small text-muted">Amount (£)</label><input class="form-control" type="number" step="0.01" id="niAmount" required></div>
+            <div class="mb-2"><label class="small text-muted">Notes</label><textarea class="form-control" id="niNotes" rows="2"></textarea></div>
+            <div id="niMsg" class="small"></div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Cancel</button>
+          <button type="button" class="btn btn-brand btn-sm" id="createInvoiceBtn">Create</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Edit Invoice Modal -->
+  <div class="modal fade" id="editInvoiceModal" tabindex="-1">
+    <div class="modal-dialog">
+      <div class="modal-content" style="background: #1a2332;">
+        <div class="modal-header"><h6 class="modal-title">Edit Invoice</h6>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button></div>
+        <div class="modal-body">
+          <form id="editInvoiceForm">
+            <input type="hidden" id="eiId">
+            <div class="mb-2"><label class="small text-muted">Invoice Number</label><input class="form-control" id="eiNumber" required></div>
+            <div class="mb-2"><label class="small text-muted">Month</label><input class="form-control" type="month" id="eiMonth" required></div>
+            <div class="mb-2"><label class="small text-muted">Site</label>
+              <select class="form-select" id="eiSite" required>
+                <option value="">Select site...</option>
+                <option value="rotherham">Rotherham</option>
+                <option value="stocksbridge">Stocksbridge</option>
+                <option value="brinsworth">Brinsworth</option>
+                <option value="wednesbury">Wednesbury</option>
+              </select>
+            </div>
+            <div class="mb-2"><label class="small text-muted">Meter</label>
+              <select class="form-select" id="eiMeter" required>
+                <option value="">Select meter...</option>
+              </select>
+            </div>
+            <div class="mb-2"><label class="small text-muted">Amount (£)</label><input class="form-control" type="number" step="0.01" id="eiAmount" required></div>
+            <div class="mb-2"><label class="small text-muted">Notes</label><textarea class="form-control" id="eiNotes" rows="2"></textarea></div>
+            <div id="eiMsg" class="small"></div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Cancel</button>
+          <button type="button" class="btn btn-brand btn-sm" id="saveInvoiceBtn">Save</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <!-- Change password tab -->
   <div class="tab-pane d-none" id="tab-change-password">
     <div class="card" style="max-width: 480px;">
@@ -348,7 +474,28 @@ function showTab(name) {
   history.replaceState(null, '', '#' + name);
 }
 document.querySelectorAll('#adminTabs .nav-link').forEach(a => a.addEventListener('click', (e) => { e.preventDefault(); showTab(a.dataset.tab); }));
-showTab((location.hash || '#users').slice(1) || 'users');
+
+// Hide tabs based on role
+const canManageInvoices = me.role === 'admin' || me.role === 'manager';
+const canManageUsers = me.role === 'admin';
+
+if (!canManageInvoices) {
+  document.querySelector('[data-tab="invoices"]')?.closest('.nav-item')?.remove();
+}
+if (!canManageUsers) {
+  document.querySelector('[data-tab="users"]')?.closest('.nav-item')?.remove();
+  document.querySelector('[data-tab="activity"]')?.closest('.nav-item')?.remove();
+}
+
+// Determine default tab based on role and URL hash
+let defaultTab = (location.hash || '').slice(1) || 'users';
+if (!canManageUsers && (defaultTab === 'users' || defaultTab === 'activity')) {
+  defaultTab = canManageInvoices ? 'invoices' : 'data';
+}
+if (!canManageInvoices && defaultTab === 'invoices') {
+  defaultTab = 'data';
+}
+showTab(defaultTab);
 
 // ─── Users ────────────────────────────────────────────────────────────────────
 let usersCache = [];
@@ -736,7 +883,207 @@ async function deleteTonnes(id) {
 
 document.getElementById('refreshTonnes').addEventListener('click', loadTonnes);
 
+// ─── Invoices Management ──────────────────────────────────────────────────────
+let invoicesCache = [];
+let invoicesPage = 1;
+let invoicesPageSize = 50;
+let metersCache = [];
+
+async function loadMeters() {
+  try {
+    metersCache = await api('/api/meters');
+  } catch (e) { console.error('Failed to load meters:', e); }
+}
+
+function populateMeterSelect(selectId, siteId) {
+  const select = document.getElementById(selectId);
+  const currentValue = select.value;
+  select.innerHTML = '<option value="">Select meter...</option>';
+  
+  const filtered = siteId ? metersCache.filter(m => m.site_id === siteId) : metersCache;
+  filtered.forEach(m => {
+    const opt = document.createElement('option');
+    opt.value = m.id;
+    opt.textContent = `${m.name} (${m.department})`;
+    select.appendChild(opt);
+  });
+  
+  // Restore selection if still valid
+  if (currentValue && filtered.some(m => m.id === currentValue)) {
+    select.value = currentValue;
+  }
+}
+
+// Site change handlers for meter dropdowns
+document.getElementById('niSite').addEventListener('change', (e) => {
+  populateMeterSelect('niMeter', e.target.value);
+});
+document.getElementById('eiSite').addEventListener('change', (e) => {
+  populateMeterSelect('eiMeter', e.target.value);
+});
+
+function renderInvoicesPage() {
+  const tb = document.getElementById('invoiceTbody');
+  tb.innerHTML = '';
+  
+  // Sort by month descending (most recent first)
+  const sorted = [...invoicesCache].sort((a, b) => new Date(b.month) - new Date(a.month));
+  const total = sorted.length;
+  const totalPages = Math.max(1, Math.ceil(total / invoicesPageSize));
+  
+  // Clamp page
+  if (invoicesPage > totalPages) invoicesPage = totalPages;
+  if (invoicesPage < 1) invoicesPage = 1;
+  
+  const start = (invoicesPage - 1) * invoicesPageSize;
+  const end = Math.min(start + invoicesPageSize, total);
+  const pageData = sorted.slice(start, end);
+  
+  pageData.forEach(inv => {
+    const tr = document.createElement('tr');
+    const monthDate = new Date(inv.month);
+    const monthStr = monthDate.toLocaleDateString('en-GB', { year: 'numeric', month: 'short' });
+    const meter = metersCache.find(m => m.id === inv.meter_id);
+    const meterName = meter ? `${meter.name}` : inv.meter_id.slice(0, 12) + '...';
+    
+    tr.innerHTML = `
+      <td>${escapeHTML(inv.invoice_number)}</td>
+      <td>${monthStr}</td>
+      <td>${siteNames[inv.site_id] || inv.site_id}</td>
+      <td class="small">${escapeHTML(meterName)}</td>
+      <td class="text-end">£${inv.amount?.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}</td>
+      <td>
+        <button class="btn btn-outline-info btn-sm py-0 px-1" onclick="editInvoice('${inv.id}')" title="Edit"><i class="bi bi-pencil"></i></button>
+        <button class="btn btn-outline-danger btn-sm py-0 px-1" onclick="deleteInvoice('${inv.id}')" title="Delete"><i class="bi bi-trash"></i></button>
+      </td>
+    `;
+    tb.appendChild(tr);
+  });
+  
+  // Update pagination UI
+  document.getElementById('invoicesInfo').textContent = total > 0 
+    ? `Showing ${start + 1}–${end} of ${total}` 
+    : 'No invoices';
+  document.getElementById('invoicesPageNum').textContent = `${invoicesPage} / ${totalPages}`;
+  document.getElementById('invoicesPrevItem').classList.toggle('disabled', invoicesPage <= 1);
+  document.getElementById('invoicesNextItem').classList.toggle('disabled', invoicesPage >= totalPages);
+}
+
+async function loadInvoices() {
+  try {
+    invoicesCache = await api('/api/admin/invoices');
+    renderInvoicesPage();
+  } catch (e) { 
+    console.error('Failed to load invoices:', e);
+    // User may not have permission - show message
+    const tb = document.getElementById('invoiceTbody');
+    tb.innerHTML = '<tr><td colspan="6" class="text-center text-muted py-3">Manager or Admin access required to view invoices</td></tr>';
+  }
+}
+
+document.getElementById('invoicesPrev').addEventListener('click', (e) => {
+  e.preventDefault();
+  if (invoicesPage > 1) { invoicesPage--; renderInvoicesPage(); }
+});
+document.getElementById('invoicesNext').addEventListener('click', (e) => {
+  e.preventDefault();
+  const totalPages = Math.ceil(invoicesCache.length / invoicesPageSize);
+  if (invoicesPage < totalPages) { invoicesPage++; renderInvoicesPage(); }
+});
+document.getElementById('invoicesPageSize').addEventListener('change', (e) => {
+  invoicesPageSize = parseInt(e.target.value, 10);
+  invoicesPage = 1;
+  renderInvoicesPage();
+});
+
+document.getElementById('createInvoiceBtn').addEventListener('click', async () => {
+  const monthInput = document.getElementById('niMonth').value;
+  // Convert YYYY-MM to first day of month
+  const month = monthInput ? monthInput + '-01' : '';
+  
+  try {
+    await api('/api/admin/invoices', {
+      method: 'POST',
+      body: JSON.stringify({
+        invoice_number: document.getElementById('niNumber').value.trim(),
+        month: month,
+        site_id: document.getElementById('niSite').value,
+        meter_id: document.getElementById('niMeter').value,
+        amount: parseFloat(document.getElementById('niAmount').value) || 0,
+        notes: document.getElementById('niNotes').value.trim()
+      })
+    });
+    bootstrap.Modal.getInstance(document.getElementById('newInvoiceModal')).hide();
+    document.getElementById('newInvoiceForm').reset();
+    await loadInvoices();
+  } catch (err) {
+    document.getElementById('niMsg').innerHTML = '<span class="text-danger">' + escapeHTML(err.message) + '</span>';
+  }
+});
+
+function editInvoice(id) {
+  const inv = invoicesCache.find(x => x.id === id);
+  if (!inv) return;
+  
+  document.getElementById('eiId').value = inv.id;
+  document.getElementById('eiNumber').value = inv.invoice_number;
+  
+  // Format month for input type="month" (YYYY-MM)
+  if (inv.month) {
+    const d = new Date(inv.month);
+    const yyyy = d.getFullYear();
+    const mm = String(d.getMonth() + 1).padStart(2, '0');
+    document.getElementById('eiMonth').value = `${yyyy}-${mm}`;
+  }
+  
+  document.getElementById('eiSite').value = inv.site_id;
+  populateMeterSelect('eiMeter', inv.site_id);
+  document.getElementById('eiMeter').value = inv.meter_id;
+  document.getElementById('eiAmount').value = inv.amount;
+  document.getElementById('eiNotes').value = inv.notes || '';
+  document.getElementById('eiMsg').textContent = '';
+  
+  new bootstrap.Modal(document.getElementById('editInvoiceModal')).show();
+}
+
+document.getElementById('saveInvoiceBtn').addEventListener('click', async () => {
+  const id = document.getElementById('eiId').value;
+  const monthInput = document.getElementById('eiMonth').value;
+  const month = monthInput ? monthInput + '-01' : '';
+  
+  try {
+    await api('/api/admin/invoices/' + id, {
+      method: 'PUT',
+      body: JSON.stringify({
+        invoice_number: document.getElementById('eiNumber').value.trim(),
+        month: month,
+        site_id: document.getElementById('eiSite').value,
+        meter_id: document.getElementById('eiMeter').value,
+        amount: parseFloat(document.getElementById('eiAmount').value) || 0,
+        notes: document.getElementById('eiNotes').value.trim()
+      })
+    });
+    bootstrap.Modal.getInstance(document.getElementById('editInvoiceModal')).hide();
+    await loadInvoices();
+  } catch (err) {
+    document.getElementById('eiMsg').innerHTML = '<span class="text-danger">' + escapeHTML(err.message) + '</span>';
+  }
+});
+
+async function deleteInvoice(id) {
+  if (!confirm('Delete this invoice? This cannot be undone.')) return;
+  try {
+    await api('/api/admin/invoices/' + id, { method: 'DELETE' });
+    await loadInvoices();
+  } catch (err) { alert(err.message); }
+}
+
+document.getElementById('refreshInvoices').addEventListener('click', loadInvoices);
+
 // initial load
+loadMeters().then(() => {
+  loadInvoices().catch(()=>{});
+}).catch(()=>{});
 loadUsers().catch(e => console.error(e));
 loadActivity().catch(()=>{});
 loadReadings().catch(()=>{});

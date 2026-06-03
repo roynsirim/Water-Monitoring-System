@@ -37,6 +37,13 @@ type Store interface {
 	UpdateTonnes(id string, updates models.TonnesEntry) error
 	DeleteTonnes(id string) error
 
+	// Invoices
+	AddInvoice(i models.Invoice) error
+	GetInvoices(siteID, meterID string, from, to time.Time) []models.Invoice
+	GetInvoice(id string) *models.Invoice
+	UpdateInvoice(id string, updates models.Invoice) error
+	DeleteInvoice(id string) error
+
 	// Auto-fill
 	AutoFillMissingData(meterID string, targetDate time.Time) *models.Reading
 	MedianFillMissingData(meterID string, targetDate time.Time, lookbackDays int) *models.Reading

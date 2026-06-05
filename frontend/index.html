@@ -58,6 +58,7 @@
     .dot-online { width: 8px; height: 8px; border-radius: 50%; background: #2ecc71; display: inline-block;
                   box-shadow: 0 0 6px #2ecc71; animation: pulse 2s infinite; }
     .dot-offline { width: 8px; height: 8px; border-radius: 50%; background: #e74c3c; display: inline-block; }
+    .dot { width: 10px; height: 10px; border-radius: 50%; display: inline-block; }
     @keyframes pulse { 0%,100%{opacity:1}50%{opacity:.4} }
     table { font-size: .82rem; }
     thead th { font-size: .72rem; text-transform: uppercase; letter-spacing: .5px; color: var(--bs-secondary-color); border-color: var(--border)!important; }
@@ -617,6 +618,53 @@
 
   <!-- Invoices Page -->
   <div id="page-invoices" class="page">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+      <h5 class="mb-0"><i class="bi bi-receipt me-2"></i>Invoice Management</h5>
+      <button class="btn btn-brand" data-bs-toggle="modal" data-bs-target="#newInvoiceModal" id="newInvoiceBtn">
+        <i class="bi bi-plus-lg me-1"></i>New Invoice</button>
+    </div>
+    <div class="row g-3 mb-4">
+      <div class="col-lg-6">
+        <div class="card h-100">
+          <div class="card-header py-2 px-3">
+            <i class="bi bi-bar-chart-fill me-1 text-info"></i> Expenses by Site
+          </div>
+          <div class="card-body">
+            <div class="chart-wrap"><canvas id="chartInvoiceSite"></canvas></div>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-6">
+        <div class="card h-100">
+          <div class="card-header py-2 px-3">
+            <i class="bi bi-pie-chart-fill me-1 text-warning"></i> Expenses by Department
+          </div>
+          <div class="card-body">
+            <div class="chart-wrap"><canvas id="chartInvoiceDept"></canvas></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row g-3 mb-4">
+      <div class="col-12">
+        <div class="card">
+          <div class="card-header py-2 px-3">
+            <i class="bi bi-list-ul me-1"></i> Department Breakdown
+          </div>
+          <div class="card-body p-0">
+            <div class="table-responsive">
+              <table class="table table-hover mb-0">
+                <thead><tr>
+                  <th style="width:30px;"></th>
+                  <th>Department</th><th class="text-end">Total (£)</th><th class="text-end">Invoices</th><th class="text-end">Avg per Invoice</th>
+                </tr></thead>
+                <tbody id="invoiceDeptTable"></tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
     <div class="card">
       <div class="card-header d-flex justify-content-between align-items-center">
         <span><i class="bi bi-receipt me-1"></i>Invoices</span>
@@ -627,11 +675,9 @@
             <option value="100">100/page</option>
           </select>
           <button class="btn btn-outline-light btn-sm" id="refreshInvoices"><i class="bi bi-arrow-clockwise"></i></button>
-          <button class="btn btn-brand btn-sm" data-bs-toggle="modal" data-bs-target="#newInvoiceModal" id="newInvoiceBtn">
-            <i class="bi bi-plus-lg"></i> New Invoice</button>
         </div>
       </div>
-      <div class="card-body p-0" style="max-height: 600px; overflow-y: auto;">
+      <div class="card-body p-0" style="max-height: 400px; overflow-y: auto;">
         <table class="table table-hover mb-0">
           <thead class="sticky-top" style="background:var(--bg-card);">
             <tr><th>Invoice #</th><th>Month</th><th>Site</th><th>Meter</th><th class="text-end">Amount</th><th>Actions</th></tr>
@@ -1775,6 +1821,108 @@ document.getElementById('eiSite')?.addEventListener('change', (e) => {
   populateMeterSelect('eiMeter', e.target.value);
 });
 
+function renderInvoiceCharts() {
+  // Aggregate by site
+  const bySite = {};
+  const byDept = {};
+  const deptCount = {};
+  
+  invoicesCache.forEach(inv => {
+    // By site
+    const siteName = siteNames[inv.site_id] || inv.site_id;
+    bySite[siteName] = (bySite[siteName] || 0) + (inv.amount || 0);
+    
+    // By department (from meter)
+    const meter = allMeters.find(m => m.id === inv.meter_id);
+    const dept = meter ? meter.department : 'Unknown';
+    byDept[dept] = (byDept[dept] || 0) + (inv.amount || 0);
+    deptCount[dept] = (deptCount[dept] || 0) + 1;
+  });
+  
+  const siteLabels = Object.keys(bySite).sort();
+  const siteData = siteLabels.map(s => bySite[s]);
+  const siteColors = ['#00b4d8', '#2ecc71', '#f39c12', '#9b59b6', '#e74c3c', '#3498db'];
+  
+  const deptLabels = Object.keys(byDept).sort();
+  const deptData = deptLabels.map(d => byDept[d]);
+  const deptColors = ['#f4a261', '#48cae4', '#e76f51', '#2a9d8f', '#e9c46a', '#264653', '#a8dadc', '#457b9d'];
+  
+  // Render department breakdown table
+  const deptTableBody = document.getElementById('invoiceDeptTable');
+  if (deptTableBody) {
+    deptTableBody.innerHTML = deptLabels.map((dept, idx) => {
+      const total = byDept[dept] || 0;
+      const count = deptCount[dept] || 0;
+      const avg = count > 0 ? total / count : 0;
+      const color = deptColors[idx % deptColors.length];
+      return `<tr>
+        <td><span class="dot" style="background:${color};"></span></td>
+        <td>${dept}</td>
+        <td class="text-end fw-semibold">£${total.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}</td>
+        <td class="text-end">${count}</td>
+        <td class="text-end">£${avg.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}</td>
+      </tr>`;
+    }).join('');
+  }
+  
+  // Render site chart
+  destroyChart('invoiceSite');
+  const ctxSite = document.getElementById('chartInvoiceSite');
+  if (ctxSite) {
+    charts['invoiceSite'] = new Chart(ctxSite, {
+      type: 'bar',
+      data: {
+        labels: siteLabels,
+        datasets: [{
+          label: 'Total Expenses (£)',
+          data: siteData,
+          backgroundColor: siteColors.slice(0, siteLabels.length),
+          borderWidth: 0,
+          borderRadius: 6
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: { legend: { display: false } },
+        scales: {
+          y: { beginAtZero: true, ticks: { callback: v => '£' + v.toLocaleString() } },
+          x: { grid: { display: false } }
+        }
+      }
+    });
+  }
+  
+  // Render department chart
+  destroyChart('invoiceDept');
+  const ctxDept = document.getElementById('chartInvoiceDept');
+  if (ctxDept) {
+    charts['invoiceDept'] = new Chart(ctxDept, {
+      type: 'doughnut',
+      data: {
+        labels: deptLabels,
+        datasets: [{
+          data: deptData,
+          backgroundColor: deptColors.slice(0, deptLabels.length),
+          borderWidth: 0
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: { position: 'right', labels: { boxWidth: 12, font: { size: 11 } } },
+          tooltip: {
+            callbacks: {
+              label: ctx => `${ctx.label}: £${ctx.raw.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}`
+            }
+          }
+        }
+      }
+    });
+  }
+}
+
 function renderInvoicesPage() {
   const tb = document.getElementById('invoiceTbody');
   if (!tb) return;
@@ -1836,6 +1984,7 @@ async function loadInvoices() {
     if (!r.ok) throw new Error('Failed to load invoices');
     invoicesCache = await r.json();
     renderInvoicesPage();
+    renderInvoiceCharts();
   } catch (e) { 
     console.error('Failed to load invoices:', e);
     const tb = document.getElementById('invoiceTbody');

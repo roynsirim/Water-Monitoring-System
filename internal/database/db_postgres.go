@@ -1231,10 +1231,7 @@ func generateSampleData(meterMap map[string]models.Meter) ([]models.Reading, []m
 		{ID: makeID(), SiteID: models.SiteBrinsworth, Department: models.DeptHotMill, Tonnes: 20000, Date: m1ago},
 		{ID: makeID(), SiteID: models.SiteBrinsworth, Department: models.DeptColdMill, Tonnes: 13000, Date: m1ago},
 		{ID: makeID(), SiteID: models.SiteBrinsworth, Department: models.DeptHRP, Tonnes: 8500, Date: m1ago},
-		{ID: makeID(), SiteID: models.SiteWednesbury, Department: models.DeptProduction, Tonnes: 5000, Date: m3ago},
-		{ID: makeID(), SiteID: models.SiteWednesbury, Department: models.DeptAmenities, Tonnes: 500, Date: m3ago},
-		{ID: makeID(), SiteID: models.SiteWednesbury, Department: models.DeptProduction, Tonnes: 5200, Date: m2ago},
-		{ID: makeID(), SiteID: models.SiteWednesbury, Department: models.DeptAmenities, Tonnes: 520, Date: m2ago},
+		{ID: makeID(), SiteID: models.SiteWednesbury, Department: models.DeptGeneral, Tonnes: 5000, Date: m3ago},
 	}
 
 	return readings, tonnes

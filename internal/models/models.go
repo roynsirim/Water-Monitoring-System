@@ -47,7 +47,6 @@ const (
 	DeptACP                 = "ACP"
 	DeptBBR                 = "BBR"
 	DeptEngineeringServices = "Engineering Services"
-	DeptGeneral             = "General" // Used by other sites
 	// Stocksbridge
 	DeptRemelt     = "Remelt"
 	DeptBilletMill = "Billet Mill"
@@ -60,8 +59,7 @@ const (
 	DeptColdMill = "Cold Mill"
 	DeptHRP      = "HRP"
 	// Wednesbury
-	DeptProduction = "Production"
-	DeptAmenities  = "Amenities"
+	DeptGeneral  = "General"
 )
 
 // ─── Data Sources ─────────────────────────────────────────────────────────────

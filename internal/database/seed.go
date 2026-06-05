@@ -67,10 +67,7 @@ func SeedMeters() []models.Meter {
 		{ID: "b-cmr", SiteID: models.SiteBrinsworth, Department: models.DeptColdMill, Name: "Cold Mill River Water Meter", WaterType: models.RiverWater, Feed: "River", Source: models.SourceTrend, Unit: "m3", IsActive: true, IsMainMeter: true},
 
 		// ── WEDNESBURY ─────────────────────────────────────────────────────
-		{ID: "w-m1", SiteID: models.SiteWednesbury, Department: models.DeptGeneral, Name: "Main Meter 1", WaterType: models.TownsWater, Feed: "Mains", Source: models.SourceManual, Unit: "m3", IsActive: true, IsMainMeter: true},
-		{ID: "w-m2", SiteID: models.SiteWednesbury, Department: models.DeptGeneral, Name: "Main Meter 2", WaterType: models.TownsWater, Feed: "Mains", Source: models.SourceManual, Unit: "m3", IsActive: true, IsMainMeter: true},
-		{ID: "w-pro", SiteID: models.SiteWednesbury, Department: models.DeptProduction, Name: "Production Meter", WaterType: models.TownsWater, Feed: "Mains", Source: models.SourceManual, Unit: "m3", IsActive: true, IsMainMeter: true},
-		{ID: "w-ame", SiteID: models.SiteWednesbury, Department: models.DeptAmenities, Name: "Amenities Meter", WaterType: models.TownsWater, Feed: "Mains", Source: models.SourceManual, Unit: "m3", IsActive: true, IsMainMeter: true},
+		{ID: "w-m1", SiteID: models.SiteWednesbury, Department: models.DeptGeneral, Name: "Bay 4 Water Meter", WaterType: models.TownsWater, Feed: "Mains", Source: models.SourceManual, Unit: "m3", IsActive: true, IsMainMeter: true},
 	}
 }
 
@@ -254,11 +251,6 @@ func seedSampleReadings(db *DB) {
 		{ID: makeID(), SiteID: models.SiteBrinsworth, Department: models.DeptHotMill, Tonnes: 20000, Date: m1ago},
 		{ID: makeID(), SiteID: models.SiteBrinsworth, Department: models.DeptColdMill, Tonnes: 13000, Date: m1ago},
 		{ID: makeID(), SiteID: models.SiteBrinsworth, Department: models.DeptHRP, Tonnes: 8500, Date: m1ago},
-		{ID: makeID(), SiteID: models.SiteWednesbury, Department: models.DeptProduction, Tonnes: 5000, Date: m3ago},
-		{ID: makeID(), SiteID: models.SiteWednesbury, Department: models.DeptAmenities, Tonnes: 500, Date: m3ago},
-		{ID: makeID(), SiteID: models.SiteWednesbury, Department: models.DeptProduction, Tonnes: 5200, Date: m2ago},
-		{ID: makeID(), SiteID: models.SiteWednesbury, Department: models.DeptAmenities, Tonnes: 520, Date: m2ago},
-		{ID: makeID(), SiteID: models.SiteWednesbury, Department: models.DeptProduction, Tonnes: 5400, Date: m1ago},
-		{ID: makeID(), SiteID: models.SiteWednesbury, Department: models.DeptAmenities, Tonnes: 540, Date: m1ago},
+		{ID: makeID(), SiteID: models.SiteWednesbury, Department: models.DeptGeneral, Tonnes: 5000, Date: m3ago},
 	}
 }

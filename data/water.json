@@ -524,43 +524,7 @@
       "id": "w-m1",
       "site_id": "wednesbury",
       "department": "General",
-      "name": "Main Meter 1",
-      "water_type": "towns",
-      "feed": "Mains",
-      "source": "manual",
-      "unit": "m3",
-      "is_active": true,
-      "is_main_meter": true
-    },
-    {
-      "id": "w-m2",
-      "site_id": "wednesbury",
-      "department": "General",
-      "name": "Main Meter 2",
-      "water_type": "towns",
-      "feed": "Mains",
-      "source": "manual",
-      "unit": "m3",
-      "is_active": true,
-      "is_main_meter": true
-    },
-    {
-      "id": "w-pro",
-      "site_id": "wednesbury",
-      "department": "Production",
-      "name": "Production Meter",
-      "water_type": "towns",
-      "feed": "Mains",
-      "source": "manual",
-      "unit": "m3",
-      "is_active": true,
-      "is_main_meter": true
-    },
-    {
-      "id": "w-ame",
-      "site_id": "wednesbury",
-      "department": "Amenities",
-      "name": "Amenities Meter",
+      "name": "Bay 4 Water Meter",
       "water_type": "towns",
       "feed": "Mains",
       "source": "manual",
@@ -1467,6 +1431,7 @@
       "date": "2026-02-28T00:00:00Z"
     }
   ],
+  "invoices": [],
   "preferences": {
     "theme": "light",
     "auto_fill_enabled": false,

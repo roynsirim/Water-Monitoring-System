@@ -530,6 +530,14 @@ document.getElementById('changePwForm').addEventListener('submit', async (e) => 
 function escapeHTML(s) { return (s || '').replace(/[&<>"']/g, c => ({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;' }[c])); }
 function fmtDate(d) { return d ? new Date(d).toLocaleDateString() : '—'; }
 const siteNames = { rotherham: 'Rotherham', stocksbridge: 'Stocksbridge', brinsworth: 'Brinsworth', wednesbury: 'Wednesbury' };
+let metersMap = {};
+
+async function fetchMetersMap() {
+  try {
+    const meters = await api('/api/meters');
+    meters.forEach(m => { metersMap[m.id] = m; });
+  } catch (e) { console.error('Failed to fetch meters:', e); }
+}
 
 // ─── Readings Management ──────────────────────────────────────────────────────
 let readingsCache = [];
@@ -558,7 +566,7 @@ function renderReadingsPage() {
     tr.innerHTML = `
       <td class="small">${fmtDate(r.date)}</td>
       <td>${siteNames[r.site_id] || r.site_id}</td>
-      <td class="small">${escapeHTML(r.meter_id.slice(0, 12))}...</td>
+      <td class="small">${escapeHTML(metersMap[r.meter_id]?.name || r.meter_id)}</td>
       <td class="text-end">${r.value?.toLocaleString()}</td>
       <td class="text-end">${r.usage?.toFixed(2) || '—'}</td>
       <td><span class="badge bg-info-subtle text-info">${r.water_type}</span>${r.is_estimated ? ' <span class="badge bg-warning-subtle text-warning">est</span>' : ''}</td>
@@ -751,9 +759,11 @@ async function deleteTonnes(id) {
 document.getElementById('refreshTonnes').addEventListener('click', loadTonnes);
 
 // initial load
+fetchMetersMap().then(() => {
+  loadReadings().catch(()=>{});
+});
 loadUsers().catch(e => console.error(e));
 loadActivity().catch(()=>{});
-loadReadings().catch(()=>{});
 loadTonnes().catch(()=>{});
 </script>
 </body>

@@ -620,8 +620,14 @@
   <div id="page-invoices" class="page">
     <div class="d-flex justify-content-between align-items-center mb-3">
       <h5 class="mb-0"><i class="bi bi-receipt me-2"></i>Invoice Management</h5>
-      <button class="btn btn-brand" data-bs-toggle="modal" data-bs-target="#newInvoiceModal" id="newInvoiceBtn">
-        <i class="bi bi-plus-lg me-1"></i>New Invoice</button>
+      <div class="d-flex align-items-center gap-2">
+        <label class="text-muted small mb-0">Month</label>
+        <input type="month" id="invoiceMonthFilter" class="form-control form-control-sm" style="width:auto">
+        <button class="btn btn-brand btn-sm" onclick="loadInvoices()"><i class="bi bi-funnel me-1"></i>Filter</button>
+        <button class="btn btn-outline-secondary btn-sm" onclick="clearInvoiceFilter()">Clear</button>
+        <button class="btn btn-brand" data-bs-toggle="modal" data-bs-target="#newInvoiceModal" id="newInvoiceBtn">
+          <i class="bi bi-plus-lg me-1"></i>New Invoice</button>
+      </div>
     </div>
     <div class="row g-3 mb-4">
       <div class="col-lg-6">
@@ -1380,7 +1386,7 @@ function filterMetersForEntry() {
   const site = document.getElementById('inSite').value;
   const dept = document.getElementById('inDept').value;
   const meters = allMeters.filter(m => m.site_id === site && (dept === '' || m.department === dept) && m.source === 'manual');
-  document.getElementById('inMeter').innerHTML = '<option value="">Select meter...</option>' + meters.map(m => `<option value="${m.id}">[${m.water_type.toUpperCase()}] ${m.name} (${m.unit})</option>`).join('');
+  document.getElementById('inMeter').innerHTML = '<option value="">Select meter...</option>' + meters.map(m => `<option value="${m.id}">${m.name}</option>`).join('');
 }
 
 async function submitReading() {
@@ -1807,7 +1813,7 @@ function populateMeterSelect(selectId, siteId) {
   filtered.forEach(m => {
     const opt = document.createElement('option');
     opt.value = m.id;
-    opt.textContent = `${m.name} (${m.department})`;
+    opt.textContent = m.name;
     select.appendChild(opt);
   });
   
@@ -2001,7 +2007,7 @@ function renderInvoicesPage() {
     const monthDate = new Date(inv.month);
     const monthStr = monthDate.toLocaleDateString('en-GB', { year: 'numeric', month: 'short' });
     const meter = allMeters.find(m => m.id === inv.meter_id);
-    const meterName = meter ? `${meter.name}` : inv.meter_id.slice(0, 12) + '...';
+    const meterName = meter ? meter.name : 'Unknown meter';
     
     const actionsHtml = canManageInvoices ? `
       <button class="btn btn-outline-info btn-sm py-0 px-1" onclick="editInvoice('${inv.id}')" title="Edit"><i class="bi bi-pencil"></i></button>
@@ -2033,7 +2039,11 @@ function renderInvoicesPage() {
 
 async function loadInvoices() {
   try {
-    const r = await fetch(`${API}/api/admin/invoices`);
+    const monthFilter = document.getElementById('invoiceMonthFilter')?.value || '';
+    const params = new URLSearchParams();
+    if (monthFilter) params.append('month', monthFilter + '-01');
+    const url = `${API}/api/admin/invoices${params.toString() ? '?' + params.toString() : ''}`;
+    const r = await fetch(url);
     if (!r.ok) throw new Error('Failed to load invoices');
     invoicesCache = await r.json();
     renderInvoicesPage();
@@ -2043,6 +2053,12 @@ async function loadInvoices() {
     const tb = document.getElementById('invoiceTbody');
     if (tb) tb.innerHTML = '<tr><td colspan="6" class="text-center text-muted py-3">Failed to load invoices or access denied</td></tr>';
   }
+}
+
+function clearInvoiceFilter() {
+  const monthInput = document.getElementById('invoiceMonthFilter');
+  if (monthInput) monthInput.value = '';
+  loadInvoices();
 }
 
 document.getElementById('invoicesPrev')?.addEventListener('click', (e) => {

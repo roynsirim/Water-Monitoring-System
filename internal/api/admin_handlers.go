@@ -559,7 +559,14 @@ func (h *AdminHandler) HandleInvoices(w http.ResponseWriter, r *http.Request) {
 		q := r.URL.Query()
 		siteID := q.Get("site_id")
 		meterID := q.Get("meter_id")
-		invoices := h.DB.GetInvoices(siteID, meterID, time.Time{}, time.Time{})
+		var from, to time.Time
+		if monthStr := q.Get("month"); monthStr != "" {
+			if t, err := time.Parse("2006-01-02", monthStr); err == nil {
+				from = time.Date(t.Year(), t.Month(), 1, 0, 0, 0, 0, time.UTC)
+				to = from.AddDate(0, 1, 0).Add(-time.Second)
+			}
+		}
+		invoices := h.DB.GetInvoices(siteID, meterID, from, to)
 		respondJSON(w, 200, invoices)
 	case http.MethodPost:
 		h.createInvoice(w, r)
